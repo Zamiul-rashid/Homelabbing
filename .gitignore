@@ -16,7 +16,7 @@ id_ed25519
 *.secret
 
 # --- Runtime State (Docker volumes / app data) ---
-data/
+/data/
 config/
 letsencrypt/
 *.sqlite
