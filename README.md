@@ -16,7 +16,7 @@ Here, **you learn the concepts first, understand what every command does, and bu
 
 By following our modular guides, you can turn an affordable refurbished PC into a private, high-performance cloud capable of replacing major subscription services:
 
-![Beginner Hosted Architecture](docs/architecture.png)
+![Beginner Hosted Architecture](docs/Beginner_architecture.png)
 
 | What You Get | Commercial Equivalent | The Self-Hosted Stack |
 | :--- | :--- | :--- |
