@@ -1,6 +1,6 @@
 # 08. Home Automation & Ad Blocking (`stacks/home-automation/`)
 
-Welcome to the **8th and final guide** of the Homelabbing curriculum! In our previous guides, you learned how to deploy media servers, protect data with backups, and lock down your network with firewalls. Now, we turn our attention to the physical space you live in and the network traffic flowing across every phone, computer, and smart device in your house.
+Welcome to the **8th guide** of the Homelabbing foundational learning path! In our previous guides, you learned how to deploy media servers, protect data with backups, and lock down your network with firewalls. Now, we turn our attention to the physical space you live in and the network traffic flowing across every phone, computer, and smart device in your house.
 
 In this guide, you will learn how to unify disparate smart home gadgets under one private, local roof using **Home Assistant**, and how to wipe out intrusive advertisements, tracking domains, and malware network-wide using **AdGuard Home**.
 

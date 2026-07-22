@@ -4,11 +4,11 @@
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04%20%7C%2024.04-E95420?logo=ubuntu&logoColor=white)](https://ubuntu.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Welcome to **Homelabbing** — a teaching-first, concept-driven guide designed to help you build, understand, and own your digital life on your very first home server.
+Welcome to **Homelabbing** — a practical, concept-driven guide designed to help you build, understand, and own your digital life on your very first home server.
 
 If you have ever felt frustrated by rising monthly subscription fees, privacy-invading cloud services, or having your personal files locked inside corporate servers, you are in the right place. We believe that taking back control of your data shouldn't require a computer science degree or running mysterious, blind automation scripts you don't understand. 
 
-Here, **you learn the concepts first, understand what every command does, and build your lab piece by piece.**
+Here, **you learn the architecture first, understand what every command does, and build your lab piece by piece.**
 
 ---
 
@@ -32,7 +32,7 @@ By following our modular guides, you can turn an affordable refurbished PC into 
 
 ## 🗺️ Your Learning Path
 
-We structured this repository so you can start from absolute zero and grow into a confident server owner. Follow our core curriculum in order:
+We structured this repository so you can start from absolute zero and grow into a confident server owner. Follow our foundational guides in order:
 
 1. **[01. What is Self-Hosting?](docs/01-what-is-selfhosting.md)** — Understand the philosophy, privacy benefits, and true cost comparison of running your own server.
 2. **[02. Understanding Docker & Containers](docs/02-understanding-docker.md)** — Learn how containerization works, why we use `docker compose`, and how to manage services safely.
@@ -48,7 +48,7 @@ We structured this repository so you can start from absolute zero and grow into 
 ## 🗂️ How This Repository Is Organized
 
 - **[`docs/`](docs/)** — Concept-driven learning guides explaining the *why* and *how* behind home server administration (`01` through `08`).
-- **[`stacks/`](stacks/)** — Modular, self-contained Docker Compose stacks (`media-server`, `arr-stack`, `music-server`, `photo-backup`, `book-reader`, `cloud-storage`, `home-automation`, `networking`, `full-stack`). Every single line in every compose file is heavily commented to teach you what it does.
+- **[`stacks/`](stacks/)** — Modular, self-contained Docker Compose stacks (`media-server`, `arr-stack`, `music-server`, `photo-backup`, `book-reader`, `cloud-storage`, `home-automation`, `networking`, `full-stack`). Every single line in every compose file is heavily commented to explain what it does.
 - **[`helpers/`](helpers/)** — Diagnostic and utility scripts (like `check-health.sh`) to help you troubleshoot and verify your environment.
 - **[`reference/`](reference/)** — *For advanced reference and inspiration only:* Contains the author's personal 25+ service production setup and recovery workflows. You are not expected to deploy this directly!
 
@@ -62,8 +62,8 @@ Prefer browsing online? Visit our companion website for interactive tools, archi
 
 ---
 
-## 🤝 Philosophy: Teach, Don't Automate Blindly
+## 🤝 Philosophy: Understand the Architecture First, Then Implement
 
-Unlike many repositories that give you a single "magic script" that hides what happens under the hood, **Homelabbing** avoids blind automation. When your server encounters an issue at 2:00 AM, a magic script won't help you debug it. Understanding your ports, volumes, and containers will.
+Unlike many repositories that give you a single "magic script" that hides what happens under the hood, **Homelabbing** avoids blind automation. Why? Because when you are self-hosting on your own and your server encounters an issue at 2:00 AM, copying and pasting commands or running a magic script without understanding the underlying mechanics will leave you stuck and helpless.
 
-Take your time, read the guides, check the inline comments, and enjoy the rewarding journey of owning your digital infrastructure!
+First learn how ports, container networks, volume bind mounts (`/config` vs `/data`), and reverse proxies work. Once you understand the architecture, implementation becomes straightforward—and you will be able to troubleshoot independently, customize your setup with confidence, and truly own your digital infrastructure!

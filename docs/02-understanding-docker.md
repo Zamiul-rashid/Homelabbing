@@ -2,7 +2,7 @@
 
 When beginners first start self-hosting, one of the first things they hear is: *"Just run it in Docker!"* But what exactly does that mean, and why is Docker considered the holy grail of modern home server management?
 
-In this guide, we will break down containerization using simple analogies, explain how Docker Compose makes running complex software effortless, and teach you the core concepts that power every service in our **Homelabbing** curriculum.
+In this guide, we will break down containerization using simple analogies, explain how Docker Compose makes running complex software effortless, and explore the core concepts that power every service in our **Homelabbing** architecture.
 
 ---
 
@@ -110,7 +110,7 @@ Instead of typing long commands from memory, you write down exactly what service
 
 ## ⌨️ Essential Docker Commands You Must Know
 
-We strongly believe in teaching you to run commands manually rather than relying on blind automated scripts. Here are the core commands you will use to run and manage every stack in **Homelabbing**:
+We believe in our core philosophy: **Understand the Architecture First, Then Implement.** Knowing how to run and inspect container commands yourself—rather than relying on blind automated scripts—gives you complete control and confidence. Here are the core commands you will use to run and manage every stack in **Homelabbing**:
 
 ### 1. Launch a Stack (`docker compose up -d`)
 Navigate to any folder containing a `docker-compose.yml` file and run:

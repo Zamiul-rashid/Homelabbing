@@ -85,7 +85,7 @@ All web dashboards are accessible right at your server's local IP (`http://YOUR_
 
 ## 📚 Step-by-Step Onboarding Guides
 
-For detailed onboarding and first-time configuration of each service, refer to their modular teaching guides:
+For detailed onboarding and first-time configuration of each service, refer to their modular setup guides:
 - **[Jellyfin First-Time Setup](../media-server/README.md)**
 - **[*Arr Stack API Wiring & Prowlarr Setup](../arr-stack/README.md)**
 - **[Navidrome Admin Setup & Mobile Apps](../music-server/README.md)**
