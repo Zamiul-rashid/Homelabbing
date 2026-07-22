@@ -1,0 +1,36 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="mb-8 text-sm text-text-muted">
+      <ol class="flex items-center space-x-2">
+        <li><a href="/Homelabbing/" class="hover:text-accent transition-colors">Home</a></li>
+        <li><span class="text-text-faint">/</span></li>
+        <li><a href="/Homelabbing/quickstart" class="hover:text-accent transition-colors">Services</a></li>
+        <li><span class="text-text-faint">/</span></li>
+        <li class="text-text font-medium" aria-current="page">{title}</li>
+      </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="mb-10">
+      <h1 class="section-heading mb-3">{title}</h1>
+      <p class="section-subheading">{description}</p>
+    </header>
+
+    <!-- Main Content Slot -->
+    <article class="prose prose-invert prose-lg max-w-none prose-headings:text-text prose-a:text-accent hover:prose-a:text-accent-hover prose-code:text-accent prose-pre:bg-terminal-bg prose-pre:border prose-pre:border-border">
+      <slot />
+    </article>
+  </div>
+</BaseLayout>

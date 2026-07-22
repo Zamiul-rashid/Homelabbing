@@ -1,0 +1,24 @@
+services:
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: nginx-proxy-manager
+    environment:
+      - TZ=${TZ:-UTC}
+    volumes:
+      - npm-data:/data
+      - npm-letsencrypt:/etc/letsencrypt
+    ports:
+      - "80:80"     # Public HTTP
+      - "443:443"   # Public HTTPS
+      - "81:81"     # Admin Web UI
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:81/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  npm-data:
+  npm-letsencrypt:

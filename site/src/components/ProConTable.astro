@@ -1,0 +1,40 @@
+---
+interface Props {
+  pros: string[];
+  cons: string[];
+}
+
+const { pros, cons } = Astro.props;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 font-sans not-prose">
+  <div class="p-5 rounded-xl bg-success-muted/10 border border-success/30">
+    <h4 class="font-bold text-success flex items-center gap-2 mb-3">
+      <span>✓</span>
+      <span>Advantages</span>
+    </h4>
+    <ul class="space-y-2 text-sm text-text">
+      {pros.map((pro) => (
+        <li class="flex items-start gap-2">
+          <span class="text-success mt-0.5">•</span>
+          <span>{pro}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="p-5 rounded-xl bg-red-950/10 border border-red-500/30">
+    <h4 class="font-bold text-red-400 flex items-center gap-2 mb-3">
+      <span>✕</span>
+      <span>Considerations</span>
+    </h4>
+    <ul class="space-y-2 text-sm text-text">
+      {cons.map((con) => (
+        <li class="flex items-start gap-2">
+          <span class="text-red-400 mt-0.5">•</span>
+          <span>{con}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

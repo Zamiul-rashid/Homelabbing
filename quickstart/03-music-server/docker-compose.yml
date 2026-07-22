@@ -1,0 +1,25 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    environment:
+      - ND_PUID=${PUID:-1000}
+      - ND_PGID=${PGID:-1000}
+      - ND_PORT=4533
+      - ND_MUSICFOLDER=/music
+      - ND_DATAFOLDER=/data
+    volumes:
+      - navidrome-data:/data
+      - ${MUSIC_DIR:-/srv/music}:/music:ro
+    ports:
+      - "4533:4533"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:4533/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  navidrome-data:

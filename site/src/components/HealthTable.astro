@@ -1,0 +1,39 @@
+---
+import { services } from '../data/services';
+---
+
+<div class="glass overflow-hidden my-8 border border-border">
+  <div class="p-4 bg-bg-elevated border-b border-border flex items-center justify-between">
+    <h3 class="font-bold text-text flex items-center gap-2">
+      <span>🩺</span>
+      <span>Quick Health Check Port Reference</span>
+    </h3>
+    <code class="text-xs text-accent font-mono">check-health.sh</code>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm font-mono">
+      <thead class="bg-bg/50 text-text-muted border-b border-border">
+        <tr>
+          <th class="py-3 px-4">Service</th>
+          <th class="py-3 px-4">Default Port</th>
+          <th class="py-3 px-4">Local URL</th>
+          <th class="py-3 px-4">Folder</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-border/50 text-text">
+        {services.map((s) => (
+          <tr class="hover:bg-bg-surface/50 transition-colors">
+            <td class="py-3 px-4 font-semibold flex items-center gap-2">
+              <span>{s.icon}</span>
+              <span>{s.name}</span>
+            </td>
+            <td class="py-3 px-4 text-accent">{s.port}</td>
+            <td class="py-3 px-4 text-text-muted">http://YOUR_SERVER_IP:{s.port}</td>
+            <td class="py-3 px-4 text-xs text-text-faint">{s.folder}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>

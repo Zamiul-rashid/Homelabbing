@@ -1,0 +1,294 @@
+services:
+  # --- 01-media-server ---
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - jellyfin-config:/config
+      - ${MEDIA_DIR:-/srv/media}:/data/media
+    ports:
+      - "8096:8096"
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:8096/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # --- 02-arr-stack ---
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+      - WEBUI_PORT=8080
+    volumes:
+      - qbittorrent-config:/config
+      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+    ports:
+      - "8080:8080"
+      - "6881:6881"
+      - "6881:6881/udp"
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:8080/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - prowlarr-config:/config
+    ports:
+      - "9696:9696"
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:9696/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - radarr-config:/config
+      - ${MEDIA_DIR:-/srv/media}:/media
+      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+    ports:
+      - "7878:7878"
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:7878/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - sonarr-config:/config
+      - ${MEDIA_DIR:-/srv/media}:/media
+      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+    ports:
+      - "8989:8989"
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:8989/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=${TZ:-UTC}
+    volumes:
+      - jellyseerr-config:/app/config
+    ports:
+      - "5055:5055"
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:5055/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # --- 03-music-server ---
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    environment:
+      - ND_PUID=${PUID:-1000}
+      - ND_PGID=${PGID:-1000}
+      - ND_PORT=4533
+      - ND_MUSICFOLDER=/music
+      - ND_DATAFOLDER=/data
+    volumes:
+      - navidrome-data:/data
+      - ${MUSIC_DIR:-/srv/music}:/music:ro
+    ports:
+      - "4533:4533"
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:4533/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # --- 04-photo-server ---
+  immich-server:
+    image: ghcr.io/immich-app/immich-server:release
+    container_name: immich_server
+    environment:
+      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      - DB_USERNAME=${IMMICH_DB_USER:-immich}
+      - DB_DATABASE_NAME=${IMMICH_DB_NAME:-immich}
+      - DB_HOSTNAME=${DB_HOSTNAME:-immich-db}
+      - REDIS_HOSTNAME=${REDIS_HOSTNAME:-immich-redis}
+    volumes:
+      - ${PHOTOS_DIR:-/srv/photos}:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "2283:2283"
+    depends_on:
+      - immich-redis
+      - immich-db
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:2283/api/server-info/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  immich-machine-learning:
+    image: ghcr.io/immich-app/immich-machine-learning:release
+    container_name: immich_machine_learning
+    volumes:
+      - immich-model-cache:/cache
+    networks:
+      - homelab_net
+    restart: unless-stopped
+
+  immich-redis:
+    image: registry.hub.docker.com/library/redis:6.2-alpine@sha256:51d6c56749a4243096327e3fb964a48ed92254357108449cb6e23999c37773c5
+    container_name: immich_redis
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  immich-db:
+    image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+    container_name: immich_postgres
+    environment:
+      - POSTGRES_PASSWORD=${IMMICH_DB_PASSWORD}
+      - POSTGRES_USER=${IMMICH_DB_USER:-immich}
+      - POSTGRES_DB=${IMMICH_DB_NAME:-immich}
+    volumes:
+      - immich-postgres-data:/var/lib/postgresql/data
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready --dbname=\"$${POSTGRES_DB}\" --username=\"$${POSTGRES_USER}\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # --- 05-cloud-storage ---
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - nextcloud-config:/config
+      - ${CLOUD_DIR:-/srv/nextcloud}:/data
+    ports:
+      - "4443:443"
+    depends_on:
+      - nextcloud-db
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsSL -k https://localhost:443/status.php || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  nextcloud-db:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: nextcloud-db
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    volumes:
+      - nextcloud-db-data:/config
+    networks:
+      - homelab_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u nextcloud --password=\"$${MYSQL_PASSWORD}\" || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+networks:
+  homelab_net:
+    driver: bridge
+
+volumes:
+  jellyfin-config:
+  qbittorrent-config:
+  prowlarr-config:
+  radarr-config:
+  sonarr-config:
+  jellyseerr-config:
+  navidrome-data:
+  immich-model-cache:
+  immich-postgres-data:
+  nextcloud-config:
+  nextcloud-db-data:
