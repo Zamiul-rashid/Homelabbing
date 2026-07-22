@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import WhatNowCards from '../../components/WhatNowCards.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import { services as serviceCatalog } from '../../data/services';
+
+export async function getStaticPaths() {
+  const serviceEntries = await getCollection('services');
+  return serviceEntries.map((entry) => {
+    const catalogItem = serviceCatalog.find((s) => s.slug === entry.slug);
+    return {
+      params: { slug: entry.slug },
+      props: { entry, catalogItem },
+    };
+  });
+}
+
+const { entry, catalogItem } = Astro.props;
+const { Content } = await entry.render();
+
+const difficultyLabel =
+  entry.data.difficulty === 1 ? '🟢 Beginner Easy' : entry.data.difficulty === 2 ? '🟡 Medium' : '🔴 Advanced';
+---
+
+<PageLayout
+  title={entry.data.title}
+  description={entry.data.tagline}
+>
+  <!-- Service Quick Specs Bar -->
+  <div class="glass p-6 my-8 border border-border not-prose flex flex-wrap items-center justify-between gap-6">
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-bg-elevated border border-border flex items-center justify-center text-3xl shadow-lg">
+        {catalogItem?.icon || '📦'}
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-text text-lg">{entry.data.title.split('—')[0]}</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-accent/20 text-accent text-xs font-semibold">Port {entry.data.port}</span>
+        </div>
+        <p class="text-xs text-text-muted mt-1">Folder: <code class="text-accent font-mono">{entry.data.folder}</code></p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 text-sm font-mono">
+      <div class="text-right">
+        <span class="text-xs text-text-faint block">Difficulty Level</span>
+        <span class="font-semibold text-text">{difficultyLabel}</span>
+      </div>
+      <a
+        href={`https://github.com/Zamiul-rashid/Homelabbing/tree/main/quickstart/${entry.data.folder}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-secondary text-xs py-2.5 px-4"
+      >
+        View Compose File →
+      </a>
+    </div>
+  </div>
+
+  <!-- Quick Setup Checklist -->
+  <div class="not-prose my-10 p-6 rounded-2xl bg-bg-surface border border-border/80">
+    <h3 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
+      <span>⚡</span>
+      <span>Quick Launch Summary</span>
+    </h3>
+    <ol class="space-y-3 font-mono text-xs md:text-sm text-text-muted">
+      {entry.data.setupSteps.map((step, index) => (
+        <li class="flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-accent/20 text-accent font-bold flex items-center justify-center shrink-0">
+            {index + 1}
+          </span>
+          <span class="mt-0.5 text-text">{step}</span>
+        </li>
+      ))}
+    </ol>
+
+    <div class="mt-6 pt-6 border-t border-border flex items-center justify-between">
+      <span class="text-xs text-text-faint font-mono">Run container command:</span>
+      <CodeBlock
+        code={`cd quickstart/${entry.data.folder} && docker compose up -d`}
+      />
+    </div>
+  </div>
+
+  <!-- Render MDX Content -->
+  <div class="mt-12">
+    <Content />
+  </div>
+
+  <!-- What Now Next Steps -->
+  {entry.data.whatNow && entry.data.whatNow.length > 0 && (
+    <WhatNowCards items={entry.data.whatNow} />
+  )}
+
+  <!-- Back Link -->
+  <div class="mt-16 pt-8 border-t border-border flex justify-between items-center not-prose">
+    <a href="/Homelabbing/services" class="text-accent hover:underline text-sm font-semibold flex items-center gap-2">
+      ← Back to All Modular Stacks
+    </a>
+    <a href="/Homelabbing/networking" class="text-text-muted hover:text-text text-sm font-semibold flex items-center gap-2">
+      Remote Access & HTTPS Options →
+    </a>
+  </div>
+</PageLayout>

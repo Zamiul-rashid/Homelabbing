@@ -1,0 +1,30 @@
+---
+import CopyButton from './CopyButton';
+
+interface Props {
+  code: string;
+  language?: string;
+  title?: string;
+}
+
+const { code, language = 'bash', title } = Astro.props;
+---
+
+<div class="terminal-window my-6 not-prose border border-border">
+  <div class="terminal-titlebar justify-between">
+    <div class="flex items-center gap-2">
+      <span class="terminal-dot bg-red-500"></span>
+      <span class="terminal-dot bg-yellow-500"></span>
+      <span class="terminal-dot bg-green-500"></span>
+      {title && <span class="text-xs text-text-muted font-mono ml-2">{title}</span>}
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-[10px] text-text-faint uppercase font-mono px-2 py-0.5 rounded bg-bg">{language}</span>
+      <CopyButton client:visible code={code} />
+    </div>
+  </div>
+
+  <div class="p-4 bg-terminal-bg overflow-x-auto">
+    <pre class="font-mono text-xs md:text-sm text-terminal-text leading-relaxed m-0 p-0 bg-transparent border-0"><code class={`language-${language}`}>{code}</code></pre>
+  </div>
+</div>

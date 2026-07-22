@@ -1,7 +1,13 @@
 # 🏠 Homelab
 
+> **🌟 LIVE INTERACTIVE SHOWCASE WEBSITE:** [https://Zamiul-rashid.github.io/Homelabbing](https://Zamiul-rashid.github.io/Homelabbing)  
+> Explore modular setup guides, interactive networking decision wizards, and live port reference health tools!
+
+> **🚀 NEW TO HOMELABBING?** Check out our [Beginner Quickstart Guide](./quickstart/README.md) (`quickstart/`) to launch modular stacks (Jellyfin, *arr, Navidrome, Immich, Nextcloud) right away!
+
 > A fully self-hosted home server stack running on a single Ubuntu machine with Docker. 25+ services. Automated backups. SSL termination. AI features. Recoverable from scratch in under 30 minutes.
 
+[![Live Site](https://img.shields.io/badge/Showcase%20Website-Live-6366f1?style=for-the-badge&logo=astro&logoColor=white)](https://Zamiul-rashid.github.io/Homelabbing)
 [![Docker](https://img.shields.io/badge/Docker-24.0%2B-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04%20LTS-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)](https://ubuntu.com/)
 [![Self-Hosted](https://img.shields.io/badge/Self--Hosted-100%25-00C7B7?style=for-the-badge&logo=homeassistant&logoColor=white)](WHY-SELFHOST.md)

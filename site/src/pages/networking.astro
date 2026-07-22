@@ -1,0 +1,136 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import NetworkingWizard from '../components/NetworkingWizard';
+import CodeBlock from '../components/CodeBlock.astro';
+---
+
+<PageLayout
+  title="Remote Access & Networking Guide"
+  description="Connect to your homelab securely from anywhere in the world using 4 distinct networking paths depending on your domain ownership and privacy needs."
+>
+  <!-- Interactive Wizard -->
+  <NetworkingWizard client:load />
+
+  <!-- Detailed Option A -->
+  <section id="option-a-duckdns" class="mt-16 pt-10 border-t border-border">
+    <h2>Option A: Free Dynamic DNS with DuckDNS & Nginx Proxy Manager</h2>
+    <p>
+      <strong>Best for:</strong> Users who don't own a domain name and want a free public URL like `https://yourname.duckdns.org` with automatic Let's Encrypt SSL certificates.
+    </p>
+
+    <h3>1. Register and Get Token</h3>
+    <p>
+      Go to <a href="https://www.duckdns.org" target="_blank" rel="noopener noreferrer">duckdns.org</a>, sign in, copy your top-bar token, and create a free subdomain (e.g., `myhomelab-demo`).
+    </p>
+
+    <h3>2. Add Secrets to quickstart/.env</h3>
+    <CodeBlock
+      title=".env — DuckDNS Configuration"
+      code={`DUCKDNS_SUBDOMAIN=myhomelab-demo\nDUCKDNS_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`}
+    />
+
+    <h3>3. Start Option A Stack</h3>
+    <CodeBlock
+      title="bash — Launch DuckDNS + NPM"
+      code={`cd quickstart/networking/option-a-duckdns\ndocker compose --env-file ../../.env up -d`}
+    />
+
+    <h3>4. Configure Proxy Host</h3>
+    <p>
+      Open `http://YOUR_SERVER_IP:81` (`admin@example.com` / `changeme`). Click <strong>Proxy Hosts → Add Proxy Host</strong>:
+    </p>
+    <ul>
+      <li><strong>Domain Names:</strong> `myhomelab-demo.duckdns.org`</li>
+      <li><strong>Forward Host / IP:</strong> `192.0.2.1` (your server local IP)</li>
+      <li><strong>Forward Port:</strong> `8096` (for Jellyfin)</li>
+      <li>Under <strong>SSL tab</strong>: Select <em>Request a new SSL Certificate</em>, check <em>Force SSL</em>, and save!</li>
+    </ul>
+  </section>
+
+  <!-- Detailed Option B -->
+  <section id="option-b-cloudflare" class="mt-16 pt-10 border-t border-border">
+    <h2>Option B: Cloudflare DNS Challenge & CDN Protection</h2>
+    <p>
+      <strong>Best for:</strong> Users who own a domain (`yourdomain.com`) and want wildcard Let's Encrypt certificates generated via API without opening Port 80, plus DDoS protection.
+    </p>
+
+    <h3>1. Get Cloudflare API Token</h3>
+    <p>
+      In Cloudflare dashboard: <strong>My Profile → API Tokens → Create Token → Use template: Edit zone DNS</strong> for your specific domain. Copy the token immediately.
+    </p>
+
+    <h3>2. Configure Environment Variable</h3>
+    <CodeBlock
+      title=".env — Cloudflare API Token"
+      code={`CF_API_TOKEN=your_cloudflare_dns_edit_token_here`}
+    />
+
+    <h3>3. Start Option B Stack</h3>
+    <CodeBlock
+      title="bash — Launch Cloudflare NPM"
+      code={`cd quickstart/networking/option-b-cloudflare\ndocker compose --env-file ../../.env up -d`}
+    />
+
+    <h3>4. Generate Wildcard SSL in NPM</h3>
+    <p>
+      In NPM (`http://YOUR_SERVER_IP:81`), go to <strong>SSL Certificates → Add SSL Certificate → Let's Encrypt</strong>:
+    </p>
+    <ul>
+      <li><strong>Domain Names:</strong> `*.yourdomain.com, yourdomain.com`</li>
+      <li>Check <strong>Use a DNS Challenge</strong> → Select <strong>Cloudflare</strong>.</li>
+      <li>Paste `dns_cloudflare_api_token = your_cloudflare_dns_edit_token_here` into the credentials box and save!</li>
+    </ul>
+  </section>
+
+  <!-- Detailed Option C -->
+  <section id="option-c-custom-domain" class="mt-16 pt-10 border-t border-border">
+    <h2>Option C: Buying a Custom Domain</h2>
+    <p>
+      Owning a domain gives your homelab clean, professional URLs like `https://media.yourdomain.com` and `https://cloud.yourdomain.com`.
+    </p>
+    <div class="not-prose my-6 grid grid-cols-1 sm:grid-cols-3 gap-4 font-sans">
+      <a href="https://porkbun.com" target="_blank" rel="noopener noreferrer" class="glass p-5 hover:border-accent transition-all block text-text">
+        <h4 class="font-bold text-accent">Porkbun 🐷</h4>
+        <p class="text-xs text-text-muted mt-1">Consistently lowest renewal prices (`.com` ~$10.37/yr) with free WHOIS privacy.</p>
+      </a>
+      <a href="https://www.cloudflare.com/products/registrar/" target="_blank" rel="noopener noreferrer" class="glass p-5 hover:border-accent transition-all block text-text">
+        <h4 class="font-bold text-accent">Cloudflare Registrar ☁️</h4>
+        <p class="text-xs text-text-muted mt-1">Zero markup at-cost pricing (`.com` ~$9.77/yr) directly integrated with Cloudflare DNS.</p>
+      </a>
+      <a href="https://www.namecheap.com" target="_blank" rel="noopener noreferrer" class="glass p-5 hover:border-accent transition-all block text-text">
+        <h4 class="font-bold text-accent">Namecheap 🛡️</h4>
+        <p class="text-xs text-text-muted mt-1">Reliable, trusted registrar with excellent 24/7 customer support and free domain privacy.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Detailed Option D -->
+  <section id="option-d-tailscale" class="mt-16 pt-10 border-t border-border">
+    <h2>Option D: Tailscale Mesh VPN (Maximum Privacy & Zero Open Ports)</h2>
+    <p>
+      <strong>Best for:</strong> Privacy purists who want to reach their server safely across the internet (`http://homelab:8096`) on enrolled devices only without touching router port forwarding.
+    </p>
+
+    <h3>1. Generate Reusable Auth Key</h3>
+    <p>
+      In your <a href="https://login.tailscale.com/admin/machines" target="_blank" rel="noopener noreferrer">Tailscale Admin Console</a>, go to <strong>Settings → Keys → Generate auth key</strong>. Check <strong>Reusable</strong> and leave Ephemeral unchecked.
+    </p>
+
+    <h3>2. Configure Environment Variable</h3>
+    <CodeBlock
+      title=".env — Tailscale Auth Key"
+      code={`TAILSCALE_AUTH_KEY=tskey-auth-xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxx`}
+    />
+
+    <h3>3. Start Tailscale Sidecar Container</h3>
+    <CodeBlock
+      title="bash — Launch Tailscale Sidecar"
+      code={`cd quickstart/networking/option-d-tailscale\ndocker compose --env-file ../../.env up -d`}
+    />
+
+    <h3>4. Verify Connection</h3>
+    <p>
+      Open your Tailscale dashboard — you will now see `homelab` listed with a private `100.x.y.z` IP! On your laptop or phone, access your services via `http://homelab:8096` or `http://100.x.y.z:8096`!
+    </p>
+  </section>
+</PageLayout>

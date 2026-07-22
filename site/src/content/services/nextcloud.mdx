@@ -1,0 +1,73 @@
+---
+title: "Nextcloud — Cloud Storage & Suite"
+tagline: "A comprehensive, self-hosted file collaboration, synchronization, document editing, and productivity platform."
+replaces: "Google Drive, Dropbox, Microsoft OneDrive, Google Docs"
+port: 4443
+difficulty: 2
+folder: "05-cloud-storage"
+mockupDescription: "Nextcloud First-Time Database & Admin Setup"
+setupSteps:
+  - "Ensure /srv/nextcloud is created on your host (`sudo mkdir -p /srv/nextcloud && sudo chown -R $USER:$USER /srv/nextcloud`)."
+  - "Verify quickstart/.env contains DB_ROOT_PASSWORD and DB_PASSWORD."
+  - "Run docker compose up -d inside 05-cloud-storage/ (launches Nextcloud + MariaDB)."
+  - "Open https://YOUR_SERVER_IP:4443 (accept self-signed SSL warning) and complete setup."
+whatNow:
+  - label: "Install Desktop & Mobile Sync Clients"
+    href: "https://nextcloud.com/install/#install-clients"
+    description: "Sync local folders across Windows, macOS, Linux, iOS, and Android seamlessly."
+  - label: "Install Nextcloud Office"
+    href: "https://nextcloud.com/office/"
+    description: "Collaborate on Word, Excel, and PowerPoint documents in real-time in your browser."
+  - label: "Set Up Remote HTTPS Access"
+    href: "/Homelabbing/networking"
+    description: "Replace the self-signed SSL warning with a valid Let's Encrypt wildcard certificate via Cloudflare."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+import UIMockup from '../../components/UIMockup.astro';
+
+## What You'll Have When Done
+Your own private cloud storage hub accessible across Windows, Mac, Linux, iOS, and Android. You can sync documents across computers in real-time, share password-protected download links with clients or friends, edit office files, manage calendars, and keep your sensitive files stored safely on `/srv/nextcloud` under your physical control.
+
+<UIMockup title="Nextcloud Workspace" url="https://192.168.1.100:4443/status.php" type="wizard" />
+
+## Why Choose Nextcloud?
+
+Nextcloud is the industry-standard enterprise cloud replacement used by governments, universities, and privacy-conscious professionals worldwide. It gives you complete data sovereignty without sacrificing modern collaboration features.
+
+<ProConTable
+  pros={[
+    "Complete file synchronization across all major operating systems and mobile devices.",
+    "Massive built-in App Store featuring Collaborative Office editing, Notes, Tasks, and Calendar.",
+    "Granular sharing controls with password protection, expiration dates, and read-only links.",
+    "End-to-end encryption support and zero external cloud tracking."
+  ]}
+  cons={[
+    "Heavier resource footprint than simple file servers (benefits from 2 GB+ of dedicated RAM).",
+    "First startup takes ~1–2 minutes while MariaDB initializes database schema tables.",
+    "Requires HTTPS certificate for external public access (handled in our Option B/C guides)."
+  ]}
+/>
+
+---
+
+## Step-by-Step Installation Walkthrough
+
+### 1. Launching Nextcloud & MariaDB
+Navigate to `05-cloud-storage/` inside `quickstart/` and start the containers:
+
+```bash
+cd quickstart/05-cloud-storage
+docker compose up -d
+```
+
+### 2. First-Time Wizard Configuration
+Open your browser to `https://YOUR_SERVER_IP:4443`. Note: Because LinuxServer Nextcloud generates an automatic self-signed SSL certificate on initial startup, your browser will show a standard warning (`Your connection is not private`). Click **Advanced → Proceed to YOUR_IP (unsafe)** to reach the wizard:
+
+1. **Create Admin Account:** Enter your desired username and a strong password.
+2. **Database Configuration:** Our compose stack connects Nextcloud to MariaDB automatically! If prompted for database connection parameters:
+   - **Database user:** `nextcloud`
+   - **Database password:** Enter your `${DB_PASSWORD}` value from `.env`.
+   - **Database name:** `nextcloud`
+   - **Database host:** `nextcloud-db`
+3. Click **Install / Finish Setup** and wait (~1 minute) while Nextcloud initializes your personal cloud!

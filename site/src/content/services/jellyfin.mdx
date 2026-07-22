@@ -1,0 +1,84 @@
+---
+title: "Jellyfin — Your Personal Netflix"
+tagline: "A powerful, open-source media system that organizes, manages, and streams your movies, shows, and music."
+replaces: "Netflix, Plex, Emby, Apple TV+"
+port: 8096
+difficulty: 1
+folder: "01-media-server"
+mockupDescription: "Jellyfin Language & Admin Wizard setup interface"
+setupSteps:
+  - "Run bootstrap script or ensure /srv/media exists and is owned by your user ID."
+  - "Verify quickstart/.env has PUID=1000 and PGID=1000."
+  - "Run docker compose up -d inside 01-media-server/."
+  - "Open browser to http://YOUR_SERVER_IP:8096 and complete the setup wizard."
+whatNow:
+  - label: "Install Mobile & TV Apps"
+    href: "https://jellyfin.org/clients/"
+    description: "Download free clients on Roku, Android TV, Apple TV, iOS, and Android."
+  - label: "Set Up Download Automation"
+    href: "/Homelabbing/services/arr-stack"
+    description: "Connect Radarr and Sonarr so movies download right into Jellyfin."
+  - label: "Configure Hardware Transcoding"
+    href: "https://jellyfin.org/docs/general/administration/hardware-acceleration/"
+    description: "Enable Intel QuickSync or NVIDIA NVENC for silky smooth 4K streaming."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+import UIMockup from '../../components/UIMockup.astro';
+
+## What You'll Have When Done
+A fully functional, 100% self-hosted media streaming server running locally on your hardware. You will be able to open any web browser, smart TV, or mobile app on your home network and instantly stream your high-definition video files with automatic poster art, cast details, and subtitles.
+
+<UIMockup title="Jellyfin Setup Wizard" url="http://192.168.1.100:8096/setup" type="wizard" />
+
+## Why Choose Jellyfin?
+
+Unlike commercial streaming services that raise prices, remove favorite shows without warning, or lock you into proprietary ecosystems, Jellyfin puts **you** in complete control of your media library.
+
+<ProConTable
+  pros={[
+    "100% Free and Open Source forever — zero subscription fees or premium paywalls.",
+    "No telemetry, no tracking, and no external account sign-in required.",
+    "Hardware-accelerated transcoding for Intel QuickSync, NVIDIA, and AMD GPUs.",
+    "Native apps across Roku, Apple TV, Android TV, LG webOS, iOS, and Android."
+  ]}
+  cons={[
+    "Requires providing your own media files (e.g., ripped DVDs/Blu-rays or personal videos).",
+    "Needs adequate CPU/GPU power if transcoding multiple 4K HDR streams simultaneously.",
+    "Remote access outside your home requires configuring a reverse proxy or Tailscale."
+  ]}
+/>
+
+---
+
+## Step-by-Step Onboarding Walkthrough
+
+### 1. Storage & Environment Setup
+Verify that your host machine has `/srv/media` created (our automated `bootstrap.sh` script does this for you). Place at least one test video file inside `/srv/media/movies` so Jellyfin has something to index right away.
+
+```bash
+# Verify your UID and GID match your quickstart/.env file
+id -u
+id -g
+```
+
+### 2. Launching the Container
+Navigate to the `01-media-server/` directory inside `quickstart/` and launch the stack:
+
+```bash
+cd quickstart/01-media-server
+docker compose up -d
+```
+
+### 3. First-Time UI Setup Walkthrough
+Once running, open your web browser to `http://YOUR_SERVER_IP:8096` and follow these 6 straightforward steps:
+
+1. **Language Selection:** Choose **English** (or your native language) and click **Next**.
+2. **Admin Account Creation:** Enter your preferred admin username and a strong password.
+3. **Add Media Libraries:** Click **+ Add Media Library**:
+   - **Content type:** Select `Movies`.
+   - **Folders:** Click `+` and choose `/data/media/movies` (or `/data/media`).
+   - Click **OK** and then **Next**.
+4. **Metadata Settings:** Leave preferred language and country at defaults so Jellyfin automatically fetches movie posters, ratings, and plot summaries from TMDB.
+5. **Remote Access:** Leave **Allow remote connections to this server** checked. Click **Next**, then **Finish**.
+6. Sign in with your new credentials and enjoy your personal Netflix!

@@ -1,0 +1,87 @@
+import React, { useState, useEffect } from 'react';
+import CopyButton from './CopyButton';
+
+const commandText = 'bash <(curl -fsSL https://raw.githubusercontent.com/Zamiul-rashid/Homelabbing/main/quickstart/scripts/bootstrap.sh)';
+
+export default function TerminalAnimation() {
+  const [typed, setTyped] = useState('');
+  const [step, setStep] = useState<'typing' | 'running' | 'done'>('typing');
+  const [replaying, setReplaying] = useState(false);
+
+  useEffect(() => {
+    let index = 0;
+    setTyped('');
+    setStep('typing');
+    const timer = setInterval(() => {
+      if (index < commandText.length) {
+        setTyped(commandText.substring(0, index + 1));
+        index++;
+      } else {
+        clearInterval(timer);
+        setStep('running');
+        setTimeout(() => setStep('done'), 1200);
+      }
+    }, 28);
+    return () => clearInterval(timer);
+  }, [replaying]);
+
+  return (
+    <div className="terminal-window my-8 border border-border/80 shadow-2xl max-w-4xl mx-auto">
+      <div className="terminal-titlebar justify-between bg-bg-surface px-4 py-3">
+        <div className="flex items-center gap-2">
+          <span className="terminal-dot bg-red-500"></span>
+          <span className="terminal-dot bg-yellow-500"></span>
+          <span className="terminal-dot bg-green-500"></span>
+          <span className="text-xs text-text-muted font-mono ml-2">homelab@ubuntu:~</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setReplaying(!replaying)}
+            className="text-[11px] text-text-muted hover:text-accent font-mono px-2.5 py-1 rounded bg-bg border border-border/60 hover:border-accent flex items-center gap-1 transition-colors"
+            title="Replay animation"
+          >
+            <span>🔄 Replay</span>
+          </button>
+          <CopyButton code={commandText} />
+        </div>
+      </div>
+
+      <div className="p-6 bg-terminal-bg font-mono text-xs md:text-sm leading-relaxed space-y-3 min-h-[220px]">
+        <div className="flex items-start gap-2 text-terminal-text">
+          <span className="text-accent font-bold select-none">$</span>
+          <span className="break-all">
+            {typed}
+            {step === 'typing' && <span className="inline-block w-2 h-4 bg-accent animate-blink-caret ml-1 align-middle"></span>}
+          </span>
+        </div>
+
+        {step === 'running' && (
+          <div className="text-text-muted space-y-1 pl-4 border-l-2 border-accent/40 animate-fade-in">
+            <p>--&gt; Installing prerequisites (ca-certificates, curl, gnupg)...</p>
+            <p>--&gt; Setting up official Docker repository and apt GPG key...</p>
+            <p>--&gt; Installing Docker Engine and Compose V2 plugin...</p>
+          </div>
+        )}
+
+        {step === 'done' && (
+          <div className="space-y-2 animate-fade-in">
+            <div className="text-text-muted space-y-1 pl-4 border-l-2 border-accent/40">
+              <p>--&gt; Installing prerequisites (ca-certificates, curl, gnupg)... <span className="text-success">[OK]</span></p>
+              <p>--&gt; Setting up official Docker repository and apt GPG key... <span className="text-success">[OK]</span></p>
+              <p>--&gt; Installing Docker Engine and Compose V2 plugin... <span className="text-success">[OK]</span></p>
+              <p>--&gt; Creating storage directories under /srv... <span className="text-success">[OK]</span></p>
+            </div>
+            <div className="p-3 rounded-lg bg-success/10 border border-success/30 text-success text-xs mt-3">
+              <p className="font-bold">✨ Done! Log out and log back in, then run:</p>
+              <p className="font-mono mt-1 text-text">bash quickstart/scripts/launch.sh</p>
+            </div>
+            <div className="flex items-center gap-2 text-terminal-text pt-2">
+              <span className="text-accent font-bold select-none">$</span>
+              <span className="inline-block w-2 h-4 bg-accent animate-blink-caret"></span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

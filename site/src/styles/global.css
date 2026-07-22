@@ -49,7 +49,7 @@
   /* Service card */
   .service-card {
     @apply glass p-6 flex flex-col gap-4 cursor-pointer
-           transition-all duration-300 hover:border-accent-DEFAULT
+           transition-all duration-300 hover:border-accent
            hover:shadow-[0_0_30px_rgba(99,102,241,0.15)]
            hover:-translate-y-1;
   }

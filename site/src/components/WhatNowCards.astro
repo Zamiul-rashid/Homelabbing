@@ -1,0 +1,37 @@
+---
+interface Card {
+  label: string;
+  href: string;
+  description: string;
+}
+
+interface Props {
+  items: Card[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="not-prose my-8">
+  <h3 class="text-xl font-bold text-text mb-4 flex items-center gap-2">
+    <span>🚀</span>
+    <span>What Now? Next Steps</span>
+  </h3>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {items.map((item) => (
+      <a
+        href={item.href}
+        class="glass p-5 flex flex-col gap-2 hover:border-accent transition-all duration-200 group no-underline"
+      >
+        <span class="font-bold text-accent group-hover:underline text-base flex items-center justify-between">
+          <span>{item.label}</span>
+          <span>→</span>
+        </span>
+        <p class="text-xs text-text-muted leading-relaxed">
+          {item.description}
+        </p>
+      </a>
+    ))}
+  </div>
+</div>

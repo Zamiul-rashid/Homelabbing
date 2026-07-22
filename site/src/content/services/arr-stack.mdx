@@ -1,0 +1,84 @@
+---
+title: "The *arr Stack & Jellyseerr"
+tagline: "Automated media downloading, search indexers, quality monitoring, and request portal."
+replaces: "Manual torrenting, Radarr, Sonarr, manual renaming, and folder management."
+port: 8080
+difficulty: 2
+folder: "02-arr-stack"
+mockupDescription: "Jellyseerr Media Request Dashboard"
+setupSteps:
+  - "Ensure /srv/downloads and /srv/media exist and are writable by your user."
+  - "Verify quickstart/.env contains your exact PUID and PGID."
+  - "Run docker compose up -d inside 02-arr-stack/."
+  - "Configure Prowlarr indexers, connect Radarr/Sonarr to qBittorrent, and link Jellyseerr."
+whatNow:
+  - label: "Make Your First Request"
+    href: "http://localhost:5055"
+    description: "Search for a favorite movie in Jellyseerr and watch Radarr grab it automatically!"
+  - label: "Configure TRaSH Guides"
+    href: "https://trash-guides.info"
+    description: "Set up custom quality profiles and reject poor audio/video encodes."
+  - label: "Set Up Discord/Telegram Alerts"
+    href: "https://wiki.servarr.com/"
+    description: "Get instant mobile push notifications whenever a new download finishes."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+import UIMockup from '../../components/UIMockup.astro';
+
+## What You'll Have When Done
+An automated media pipeline where browsing and requesting a movie or TV show on **Jellyseerr** automatically triggers search indexers in **Prowlarr**, sends the optimal quality torrent to **qBittorrent**, monitors progress in **Radarr/Sonarr**, and cleanly renames and moves the finished file straight into `/srv/media` for Jellyfin to stream!
+
+<UIMockup title="Jellyseerr Media Portal" url="http://192.168.1.100:5055/requests" type="library" />
+
+## Why Use the *arr Suite?
+
+Gone are the days of hunting down torrents on sketchy websites, manually unzipping files, fixing confusing file names like `Movie.2023.1080p.WEB-DL.x264.AC3-EVO.mkv`, and dragging them across folders.
+
+<ProConTable
+  pros={[
+    "Fully hands-off automation — request a movie once and it appears in Jellyfin within minutes.",
+    "Centralized indexer synchronization via Prowlarr across all your apps.",
+    "Automatic quality upgrades (e.g., replace a 720p WEB-DL with a 4K Remux automatically when released).",
+    "Beautiful family-friendly request UI (Jellyseerr) with Jellyfin single sign-on."
+  ]}
+  cons={[
+    "Initial configuration takes ~15 minutes to link API keys between all containers.",
+    "Requires understanding folder mapping principles (`/srv/downloads` vs `/srv/media`).",
+    "Requires a reliable internet connection and appropriate indexer sources."
+  ]}
+/>
+
+---
+
+## The 5 Synchronized Containers
+
+When you run this stack, you unlock five specialized tools working in harmony:
+
+1. **qBittorrent (`:8080`)** — High-performance download engine with web interface and hardlink support.
+2. **Prowlarr (`:9696`)** — Indexer manager that syncs search providers directly to Radarr and Sonarr.
+3. **Radarr (`:7878`)** — Movie monitoring, searching, downloading, and automated renaming.
+4. **Sonarr (`:8989`)** — TV show and anime monitoring with season/episode tracking.
+5. **Jellyseerr (`:5055`)** — Request portal where family and friends can discover and request content.
+
+---
+
+## Step-by-Step Configuration Guide
+
+### 1. Connecting Prowlarr (`http://YOUR_IP:9696`)
+1. Click **Add Indexer**, search for public indexers (e.g., `1337x`, `EZTV`), and click **Save**.
+2. Go to **Settings → Apps → + Add**:
+   - Add **Radarr** (`http://radarr:7878`) and paste your Radarr API key (found in Radarr under Settings → General).
+   - Add **Sonarr** (`http://sonarr:8989`) and paste your Sonarr API key.
+3. Click **Sync App Indexers** — your search providers are now automatically linked!
+
+### 2. Linking Radarr & Sonarr to qBittorrent
+In both Radarr (`http://YOUR_IP:7878`) and Sonarr (`http://YOUR_IP:8989`):
+1. Go to **Settings → Download Clients → + Add → qBittorrent**:
+   - **Host:** `qbittorrent`
+   - **Port:** `8080`
+2. Click **Test** and **Save**.
+
+### 3. Connecting Jellyseerr (`http://YOUR_IP:5055`)
+1. Open the Jellyseerr dashboard and log in using your Jellyfin account (`http://jellyfin:8096`).
+2. Add your Radarr (`http://radarr:7878`) and Sonarr (`http://sonarr:8989`) endpoints using their API keys. You're ready to request!

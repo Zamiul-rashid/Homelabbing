@@ -1,0 +1,65 @@
+---
+title: "Navidrome — Personal Cloud Music"
+tagline: "A modern, lightweight, fast web-based music server and Subsonic-compatible audio streaming system."
+replaces: "Spotify, Apple Music, YouTube Music, Tidal"
+port: 4533
+difficulty: 1
+folder: "03-music-server"
+mockupDescription: "Navidrome Admin Account Login screen"
+setupSteps:
+  - "Place your FLAC, MP3, and ALAC music folders inside /srv/music."
+  - "Check that quickstart/.env has your correct user permissions."
+  - "Run docker compose up -d inside 03-music-server/."
+  - "Open http://YOUR_SERVER_IP:4533 to create your admin profile and scan albums."
+whatNow:
+  - label: "Connect Subsonic Mobile Apps"
+    href: "https://www.navidrome.org/docs/overview/#apps"
+    description: "Download Symfonium (Android) or Amperfy (iOS) and stream lossless audio anywhere."
+  - label: "Connect Last.fm Scrobbling"
+    href: "https://www.navidrome.org/docs/usage/configuration-options/#scrobbling"
+    description: "Track your listening habits across ListenBrainz and Last.fm."
+  - label: "Set Up Remote HTTPS Access"
+    href: "/Homelabbing/networking"
+    description: "Listen to your home music collection while driving or commuting via Cloudflare or Tailscale."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+import UIMockup from '../../components/UIMockup.astro';
+
+## What You'll Have When Done
+A blazing-fast, private music server that indexes your entire FLAC, MP3, and ALAC audio collection. You can stream lossless audio directly from any web browser or connect dozens of sleek third-party mobile apps (`Symfonium`, `Substreamer`, `Amperfy`) for offline downloading, smart playlists, and scrobbling without monthly subscription fees.
+
+<UIMockup title="Navidrome Audio Cloud" url="http://192.168.1.100:4533/login" type="login" />
+
+## Why Choose Navidrome?
+
+Audio streaming platforms compress your music, remove classic albums due to licensing disputes, and charge recurring monthly fees. Navidrome runs on less than 50 MB of RAM while serving bit-perfect audio directly from your hard drive.
+
+<ProConTable
+  pros={[
+    "Extremely lightweight Go backend — starts in under 1 second and consumes minimal RAM.",
+    "Full compatibility with the universal Subsonic API ecosystem (hundreds of mobile and desktop apps).",
+    "Supports multi-disc albums, lyrics, instant search, and automated background scanning.",
+    "Handles massive libraries (100,000+ tracks) without slowing down."
+  ]}
+  cons={[
+    "Requires providing and managing your own digital music collection.",
+    "Built-in web interface is clean and functional, but third-party apps are recommended for mobile use.",
+    "Does not include automated downloading by default (can be paired with Lidarr if desired)."
+  ]}
+/>
+
+---
+
+## Onboarding & Mobile App Connection
+
+### 1. Initial Scan
+Once you run `docker compose up -d` in `03-music-server/`, open `http://YOUR_SERVER_IP:4533`. Create your admin profile (`username` and `password`). Navidrome immediately begins scanning `/srv/music` and populates your album art in seconds.
+
+### 2. Recommended Mobile Clients
+Because Navidrome implements the industry-standard **Subsonic API**, you aren't forced into using a single proprietary app:
+
+- **Android:** We highly recommend **Symfonium** (unmatched equalizer, offline caching, and widget support) or **Substreamer** (free and minimalist).
+- **iOS:** We recommend **Amperfy** (free, designed to feel exactly like Apple Music) or **Substreamer**.
+
+To connect: open the app, enter `http://YOUR_SERVER_IP:4533` (or your domain/Tailscale URL), and sign in with your Navidrome credentials!

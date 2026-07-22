@@ -1,0 +1,73 @@
+---
+title: "Immich — AI Photo & Video Backup"
+tagline: "High-performance self-hosted backup and organization platform for your mobile photos and videos."
+replaces: "Google Photos, Apple iCloud Photos, Amazon Photos"
+port: 2283
+difficulty: 2
+folder: "04-photo-server"
+mockupDescription: "Immich Machine Learning & Hardware Acceleration status"
+setupSteps:
+  - "Verify /srv/photos exists on your host and create your quickstart/.env with IMMICH_DB_PASSWORD."
+  - "Run docker compose up -d inside 04-photo-server/ (launches server, ML, Redis, and PostgreSQL)."
+  - "Open http://YOUR_SERVER_IP:2283 and click Get Started to register your admin user."
+  - "Install the Immich mobile app on iOS or Android and enable background backup."
+whatNow:
+  - label: "Install iOS / Android Backup App"
+    href: "https://immich.app/"
+    description: "Connect your smartphone for automatic background photo and video backup over Wi-Fi."
+  - label: "Configure Storage Template"
+    href: "https://immich.app/docs/features/storage-template/"
+    description: "Customize how Immich organizes uploaded files on disk by Year/Month-Day."
+  - label: "Explore AI Smart Search"
+    href: "https://immich.app/docs/features/smart-search/"
+    description: "Search for objects, pets, facial recognition, and locations using local machine learning."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+import UIMockup from '../../components/UIMockup.astro';
+
+## What You'll Have When Done
+A blazing-fast photo backup server running locally on your hardware with native iOS and Android backup apps. Your entire lifetime photo library will automatically back up in full original quality right from your phone over Wi-Fi, featuring local AI facial recognition, object detection search (e.g., search "dog on beach"), interactive map albums, and zero cloud storage fees.
+
+<UIMockup title="Immich AI & Backup Hub" url="http://192.168.1.100:2283/admin" type="onboarding" />
+
+## Why Choose Immich?
+
+Immich is widely regarded as one of the most impressive self-hosted software projects ever created. It delivers an experience that rivals or beats Google Photos while keeping your priceless family memories stored safely on your own hard drive.
+
+<ProConTable
+  pros={[
+    "Blazing fast user interface built with svelte/TypeScript and high-performance Go microservices.",
+    "Local machine learning (CLIP & facial recognition) runs right on your server — zero data sent to third parties.",
+    "Seamless background mobile backup across iOS and Android with automatic duplicate detection.",
+    "Multi-user support so your partner and family members can have their own private photo vaults."
+  ]}
+  cons={[
+    "Requires a multi-container setup including Redis and PostgreSQL (handled automatically by our compose file).",
+    "Machine learning models require ~2 GB of RAM during initial indexing passes.",
+    "Project undergoes rapid active development; always review release notes when upgrading versions."
+  ]}
+/>
+
+---
+
+## Multi-Container Architecture
+
+Immich relies on a robust microservice stack that our `04-photo-server/docker-compose.yml` configures automatically:
+
+- **`immich-server` (`:2283`)** — Core API, web frontend, and upload controller.
+- **`immich-machine-learning`** — Python service running CLIP and face detection models locally.
+- **`immich-redis`** — High-speed task queue and job caching.
+- **`immich-db` (`pgvecto-rs`)** — PostgreSQL database with vector search capabilities for instant semantic photo lookups.
+
+---
+
+## Step-by-Step Setup & Mobile Backup
+
+### 1. First-Time Registration
+Navigate to `http://YOUR_SERVER_IP:2283` and click **Get Started**. Enter your email, full name, and password to create the initial admin account.
+
+### 2. Connecting the Mobile App
+1. Download **Immich** from the Apple App Store or Google Play Store.
+2. Open the app and enter your server address: `http://YOUR_SERVER_IP:2283` (or your remote HTTPS URL).
+3. Log in and toggle on **Foreground & Background Backup**. Watch as your phone backs up thousands of photos at lightning speed over your local Wi-Fi!

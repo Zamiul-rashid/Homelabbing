@@ -45,3 +45,10 @@ Thumbs.db
 /proxy-stack/.env
 /media-stack/.env
 /nextcloud-stack/.env
+
+# --- Astro Static Site & Agent Build Artifacts ---
+site/node_modules/
+site/dist/
+site/.astro/
+AUDIT.log
+SIGN-OFF.md
