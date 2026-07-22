@@ -22,7 +22,7 @@ export default function CopyButton({ code, className = '' }: Props) {
     <button
       onClick={handleCopy}
       type="button"
-      className={`px-3 py-1.5 rounded-md text-xs font-mono font-semibold transition-all duration-200 border flex items-center gap-1.5 shadow-sm ${
+      className={`px-3 py-1.5 rounded-md text-xs font-mono font-semibold transition-all duration-200 border flex items-center gap-1.5 shadow-sm focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${
         copied
           ? 'bg-success/20 border-success text-success'
           : 'bg-bg-elevated hover:bg-bg border-border text-text-muted hover:text-text'

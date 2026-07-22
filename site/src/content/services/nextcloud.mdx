@@ -4,12 +4,12 @@ tagline: "A comprehensive, self-hosted file collaboration, synchronization, docu
 replaces: "Google Drive, Dropbox, Microsoft OneDrive, Google Docs"
 port: 4443
 difficulty: 2
-folder: "05-cloud-storage"
+folder: "cloud-storage"
 mockupDescription: "Nextcloud First-Time Database & Admin Setup"
 setupSteps:
-  - "Ensure /srv/nextcloud is created on your host (`sudo mkdir -p /srv/nextcloud && sudo chown -R $USER:$USER /srv/nextcloud`)."
-  - "Verify quickstart/.env contains DB_ROOT_PASSWORD and DB_PASSWORD."
-  - "Run docker compose up -d inside 05-cloud-storage/ (launches Nextcloud + MariaDB)."
+  - "Ensure /data/nextcloud is created on your host (`sudo mkdir -p /data/nextcloud && sudo chown -R $USER:$USER /data/nextcloud`)."
+  - "Verify stacks/.env contains DB_ROOT_PASSWORD and DB_PASSWORD."
+  - "Run docker compose up -d inside stacks/cloud-storage/ (launches Nextcloud + MariaDB)."
   - "Open https://YOUR_SERVER_IP:4443 (accept self-signed SSL warning) and complete setup."
 whatNow:
   - label: "Install Desktop & Mobile Sync Clients"
@@ -27,7 +27,7 @@ import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
 ## What You'll Have When Done
-Your own private cloud storage hub accessible across Windows, Mac, Linux, iOS, and Android. You can sync documents across computers in real-time, share password-protected download links with clients or friends, edit office files, manage calendars, and keep your sensitive files stored safely on `/srv/nextcloud` under your physical control.
+Your own private cloud storage hub accessible across Windows, Mac, Linux, iOS, and Android. You can sync documents across computers in real-time, share password-protected download links with clients or friends, edit office files, manage calendars, and keep your sensitive files stored safely on `/data/nextcloud` under your physical control.
 
 <UIMockup title="Nextcloud Workspace" url="https://192.168.1.100:4443/status.php" type="wizard" />
 
@@ -54,10 +54,10 @@ Nextcloud is the industry-standard enterprise cloud replacement used by governme
 ## Step-by-Step Installation Walkthrough
 
 ### 1. Launching Nextcloud & MariaDB
-Navigate to `05-cloud-storage/` inside `quickstart/` and start the containers:
+Navigate to `stacks/cloud-storage/` and start the containers:
 
 ```bash
-cd quickstart/05-cloud-storage
+cd stacks/cloud-storage
 docker compose up -d
 ```
 

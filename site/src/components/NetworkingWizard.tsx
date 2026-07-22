@@ -49,7 +49,7 @@ export default function NetworkingWizard() {
           </p>
           <div className="p-4 rounded-lg bg-terminal-bg border border-border space-y-2">
             <div className="flex items-center justify-between text-xs text-text-faint font-mono pb-2 border-b border-border/50">
-              <span>quickstart/.env snippet</span>
+              <span>stacks/.env snippet</span>
               <CopyButton code="TAILSCALE_AUTH_KEY=tskey-auth-xxxxxx-xxxxxxxxxxxxxxxx" />
             </div>
             <pre className="text-xs font-mono text-terminal-text overflow-x-auto m-0">TAILSCALE_AUTH_KEY=tskey-auth-xxxxxx-xxxxxxxxxxxxxxxx</pre>

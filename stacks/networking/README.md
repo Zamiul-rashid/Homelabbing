@@ -1,4 +1,4 @@
-# 🌐 Remote Access & Networking Guide
+# 🌐 Remote Access & Networking Guide (`stacks/networking/`)
 
 Accessing your homelab from your couch via `http://192.168.x.x:8096` is great when you're at home. But what if you want to stream your music from Navidrome while commuting, or share Jellyfin with friends and family?
 
@@ -35,6 +35,9 @@ Are you accessing your server from outside your home?
 
 ## 🔒 Security Best Practices
 
-1. **Never expose database containers** (PostgreSQL, MariaDB, Redis) to the public internet. Only expose your web reverse proxy (Nginx Proxy Manager) on ports 80/443.
+1. **Never expose database containers** (PostgreSQL, MariaDB, Redis) to the public internet. Only expose your web reverse proxy (`nginx-proxy-manager`) on ports 80/443.
 2. **Use strong passwords** for all web interfaces before making them accessible remotely.
-3. **Check health status regularly** using `bash quickstart/scripts/check-health.sh`.
+3. **Check health status regularly** using our diagnostic checker from the repository root:
+   ```bash
+   ./helpers/check-health.sh
+   ```

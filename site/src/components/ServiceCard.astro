@@ -20,11 +20,11 @@ const difficultyLabel =
 
 <a
   href={`/Homelabbing/services/${service.slug}`}
-  class="service-card group no-underline block text-text"
+  class="service-card group no-underline block text-text focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none rounded-2xl"
   style={`--hover-accent: ${service.accentColor};`}
 >
   <div class="flex items-center justify-between">
-    <div class="w-12 h-12 rounded-xl bg-bg-elevated border border-border flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+    <div class="w-12 h-12 rounded-xl bg-bg-elevated border border-border flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-md">
       {service.icon}
     </div>
     <span class={badgeClass}>{difficultyLabel}</span>
@@ -34,16 +34,16 @@ const difficultyLabel =
     <h3 class="text-xl font-bold text-text group-hover:text-accent transition-colors">
       {service.name}
     </h3>
-    <p class="text-xs text-text-faint font-mono mt-0.5">Replaces: {service.replaces}</p>
+    <p class="text-xs text-text-faint font-mono mt-1">Replaces: {service.replaces}</p>
   </div>
 
   <p class="text-sm text-text-muted flex-grow leading-relaxed">
     {service.tagline}
   </p>
 
-  <div class="pt-3 border-t border-border/60 flex items-center justify-between text-xs font-mono">
+  <div class="pt-4 border-t border-border/60 flex items-center justify-between text-xs font-mono">
     <span class="text-text-faint">Port: <strong class="text-text">{service.port}</strong></span>
-    <span class="text-accent group-hover:translate-x-1 transition-transform flex items-center gap-1">
+    <span class="text-accent font-semibold group-hover:translate-x-1 transition-transform flex items-center gap-1">
       Setup Guide →
     </span>
   </div>

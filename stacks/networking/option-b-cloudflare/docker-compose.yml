@@ -1,16 +1,24 @@
+# ==============================================================================
+# Homelabbing Networking Option B (Cloudflare + Nginx Proxy Manager)
+# This stack deploys Nginx Proxy Manager to connect directly to Cloudflare API
+# for automated DNS challenge verification and wildcard SSL generation.
+# ==============================================================================
+
 services:
   nginx-proxy-manager:
     image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
     environment:
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - npm-data:/data
-      - npm-letsencrypt:/etc/letsencrypt
+      # Save configuration state and SQLite database right inside ./config/data.
+      - ./config/data:/data
+      # Save generated Let's Encrypt wildcard certificates inside ./config/letsencrypt.
+      - ./config/letsencrypt:/etc/letsencrypt
     ports:
       - "80:80"     # Public HTTP
       - "443:443"   # Public HTTPS
-      - "81:81"     # Admin Web UI
+      - "81:81"     # Admin Web GUI (Access at http://YOUR_SERVER_IP:81)
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -fsSL http://localhost:81/ || exit 1"]
@@ -18,7 +26,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-
-volumes:
-  npm-data:
-  npm-letsencrypt:

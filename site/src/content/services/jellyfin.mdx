@@ -4,12 +4,12 @@ tagline: "A powerful, open-source media system that organizes, manages, and stre
 replaces: "Netflix, Plex, Emby, Apple TV+"
 port: 8096
 difficulty: 1
-folder: "01-media-server"
+folder: "media-server"
 mockupDescription: "Jellyfin Language & Admin Wizard setup interface"
 setupSteps:
-  - "Run bootstrap script or ensure /srv/media exists and is owned by your user ID."
-  - "Verify quickstart/.env has PUID=1000 and PGID=1000."
-  - "Run docker compose up -d inside 01-media-server/."
+  - "Verify /data/media exists and is owned by your user (`sudo mkdir -p /data/media && sudo chown -R $USER:$USER /data/media`)."
+  - "Verify stacks/.env has your correct user permissions (PUID and PGID)."
+  - "Run docker compose up -d inside stacks/media-server/."
   - "Open browser to http://YOUR_SERVER_IP:8096 and complete the setup wizard."
 whatNow:
   - label: "Install Mobile & TV Apps"
@@ -54,19 +54,19 @@ Unlike commercial streaming services that raise prices, remove favorite shows wi
 ## Step-by-Step Onboarding Walkthrough
 
 ### 1. Storage & Environment Setup
-Verify that your host machine has `/srv/media` created (our automated `bootstrap.sh` script does this for you). Place at least one test video file inside `/srv/media/movies` so Jellyfin has something to index right away.
+Verify that your host machine has `/data/media` created. Place at least one test video file inside `/data/media/movies` so Jellyfin has something to index right away.
 
 ```bash
-# Verify your UID and GID match your quickstart/.env file
+# Verify your UID and GID match your stacks/.env file
 id -u
 id -g
 ```
 
 ### 2. Launching the Container
-Navigate to the `01-media-server/` directory inside `quickstart/` and launch the stack:
+Navigate to the `media-server/` directory inside `stacks/` and launch the stack:
 
 ```bash
-cd quickstart/01-media-server
+cd stacks/media-server
 docker compose up -d
 ```
 

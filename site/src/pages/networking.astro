@@ -23,7 +23,7 @@ import CodeBlock from '../components/CodeBlock.astro';
       Go to <a href="https://www.duckdns.org" target="_blank" rel="noopener noreferrer">duckdns.org</a>, sign in, copy your top-bar token, and create a free subdomain (e.g., `myhomelab-demo`).
     </p>
 
-    <h3>2. Add Secrets to quickstart/.env</h3>
+    <h3>2. Add Secrets to stacks/.env</h3>
     <CodeBlock
       title=".env — DuckDNS Configuration"
       code={`DUCKDNS_SUBDOMAIN=myhomelab-demo\nDUCKDNS_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`}
@@ -32,7 +32,7 @@ import CodeBlock from '../components/CodeBlock.astro';
     <h3>3. Start Option A Stack</h3>
     <CodeBlock
       title="bash — Launch DuckDNS + NPM"
-      code={`cd quickstart/networking/option-a-duckdns\ndocker compose --env-file ../../.env up -d`}
+      code={`cd stacks/networking/option-a-duckdns\ndocker compose up -d`}
     />
 
     <h3>4. Configure Proxy Host</h3>
@@ -41,7 +41,7 @@ import CodeBlock from '../components/CodeBlock.astro';
     </p>
     <ul>
       <li><strong>Domain Names:</strong> `myhomelab-demo.duckdns.org`</li>
-      <li><strong>Forward Host / IP:</strong> `192.0.2.1` (your server local IP)</li>
+      <li><strong>Forward Host / IP:</strong> `192.168.1.100` (your server local IP)</li>
       <li><strong>Forward Port:</strong> `8096` (for Jellyfin)</li>
       <li>Under <strong>SSL tab</strong>: Select <em>Request a new SSL Certificate</em>, check <em>Force SSL</em>, and save!</li>
     </ul>
@@ -59,7 +59,7 @@ import CodeBlock from '../components/CodeBlock.astro';
       In Cloudflare dashboard: <strong>My Profile → API Tokens → Create Token → Use template: Edit zone DNS</strong> for your specific domain. Copy the token immediately.
     </p>
 
-    <h3>2. Configure Environment Variable</h3>
+    <h3>2. Configure Environment Variable in stacks/.env</h3>
     <CodeBlock
       title=".env — Cloudflare API Token"
       code={`CF_API_TOKEN=your_cloudflare_dns_edit_token_here`}
@@ -68,7 +68,7 @@ import CodeBlock from '../components/CodeBlock.astro';
     <h3>3. Start Option B Stack</h3>
     <CodeBlock
       title="bash — Launch Cloudflare NPM"
-      code={`cd quickstart/networking/option-b-cloudflare\ndocker compose --env-file ../../.env up -d`}
+      code={`cd stacks/networking/option-b-cloudflare\ndocker compose up -d`}
     />
 
     <h3>4. Generate Wildcard SSL in NPM</h3>
@@ -116,16 +116,16 @@ import CodeBlock from '../components/CodeBlock.astro';
       In your <a href="https://login.tailscale.com/admin/machines" target="_blank" rel="noopener noreferrer">Tailscale Admin Console</a>, go to <strong>Settings → Keys → Generate auth key</strong>. Check <strong>Reusable</strong> and leave Ephemeral unchecked.
     </p>
 
-    <h3>2. Configure Environment Variable</h3>
+    <h3>2. Configure Environment Variable in stacks/.env</h3>
     <CodeBlock
       title=".env — Tailscale Auth Key"
       code={`TAILSCALE_AUTH_KEY=tskey-auth-xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxx`}
     />
 
-    <h3>3. Start Tailscale Sidecar Container</h3>
+    <h3>3. Start Tailscale Container</h3>
     <CodeBlock
       title="bash — Launch Tailscale Sidecar"
-      code={`cd quickstart/networking/option-d-tailscale\ndocker compose --env-file ../../.env up -d`}
+      code={`cd stacks/networking/option-d-tailscale\ndocker compose up -d`}
     />
 
     <h3>4. Verify Connection</h3>

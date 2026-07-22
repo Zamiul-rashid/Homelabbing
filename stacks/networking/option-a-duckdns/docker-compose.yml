@@ -1,11 +1,19 @@
+# ==============================================================================
+# Homelabbing Networking Option A (DuckDNS + Nginx Proxy Manager)
+# This stack deploys DuckDNS for dynamic DNS updating and Nginx Proxy Manager
+# to terminate HTTPS SSL traffic and route requests to your applications.
+# ==============================================================================
+
 services:
   duckdns:
+    # LinuxServer.io image that periodically updates your free *.duckdns.org domain.
     image: lscr.io/linuxserver/duckdns:latest
     container_name: duckdns
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
+      # Your chosen DuckDNS subdomain and account token loaded from stacks/.env.
       - SUBDOMAINS=${DUCKDNS_SUBDOMAIN}
       - TOKEN=${DUCKDNS_TOKEN}
       - LOG_FILE=false
@@ -17,17 +25,21 @@ services:
       retries: 3
 
   nginx-proxy-manager:
+    # Official Nginx Proxy Manager container providing an accessible web UI
+    # to configure reverse proxy rules and automate Let's Encrypt SSL padlocks.
     image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy-manager
     environment:
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - npm-data:/data
-      - npm-letsencrypt:/etc/letsencrypt
+      # Save configuration rules and SQLite database right inside ./config/data.
+      - ./config/data:/data
+      # Save generated Let's Encrypt SSL certificates locally right inside ./config/letsencrypt.
+      - ./config/letsencrypt:/etc/letsencrypt
     ports:
-      - "80:80"     # Public HTTP
-      - "443:443"   # Public HTTPS
-      - "81:81"     # Admin Web UI
+      - "80:80"     # Public HTTP (Required for Let's Encrypt verification and redirection)
+      - "443:443"   # Public HTTPS (Terminated securely by Nginx Proxy Manager)
+      - "81:81"     # Admin Web GUI (Access at http://YOUR_SERVER_IP:81)
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -fsSL http://localhost:81/ || exit 1"]
@@ -35,7 +47,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-
-volumes:
-  npm-data:
-  npm-letsencrypt:

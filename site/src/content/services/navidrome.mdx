@@ -4,12 +4,12 @@ tagline: "A modern, lightweight, fast web-based music server and Subsonic-compat
 replaces: "Spotify, Apple Music, YouTube Music, Tidal"
 port: 4533
 difficulty: 1
-folder: "03-music-server"
+folder: "music-server"
 mockupDescription: "Navidrome Admin Account Login screen"
 setupSteps:
-  - "Place your FLAC, MP3, and ALAC music folders inside /srv/music."
-  - "Check that quickstart/.env has your correct user permissions."
-  - "Run docker compose up -d inside 03-music-server/."
+  - "Place your FLAC, MP3, and ALAC music folders inside /data/media/music."
+  - "Check that stacks/.env has your correct user permissions (PUID and PGID)."
+  - "Run docker compose up -d inside stacks/music-server/."
   - "Open http://YOUR_SERVER_IP:4533 to create your admin profile and scan albums."
 whatNow:
   - label: "Connect Subsonic Mobile Apps"
@@ -53,10 +53,17 @@ Audio streaming platforms compress your music, remove classic albums due to lice
 
 ## Onboarding & Mobile App Connection
 
-### 1. Initial Scan
-Once you run `docker compose up -d` in `03-music-server/`, open `http://YOUR_SERVER_IP:4533`. Create your admin profile (`username` and `password`). Navidrome immediately begins scanning `/srv/music` and populates your album art in seconds.
+### 1. Launching the Container
+Once you place your audio files in `/data/media/music`, run `docker compose up -d` in `stacks/music-server/`:
+```bash
+cd stacks/music-server
+docker compose up -d
+```
 
-### 2. Recommended Mobile Clients
+### 2. Initial Scan & Login
+Open `http://YOUR_SERVER_IP:4533`. Create your admin profile (`username` and `password`). Navidrome immediately begins scanning `/data/media/music` and populates your album art in seconds.
+
+### 3. Recommended Mobile Clients
 Because Navidrome implements the industry-standard **Subsonic API**, you aren't forced into using a single proprietary app:
 
 - **Android:** We highly recommend **Symfonium** (unmatched equalizer, offline caching, and widget support) or **Substreamer** (free and minimalist).

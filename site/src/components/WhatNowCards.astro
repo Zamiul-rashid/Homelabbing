@@ -22,7 +22,7 @@ const { items } = Astro.props;
     {items.map((item) => (
       <a
         href={item.href}
-        class="glass p-5 flex flex-col gap-2 hover:border-accent transition-all duration-200 group no-underline"
+        class="glass p-5 flex flex-col gap-2 hover:border-accent transition-all duration-200 group no-underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none rounded-xl"
       >
         <span class="font-bold text-accent group-hover:underline text-base flex items-center justify-between">
           <span>{item.label}</span>

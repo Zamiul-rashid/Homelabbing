@@ -1,60 +1,129 @@
-# Immich — High-Performance Self-Hosted Photo & Video Backup
-> What it is: A cutting-edge, self-hosted backup and organization platform for your mobile photos and videos powered by local machine learning. What it replaces: Google Photos, Apple iCloud Photos, Amazon Photos.
+# Immich Photo & Video Backup — High-Performance Self-Hosted Cloud Gallery
 
-## What you'll have when done
-A blazing-fast photo backup server running locally on your hardware with native iOS and Android backup apps. Your entire lifetime photo library will automatically back up in full original quality right from your phone over Wi-Fi, featuring local AI facial recognition, object detection search (e.g., search "dog on beach"), interactive map albums, and zero cloud storage fees.
+## 🎯 What You'll Have When You're Done
+When you complete this guide, you will have a cutting-edge, self-hosted photo and video backup server running locally on your hardware with native mobile apps for iOS and Android. Your entire lifetime photo library will automatically back up in full original quality directly from your smartphone over Wi-Fi, featuring local AI facial recognition, natural language object search (e.g., search "dog on beach"), interactive map albums, and zero cloud storage fees!
 
-## Quick Launch
-### 1. Set up storage
-Verify that your host machine has `/srv/photos` created:
-```bash
-sudo mkdir -p /srv/photos
-sudo chown -R $USER:$USER /srv/photos
+---
+
+## 💡 What Is Immich and Why Would I Want It?
+
+Storing thousands of photos and 4K videos on mobile devices quickly fills up local storage, and cloud backup providers like Google Photos, iCloud, and Amazon Photos charge ongoing monthly subscriptions for extra storage while sometimes compressing your memories.
+
+**[Immich](https://immich.app/)** is a modern self-hosted alternative that provides the exact same user experience as Google Photos:
+- **Automatic Mobile Background Backup:** Native iOS and Android apps automatically upload new pictures and videos in full, uncompressed original quality whenever your phone connects to Wi-Fi.
+- **Local Machine Learning (AI):** Runs neural networks locally on your server (`immich-machine-learning`) to detect faces, group people, and generate semantic embeddings. You can search for "birthday cake" or "camping in the woods" and find matching photos instantly without sending data to Google or OpenAI!
+- **Multi-User Household Support:** Create separate, private vaults for every family member on a single server with shared family albums and granular permission controls.
+
+---
+
+## 📋 Prerequisites
+
+Before deploying this stack, make sure you have:
+1. Completed **[02. Understanding Docker & Containers](../../docs/02-understanding-docker.md)**.
+2. Created your `/data/media/photos` directory as covered in **[04. Storage, Disks & NAS Concepts](../../docs/04-storage-and-nas.md)**.
+3. Copied and edited `stacks/.env` (`cp stacks/.env.example stacks/.env`), ensuring you chose a secure database password for `IMMICH_DB_PASSWORD`.
+
+---
+
+## 🔧 Understanding the Compose File
+
+Our `docker-compose.yml` deploys a synchronized 4-container application suite:
+
+```yaml
+services:
+  immich-server:
+    image: ghcr.io/immich-app/immich-server:release
+    volumes:
+      - ${DATA_ROOT:-/data}/media/photos:/usr/src/app/upload
+    ports:
+      - "2283:2283"
+    depends_on:
+      - immich-redis
+      - immich-db
+
+  immich-machine-learning:
+    image: ghcr.io/immich-app/immich-machine-learning:release
+    volumes:
+      - ./config/model-cache:/cache
+
+  immich-redis:
+    image: registry.hub.docker.com/library/redis:6.2-alpine
+
+  immich-db:
+    image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0
+    volumes:
+      - ./config/postgres:/var/lib/postgresql/data
 ```
 
-### 2. Configure .env
-Ensure your `quickstart/.env` contains your Immich database secrets (`IMMICH_DB_PASSWORD`) and paths:
+- **`immich-server`:** The primary web and API server where mobile apps connect on door `2283`. It saves all uploaded photos directly into your physical `/data/media/photos` folder.
+- **`immich-machine-learning`:** A dedicated AI processor. It stores downloaded AI models locally inside `./config/model-cache`.
+- **`immich-redis` & `immich-db`:** High-speed Redis caching and a specialized PostgreSQL database loaded with the `pgvecto-rs` vector extension to store high-dimensional image search embeddings right inside `./config/postgres`.
+
+---
+
+## 🚀 Setting It Up Step by Step
+
+### Step 1: Navigate to the Photo Backup Folder
+Open your terminal and move into the `photo-backup` stack directory:
 ```bash
-PUID=1000
-PGID=1000
-TZ=UTC
-PHOTOS_DIR=/srv/photos
-IMMICH_DB_PASSWORD=SecureSecretPassword123!
+cd /opt/homelab/stacks/photo-backup
 ```
 
-### 3. Start
-From inside `04-photo-server/`, launch the multi-container stack (`server`, `machine-learning`, `redis`, and `pgvecto-rs postgres`):
+### Step 2: Launch the Immich Stack
+Start all 4 containers in detached background mode:
 ```bash
 docker compose up -d
 ```
 
-Expected terminal output:
+### 🔍 What Just Happened?
+When you ran `docker compose up -d`:
+1. Docker pulled the 4 specialized containers (`server`, `machine-learning`, `redis`, `pgvecto-rs`).
+2. It created `./config/postgres` and `./config/model-cache` on your local drive to store your database and AI weights.
+3. It initialized PostgreSQL and bound door `2283` for web and mobile access!
+
+---
+
+## ✅ Verifying It Works
+
+### Step 1: Check Container Health
+Run our diagnostic checker to ensure all components booted:
+```bash
+../../helpers/check-health.sh
 ```
-[+] Running 5/5
- ✔ Network 04-photo-server_default      Created            0.1s
- ✔ Container immich_redis               Started            0.3s
- ✔ Container immich_postgres            Started            0.4s
- ✔ Container immich_machine_learning    Started            0.5s
- ✔ Container immich_server              Started            0.8s
+`immich_server` should show as `healthy (running)` on `http://YOUR_SERVER_IP:2283`.
+
+### Step 2: Complete Admin Onboarding
+Open your web browser and navigate to:
 ```
+http://192.168.1.100:2283
+```
+*(Replace `192.168.1.100` with your server's actual IP address.)*
 
-### 4. Open browser: http://YOUR_IP:2283
-When you navigate to `http://192.0.2.1:2283`, you will see the **Welcome to Immich Admin Onboarding** screen.
+1. **Get Started:** Click **Getting Started**, type your Email, Password, and Name, then click **Sign Up**.
+2. **Login & Configure Storage:** Once logged in, go to **Administration → Settings → Storage Template** to customize how Immich formats folder structures (`Year/Month-Day/Filename.ext`).
+3. **Verify AI Jobs:** Check **Administration → Jobs** to confirm that facial detection and semantic search models are active and running.
 
-## First-Time Setup
-1. **Create Admin Account:** Click **Get Started**, enter your Email address, Password, and Name, then click **Sign Up**.
-2. **Login:** Log in with your new admin credentials.
-3. **Storage Template:** Under **Administration → Settings → Storage Template**, you can customize how Immich organizes uploaded files on disk (`Year/Month-Day/Filename.ext`).
-4. **Machine Learning Jobs:** Go to **Administration → Jobs** and check that facial recognition and smart search models are active and downloading smoothly.
+---
 
-## Connecting to Other Services
-- **External Libraries:** You can point Immich to read-only folders inside `/srv/nextcloud` or existing photo archives without duplicating files using Immich's **External Libraries** feature!
+## 📱 Connecting Your Mobile Phone
 
-## Add HTTPS (Optional)
-Because mobile photo backups occur continuously from cellular networks and out of the home, secure HTTPS remote access is strongly recommended:
-→ **[networking/README.md](../networking/README.md)**
+1. **Download the Mobile App:** Search for **Immich** on the Apple App Store (iOS) or Google Play Store (Android).
+2. **Connect to Your Server:** Open the app and type your server URL (`http://YOUR_SERVER_IP:2283` or your HTTPS domain once set up via `networking/`).
+3. **Enable Background Backup:** Sign in, tap the cloud icon in the top right, and turn on **Foreground & Background Backup** to start syncing your phone's photo gallery!
 
-## What Now?
-1. **Install Mobile App:** Download **Immich** on your iOS (App Store) or Android (Google Play) phone.
-2. **Connect & Backup:** Open the app, enter your server URL (`http://YOUR_SERVER_IP:2283` or your HTTPS domain), sign in, and enable **Foreground & Background Backup**!
-3. **Test AI Search:** Once your initial backup completes, try typing `sunset`, `birthday cake`, or clicking on a person's face to watch local machine learning find relevant pictures instantly.
+---
+
+## 🧩 What's Next?
+
+Now that your media, music, and personal photos are securely hosted and backed up, let's deploy our self-hosted cloud office and synchronization suite (`Nextcloud`) so you can replace Google Workspace across all your laptops and desktop computers!
+
+👉 **Proceed to the [`cloud-storage/`](../cloud-storage/README.md) Stack**
+
+---
+
+## 🔧 Troubleshooting
+
+- **Issue: Mobile uploads hang or fail for large 4K video clips.**
+  - **Solution:** If you are accessing Immich through a reverse proxy (`Nginx Proxy Manager` or Cloudflare) instead of directly via LAN, reverse proxies often enforce strict upload size limits (`client_max_body_size`). Ensure your Nginx Proxy Manager configuration for Immich explicitly enables `client_max_body_size 0;` or `50000M;` under Advanced Configuration!
+- **Issue: Machine learning search returns no results when I type words like 'dog' or 'mountain'.**
+  - **Solution:** Semantic search (`CLIP` embeddings) runs asynchronously after photos are uploaded. If you just uploaded 5,000 photos, the CPU may still be generating embeddings. Check progress under **Administration → Jobs → Smart Search**. Once complete, your natural language queries will work instantly!

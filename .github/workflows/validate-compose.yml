@@ -1,0 +1,37 @@
+name: Validate Docker Compose Stacks
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "stacks/**"
+      - ".github/workflows/validate-compose.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "stacks/**"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate Docker Compose Configs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create dummy environment file for validation
+        run: cp stacks/.env.example stacks/.env
+
+      - name: Validate all compose files
+        run: |
+          echo "=== Checking Docker Compose configurations in stacks/ ==="
+          for compose_file in $(find stacks/ -name "docker-compose.yml"); do
+            echo "-> Validating: $compose_file"
+            docker compose -f "$compose_file" --env-file stacks/.env config -q || {
+              echo "❌ Validation failed for $compose_file"
+              exit 1
+            }
+            echo "✓ $compose_file is valid."
+          done
+          echo "=== All compose stacks passed validation successfully! ==="

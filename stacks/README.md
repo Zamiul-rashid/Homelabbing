@@ -1,81 +1,66 @@
-# 🚀 Quickstart: Build Your Personal Home Server
+# 🧱 Modular Homelabbing Stacks (`stacks/`)
 
-> **No experience needed.** If you can open a terminal, you can build a self-hosted cloud that replaces your monthly subscriptions.
+Welcome to our modular Docker Compose ecosystem! Instead of placing every single application inside a giant, complicated 1,500-line `docker-compose.yml` file, **Homelabbing** divides your home server into clean, self-contained **stacks**.
 
-Welcome to the beginner-friendly quickstart layer of **Homelabbing**! Whether you have an old $50 desktop PC collecting dust, a Raspberry Pi 4/5, or a dedicated home server, these modular stacks let you take control of your digital life—one service at a time.
-
----
-
-## 📊 At a Glance: What You Can Build
-
-| Stack / Service | Replaces | Port | Difficulty | Folder |
-| :--- | :--- | :---: | :---: | :--- |
-| **🎬 Jellyfin** | Netflix, Plex, Emby | `8096` | 🟢 Easy | `01-media-server` |
-| **⚡ *arr Stack** | Manual torrenting, Radarr, Sonarr | `8080`–`9696` | 🟡 Medium | `02-arr-stack` |
-| **🎵 Navidrome** | Spotify, Apple Music | `4533` | 🟢 Easy | `03-music-server` |
-| **🖼️ Immich** | Google Photos, iCloud Photos | `2283` | 🟡 Medium | `04-photo-server` |
-| **☁️ Nextcloud** | Google Drive, Dropbox, OneDrive | `4443` | 🟡 Medium | `05-cloud-storage` |
-| **🏰 Full Stack** | All of the above (Single network) | *All* | 🔴 Advanced | `06-full-stack` |
+Every single line inside every `docker-compose.yml` file in this directory is **heavily commented** to teach you what every directive (`image`, `environment`, `volumes`, `ports`, `healthcheck`) does and why it matters.
 
 ---
 
-## ✅ Prerequisites Checklist
+## 🏗️ Why Use Modular Stacks?
 
-Before running any container, make sure your host machine meets these requirements:
-- [ ] Running a Linux distribution (Ubuntu 22.04/24.04 or Debian 12 recommended).
-- [ ] At least 4 GB of RAM (8 GB+ recommended if running Immich + Nextcloud).
-- [ ] Internet access for pulling Docker container images.
-
----
-
-## ⚡ Step 0: One-Line Docker Setup
-
-If you don't have Docker installed yet, run our automated bootstrap script on your Ubuntu or Debian system. It installs the official Docker Engine, Compose V2 plugin, adds your user to the `docker` group, and prepares host storage folders (`/srv/media`, `/srv/downloads`, etc.):
-
-```bash
-sudo bash scripts/bootstrap.sh
-```
-
-*(Once finished, log out and log back into your terminal so your new group permissions take effect).*
+1. **Zero-Impact Upgrades & Maintenance:** If you need to restart or troubleshoot your photo backup server (`photo-backup`), your family members watching a 4K movie on `media-server` will never notice any interruption.
+2. **Learn One Concept at a Time:** Instead of booting 20 containers at once and feeling overwhelmed, you can launch one single stack, understand its volume mounts and ports, and verify it works before adding the next piece.
+3. **Customize Your Architecture:** Only want a book reader and photo server? Just run `book-reader` and `photo-backup`. You never have to spin up containers you don't actually need!
 
 ---
 
-## 🎯 Step 1: Choose Your Fast Path
+## 🗺️ Recommended Stack Launch Order
 
-We strongly recommend starting with **Jellyfin (`01-media-server`)** to get familiar with Docker. Once you see your movies streaming in your browser, add the download automation stack (`02-arr-stack`) or branch out into music (`03-music-server`) and photos (`04-photo-server`).
+We recommend launching these modular stacks in the following order as you build your lab:
 
-### The Interactive Launcher (Easiest)
-You don't even need to remember folder paths or compose commands! Just run:
-
-```bash
-bash scripts/launch.sh
-```
-
-Our interactive menu will check your `.env` file, let you pick the stack you want to start, launch containers in the background, and perform an automated health check with direct clickable URLs!
-
----
-
-## 🩺 Checking Service Health
-
-At any time, you can verify container status across all 9 homelab ports by running:
-
-```bash
-bash scripts/check-health.sh
-```
-
-You'll get a clean, color-coded table showing whether each container is `healthy`, `starting...`, or `not running`.
+| # | Stack Folder | Primary Services | What It Gives You |
+| :--- | :--- | :--- | :--- |
+| **1** | **[`media-server/`](media-server/)** | Jellyfin | Pristine, uncompressed 4K movie and TV show streaming across your LAN. |
+| **2** | **[`arr-stack/`](arr-stack/)** | Radarr, Sonarr, Prowlarr, qBittorrent, Jellyseerr | Automated media discovery, zero-copy hardlinking, and household requests. |
+| **3** | **[`music-server/`](music-server/)** | Navidrome | Blazing-fast personal music streaming with Subsonic mobile app compatibility. |
+| **4** | **[`photo-backup/`](photo-backup/)** | Immich | Self-hosted photo and video backup with AI facial recognition and timeline sync. |
+| **5** | **[`book-reader/`](book-reader/)** | Kavita | High-performance ebook, comic book, and multi-volume manga reader. |
+| **6** | **[`cloud-storage/`](cloud-storage/)** | Nextcloud, MariaDB | Complete Google Workspace and Dropbox replacement for multi-device document sync. |
+| **7** | **[`networking/`](networking/)** | Nginx Proxy Manager, DuckDNS / Cloudflare, Tailscale | Remote access, custom subdomains, reverse proxy routing, and SSL padlocks. |
+| **8** | **[`full-stack/`](full-stack/)** | Combined All-in-One Compose | *For experienced users only:* A consolidated compose file combining all services into a single stack. |
 
 ---
 
-## 🌐 Remote Access & Networking
+## 🚀 How to Launch Any Stack Step-by-Step
 
-Want to access your Jellyfin server from a hotel room or share Nextcloud with your family across town? Check out our comprehensive guides:
+Before launching any stack, make sure you have prepared your hardware and formatted your `/data` storage pool as explained in **[`docs/03-your-first-server.md`](../docs/03-your-first-server.md)** and **[`docs/04-storage-and-nas.md`](../docs/04-storage-and-nas.md)**.
 
-👉 **[Remote Access & Networking Guide (`networking/README.md`)](./networking/README.md)**
-Choose between **DuckDNS (Free)**, **Cloudflare DNS Challenge (Free)**, **Custom Bought Domains**, and **Tailscale VPN Mesh (Most Secure)**.
+1. **Copy the Environment Template:**
+   In this directory (`stacks/`), copy the environment variables template so Docker knows your user permissions and timezone:
+   ```bash
+   cp .env.example .env
+   nano .env
+   ```
+   Set your `PUID`, `PGID` (find them by running `id` in your terminal), `TZ` (`America/New_York`), and `SERVER_IP`.
 
----
+2. **Navigate into the Desired Stack Folder:**
+   ```bash
+   cd media-server
+   ```
 
-## 🔬 Ready to Go Deeper?
+3. **Launch the Containers in the Background (`-d`):**
+   ```bash
+   docker compose up -d
+   ```
 
-This `quickstart/` directory is designed specifically for first-timers. Once you master these modular stacks and want high-availability reverse proxying, monitoring (Grafana/Prometheus), automated backups, and 25+ advanced containers, explore the parent repository's full **[Doomsday Protocol Architecture](../README.md)**!
+4. **Verify Live Logs & Health Status:**
+   ```bash
+   docker compose ps
+   docker logs --tail 50 jellyfin
+   ```
+   Or run our handy diagnostic checker anytime from the repo root:
+   ```bash
+   ./helpers/check-health.sh
+   ```
+
+Enjoy building and learning each component!

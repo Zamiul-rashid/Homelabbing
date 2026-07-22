@@ -1,23 +1,59 @@
+# ==============================================================================
+# Homelabbing Media Server Stack (Jellyfin)
+# This stack deploys Jellyfin, a 100% free and open-source media streaming
+# server that organizes and streams your personal movies and TV shows.
+# ==============================================================================
+
 services:
   jellyfin:
+    # We use the community-maintained LinuxServer.io (`lscr.io/linuxserver/jellyfin`)
+    # container image. LinuxServer.io images are industry standards known for
+    # consistent user permission handling (`PUID`/`PGID`) and rapid updates.
     image: lscr.io/linuxserver/jellyfin:latest
+
+    # Assigning a clear container name makes viewing terminal logs (`docker logs jellyfin`)
+    # and managing restarts simple and predictable.
     container_name: jellyfin
+
+    # Environment variables configure internal permissions and timezones.
+    # We load these variables automatically from your stacks/.env file.
     environment:
+      # PUID (User ID) tells the container which Linux user owns newly created files.
       - PUID=${PUID:-1000}
+      # PGID (Group ID) tells the container which Linux group owns newly created files.
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      # TZ synchronizes scheduled library scans and playback logs to your local clock.
+      - TZ=${TZ:-America/New_York}
+
+    # Volume bind mounts map physical folders on your actual hard drive right into
+    # the virtual filesystem inside the container.
     volumes:
-      - jellyfin-config:/config
-      - ${MEDIA_DIR:-/srv/media}:/data/media
+      # Mount the local config directory (`./config`) to `/config` inside Jellyfin.
+      # This is where your media database, metadata cache, and user accounts live.
+      # Because it is stored locally on your hard disk, your library remains intact
+      # even if you delete or upgrade the container image!
+      - ./config:/config
+
+      # Mount your pooled media directory (`/data/media`) right to `/data/media`
+      # inside Jellyfin so the server can scan your movie and TV series files.
+      - ${DATA_ROOT:-/data}/media:/data/media
+
+    # Port mappings expose internal container ports to your local network.
     ports:
+      # Format is [HOST_PORT]:[CONTAINER_PORT].
+      # Jellyfin listens internally on door 8096. We bind door 8096 on your server
+      # so you can reach the dashboard at http://YOUR_SERVER_IP:8096 across your home Wi-Fi.
       - "8096:8096"
+
+    # The restart policy tells Docker to automatically reboot Jellyfin whenever your
+    # server turns on or if the container crashes unexpectedly (`unless-stopped`).
     restart: unless-stopped
+
+    # The healthcheck periodically tests if Jellyfin's web server is responding properly.
+    # If the health check fails 3 times (`retries: 3`), diagnostic tools flag it as unhealthy.
     healthcheck:
       test: ["CMD-SHELL", "curl -fsSL http://localhost:8096/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
-
-volumes:
-  jellyfin-config:

@@ -1,17 +1,29 @@
+# ==============================================================================
+# Homelabbing Photo Backup Stack (Immich)
+# This stack deploys Immich, a cutting-edge self-hosted photo & video backup
+# solution featuring local machine learning, facial recognition, and mobile sync.
+# ==============================================================================
+
 services:
   immich-server:
+    # Official Immich server container handling web API, uploads, and library management.
     image: ghcr.io/immich-app/immich-server:release
     container_name: immich_server
     environment:
-      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      # Database credentials and connection parameters passed down from stacks/.env.
+      - DB_PASSWORD=${IMMICH_DB_PASSWORD:-SecretPassword123!}
       - DB_USERNAME=${IMMICH_DB_USER:-immich}
       - DB_DATABASE_NAME=${IMMICH_DB_NAME:-immich}
       - DB_HOSTNAME=${DB_HOSTNAME:-immich-db}
       - REDIS_HOSTNAME=${REDIS_HOSTNAME:-immich-redis}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - ${PHOTOS_DIR:-/srv/photos}:/usr/src/app/upload
+      # Mount your physical photo vault (/data/media/photos) directly to the upload path.
+      - ${DATA_ROOT:-/data}/media/photos:/usr/src/app/upload
+      # Mount system localtime in read-only mode so photo timestamps match wall time.
       - /etc/localtime:/etc/localtime:ro
     ports:
+      # Expose Immich web dashboard and mobile API gateway on door 2283.
       - "2283:2283"
     depends_on:
       - immich-redis
@@ -25,13 +37,19 @@ services:
       start_period: 30s
 
   immich-machine-learning:
+    # Dedicated AI/ML container that runs facial recognition, object detection,
+    # and CLIP vector embedding generation locally on your hardware.
     image: ghcr.io/immich-app/immich-machine-learning:release
     container_name: immich_machine_learning
     volumes:
-      - immich-model-cache:/cache
+      # Mount local cache folder inside ./config/model-cache so downloaded AI models
+      # (like CLIP and facial detection weights) survive container restarts.
+      - ./config/model-cache:/cache
     restart: unless-stopped
 
   immich-redis:
+    # Redis acts as an ultra-fast in-memory queue, coordinating asynchronous tasks
+    # (like thumbnail generation and metadata indexing) across Immich services.
     image: registry.hub.docker.com/library/redis:6.2-alpine@sha256:51d6c56749a4243096327e3fb964a48ed92254357108449cb6e23999c37773c5
     container_name: immich_redis
     restart: unless-stopped
@@ -42,14 +60,19 @@ services:
       retries: 3
 
   immich-db:
+    # High-performance PostgreSQL database running the pgvector extension (`pgvecto-rs`).
+    # Storing vector embeddings inside PostgreSQL allows Immich to perform instant
+    # semantic searches across tens of thousands of images.
     image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
     container_name: immich_postgres
     environment:
-      - POSTGRES_PASSWORD=${IMMICH_DB_PASSWORD}
+      - POSTGRES_PASSWORD=${IMMICH_DB_PASSWORD:-SecretPassword123!}
       - POSTGRES_USER=${IMMICH_DB_USER:-immich}
       - POSTGRES_DB=${IMMICH_DB_NAME:-immich}
     volumes:
-      - immich-postgres-data:/var/lib/postgresql/data
+      # Save the PostgreSQL database locally right inside ./config/postgres.
+      # Because this contains your photo indexes and metadata, keep it backed up!
+      - ./config/postgres:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready --dbname=\"$${POSTGRES_DB}\" --username=\"$${POSTGRES_USER}\" || exit 1"]
@@ -57,7 +80,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-
-volumes:
-  immich-model-cache:
-  immich-postgres-data:

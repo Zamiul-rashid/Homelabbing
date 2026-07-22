@@ -7,87 +7,93 @@ import { services } from '../data/services';
 ---
 
 <PageLayout
-  title="Quickstart Guide & Modular Architecture"
-  description="Follow our simple 3-step setup to launch your personal home server from scratch using Docker Compose."
+  title="Getting Started Guide & Modular Architecture"
+  description="Follow our educational 3-step setup to understand, configure, and launch your personal home server using Docker Compose."
 >
   <div class="space-y-12">
     <!-- Intro Banner -->
     <section class="glass p-8 border border-accent/40 bg-gradient-to-br from-bg-surface via-bg-surface to-accent/5">
-      <h2 class="text-2xl font-bold text-text mt-0">⚡ Easiest Way to Begin</h2>
+      <h2 class="text-2xl font-bold text-text mt-0">⚡ How Our Modular Architecture Works</h2>
       <p class="text-text-muted leading-relaxed mb-6">
-        You don't need to be a Linux system administrator to get started. Our interactive launcher handles folder structure creation, permission setups, and container orchestration automatically.
+        We do not believe in blind automation scripts that hide what is happening under the hood. Instead, our repository is structured into completely standalone, heavily commented application stacks inside the <code>stacks/</code> directory so you learn how Docker Compose and storage volumes work while building your cloud.
       </p>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans not-prose">
         <div class="p-4 rounded-lg bg-bg border border-border">
           <span class="text-xs font-mono text-accent font-bold">STEP 01</span>
-          <h3 class="font-bold text-text text-base mt-1">Bootstrap Host</h3>
-          <p class="text-xs text-text-muted mt-1">Run our single script to install Docker and create `/srv` folders.</p>
+          <h3 class="font-bold text-text text-base mt-1">Prepare Storage</h3>
+          <p class="text-xs text-text-muted mt-1">Create unified <code>/data</code> folders so all your media and downloads share a clean hierarchy.</p>
         </div>
         <div class="p-4 rounded-lg bg-bg border border-border">
           <span class="text-xs font-mono text-accent font-bold">STEP 02</span>
-          <h3 class="font-bold text-text text-base mt-1">Interactive Menu</h3>
-          <p class="text-xs text-text-muted mt-1">Run `bash scripts/launch.sh` and pick your stack from menu options 1–6.</p>
+          <h3 class="font-bold text-text text-base mt-1">Configure .env</h3>
+          <p class="text-xs text-text-muted mt-1">Copy <code>stacks/.env.example</code> to <code>stacks/.env</code> and set your user ID and passwords.</p>
         </div>
         <div class="p-4 rounded-lg bg-bg border border-border">
           <span class="text-xs font-mono text-accent font-bold">STEP 03</span>
-          <h3 class="font-bold text-text text-base mt-1">Open Browser</h3>
-          <p class="text-xs text-text-muted mt-1">Access your services at `http://YOUR_IP:PORT` instantly!</p>
+          <h3 class="font-bold text-text text-base mt-1">Start & Learn</h3>
+          <p class="text-xs text-text-muted mt-1">Navigate into any stack directory and run <code>docker compose up -d</code>!</p>
         </div>
       </div>
     </section>
 
     <!-- Step 1 Command -->
     <section>
-      <h2>1. Host Bootstrap (Ubuntu / Debian)</h2>
+      <h2>1. Clone Repository & Prepare Storage (`/data`)</h2>
       <p>
-        If you have a fresh installation of Ubuntu 22.04/24.04 or Debian 12, run this single command to install the official Docker Engine, Compose V2 plugin, and prepare storage directories under `/srv`:
+        First, clone this repository onto your home server. Then create your unified storage directory tree under <code>/data</code> (or any path you prefer) and assign ownership to your Linux user (`$USER`). This ensures all containers can read and write media cleanly without permission denied errors:
       </p>
       <CodeBlock
-        title="bash — Host Installation Script"
-        code={`sudo bash <(curl -fsSL https://raw.githubusercontent.com/Zamiul-rashid/Homelabbing/main/quickstart/scripts/bootstrap.sh)`}
+        title="bash — Repository Cloning & Storage Setup"
+        code={`git clone https://github.com/Zamiul-rashid/Homelabbing.git\ncd Homelabbing\n\n# Create our standard directory tree for movies, TV, music, books, photos, and cloud storage\nsudo mkdir -p /data/media/{movies,tv,music,books,comics,photos} /data/downloads/{incomplete,complete} /data/nextcloud\n\n# Assign ownership to your current Linux user\nsudo chown -R $USER:$USER /data`}
       />
-      <div class="p-4 rounded-xl bg-yellow-950/20 border border-warning/30 text-xs text-warning not-prose">
-        <strong>Important:</strong> After running `bootstrap.sh`, log out of your SSH session and log back in so your user's `docker` group membership takes effect!
+      <div class="p-4 rounded-xl bg-blue-950/20 border border-blue-500/30 text-xs text-blue-200 not-prose mt-4">
+        <strong>💡 Why `/data`?</strong> By keeping your media and download directories under the same parent folder path (`/data`), download clients like qBittorrent and organizers like Radarr can perform instantaneous, zero-copy hardlinks—saving hard disk space and CPU cycles!
       </div>
     </section>
 
     <!-- Step 2 Command -->
     <section>
-      <h2>2. Clone and Launch</h2>
+      <h2>2. Configure Environment Variables (`stacks/.env`)</h2>
       <p>
-        Clone the repository and run our interactive launcher. It will check if your `quickstart/.env` exists, open it for editing if needed, and let you select from our 6 numbered options:
+        Every modular stack automatically pulls shared variables (like your timezone, database passwords, and user IDs) from a single central environment file inside <code>stacks/.env</code>. Copy the template and verify your user permissions using <code>id -u</code> and <code>id -g</code>:
       </p>
       <CodeBlock
-        title="bash — Interactive Menu Launcher"
-        code={`git clone https://github.com/Zamiul-rashid/Homelabbing.git\ncd Homelabbing/quickstart\nbash scripts/launch.sh`}
+        title="bash — Environment Configuration"
+        code={`# Copy the documented environment template\ncp stacks/.env.example stacks/.env\n\n# Check your current Linux user ID and group ID (usually 1000)\nid -u\nid -g\n\n# Open stacks/.env in your favorite terminal editor to set your secure passwords\nnano stacks/.env`}
+      />
+    </section>
+
+    <!-- Step 3 Command -->
+    <section>
+      <h2>3. Launch Your Chosen Stack</h2>
+      <p>
+        You do not need to boot everything at once! Move inside any modular application folder inside <code>stacks/</code> (such as <code>media-server/</code> or <code>book-reader/</code>) and start it in detached background mode:
+      </p>
+      <CodeBlock
+        title="bash — Starting a Modular Stack"
+        code={`cd stacks/media-server\ndocker compose up -d`}
       />
       
       <div class="terminal-window not-prose border border-border my-6">
         <div class="terminal-titlebar">
-          <span class="text-xs font-mono text-text-muted">scripts/launch.sh menu output</span>
+          <span class="text-xs font-mono text-text-muted">Terminal Output — docker compose up -d</span>
         </div>
         <div class="p-5 bg-terminal-bg font-mono text-xs text-terminal-text space-y-1">
-          <p class="text-accent font-bold">==========================================================================</p>
-          <p class="font-bold">  Pick a starting point to launch:</p>
-          <p class="text-accent font-bold">==========================================================================</p>
-          <p>  1) Jellyfin (simplest start — just a media player)</p>
-          <p>  2) + Download automation (*arr stack)</p>
-          <p>  3) + Music server (Navidrome)</p>
-          <p>  4) + Photo backup (Immich)</p>
-          <p>  5) + Cloud storage (Nextcloud)</p>
-          <p>  6) Everything (full stack)</p>
-          <p class="text-accent font-bold">==========================================================================</p>
-          <p class="pt-2">Enter choice [1-6]: <span class="text-accent animate-pulse">_</span></p>
+          <p class="text-text-muted">[+] Running 2/2</p>
+          <p class="text-success"> ✔ Network media-server_default   Created                            0.1s</p>
+          <p class="text-success"> ✔ Container jellyfin               Started                            0.4s</p>
+          <p class="pt-2 text-accent font-bold">✨ Jellyfin is now live! Open your browser right now:</p>
+          <p class="font-bold">👉 http://YOUR_SERVER_IP:8096</p>
         </div>
       </div>
     </section>
 
     <!-- Explore Services Directory -->
     <section>
-      <h2>3. Explore the Individual Stacks</h2>
+      <h2>4. Explore All Modular Stacks</h2>
       <p>
-        Want to inspect the Docker Compose definitions or read specific onboarding guides for a particular service? Click any card below to open its dedicated walkthrough:
+        Want to inspect the exact line-by-line teaching comments or read the detailed onboarding walkthrough for a specific service? Click any card below:
       </p>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 not-prose my-8">
@@ -99,10 +105,14 @@ import { services } from '../data/services';
 
     <!-- Health table -->
     <section>
-      <h2>4. Health Checking Across All Ports</h2>
+      <h2>5. Health Checking Across All Ports</h2>
       <p>
-        To verify that all containers are running cleanly without error loops or broken permissions, run `bash scripts/check-health.sh` at any time:
+        To verify that all containers are running cleanly without error loops or database connection timeouts, run our diagnostic health checker from the repository root at any time:
       </p>
+      <CodeBlock
+        title="bash — Automated Health Diagnostics"
+        code={`./helpers/check-health.sh`}
+      />
       <HealthTable />
     </section>
   </div>

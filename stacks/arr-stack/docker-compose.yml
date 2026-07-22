@@ -1,17 +1,29 @@
+# ==============================================================================
+# Homelabbing Automation Pipeline (*Arr Stack)
+# This stack deploys the complete automated acquisition, indexing, and request
+# pipeline: qBittorrent, Prowlarr, Radarr, Sonarr, and Jellyseerr.
+# ==============================================================================
+
 services:
   qbittorrent:
+    # qBittorrent is our BitTorrent download client. We use the LinuxServer.io image.
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
+      # WEBUI_PORT tells qBittorrent which port its web dashboard should listen on.
       - WEBUI_PORT=8080
     volumes:
-      - qbittorrent-config:/config
-      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+      # Mount configuration state locally inside ./config/qbittorrent on your drive.
+      - ./config/qbittorrent:/config
+      # Mount the unified downloads folder (/data/downloads) right to /downloads.
+      - ${DATA_ROOT:-/data}/downloads:/downloads
     ports:
+      # Expose Web dashboard on door 8080.
       - "8080:8080"
+      # Expose BitTorrent peer communication ports (both TCP and UDP) on door 6881.
       - "6881:6881"
       - "6881:6881/udp"
     restart: unless-stopped
@@ -23,15 +35,18 @@ services:
       start_period: 30s
 
   prowlarr:
+    # Prowlarr manages your torrent indexers and synchronizes them to Radarr and Sonarr.
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - prowlarr-config:/config
+      # Save Prowlarr indexer configurations and SQLite database locally.
+      - ./config/prowlarr:/config
     ports:
+      # Expose Prowlarr web dashboard on door 9696.
       - "9696:9696"
     restart: unless-stopped
     healthcheck:
@@ -42,17 +57,22 @@ services:
       start_period: 30s
 
   radarr:
+    # Radarr tracks movie releases, instructs qBittorrent to download them, and hardlinks completed files.
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - radarr-config:/config
-      - ${MEDIA_DIR:-/srv/media}:/media
-      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+      # Save Radarr movie database locally inside ./config/radarr.
+      - ./config/radarr:/config
+      # Mount both media (/data/media) and downloads (/data/downloads) right into Radarr.
+      # Having both under the same parent volume tree allows zero-copy hardlinking!
+      - ${DATA_ROOT:-/data}/media:/media
+      - ${DATA_ROOT:-/data}/downloads:/downloads
     ports:
+      # Expose Radarr web dashboard on door 7878.
       - "7878:7878"
     restart: unless-stopped
     healthcheck:
@@ -63,17 +83,21 @@ services:
       start_period: 30s
 
   sonarr:
+    # Sonarr tracks episodic television seasons, automates downloads, and renames files.
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - sonarr-config:/config
-      - ${MEDIA_DIR:-/srv/media}:/media
-      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+      # Save Sonarr series database locally inside ./config/sonarr.
+      - ./config/sonarr:/config
+      # Mount both media (/data/media) and downloads (/data/downloads) for zero-copy hardlinking.
+      - ${DATA_ROOT:-/data}/media:/media
+      - ${DATA_ROOT:-/data}/downloads:/downloads
     ports:
+      # Expose Sonarr web dashboard on door 8989.
       - "8989:8989"
     restart: unless-stopped
     healthcheck:
@@ -84,14 +108,17 @@ services:
       start_period: 30s
 
   jellyseerr:
+    # Jellyseerr is the friendly web request portal for your family and friends.
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
     environment:
       - LOG_LEVEL=info
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - jellyseerr-config:/app/config
+      # Save Jellyseerr request database locally inside ./config/jellyseerr.
+      - ./config/jellyseerr:/app/config
     ports:
+      # Expose Jellyseerr web request dashboard on door 5055.
       - "5055:5055"
     restart: unless-stopped
     healthcheck:
@@ -100,10 +127,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-
-volumes:
-  qbittorrent-config:
-  prowlarr-config:
-  radarr-config:
-  sonarr-config:
-  jellyseerr-config:

@@ -1,0 +1,189 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="Core Concepts & Educational Guides"
+  description="Master the fundamental principles of self-hosting, Linux administration, Docker containers, networking, and storage with our 7 foundational teaching guides."
+>
+  <div class="space-y-12">
+    <!-- Intro Section -->
+    <section class="glass p-8 border border-accent/40 bg-gradient-to-br from-bg-surface via-bg-surface to-accent/5">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-accent text-xs font-mono mb-4">
+        <span>Curriculum &bull; Knowledge Base</span>
+      </div>
+      <h2 class="text-2xl font-bold text-text mt-0">🧠 Why We Teach Concepts Before Code</h2>
+      <p class="text-text-muted leading-relaxed mb-0">
+        Most homelab tutorials give you complex terminal commands to copy and paste without explaining what they do. When something breaks, you are left helpless. Our curriculum is built on the philosophy of <strong>"Teach, don't automate blindly."</strong> We break down every concept into human-readable analogies so you can run your home server with confidence.
+      </p>
+    </section>
+
+    <!-- The 7 Guides Grid -->
+    <section>
+      <h2 class="text-2xl font-bold text-text mb-6">Foundational Guides inside `docs/`</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 not-prose font-sans">
+        <!-- Guide 1 -->
+        <a
+          href="https://github.com/Zamiul-rashid/Homelabbing/blob/main/docs/01-what-is-selfhosting.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group glass p-6 rounded-2xl border border-border hover:border-accent/60 transition-all flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-accent/10 text-accent font-bold">GUIDE 01</span>
+              <span class="text-xl">🌐</span>
+            </div>
+            <h3 class="text-lg font-bold text-text group-hover:text-accent transition-colors">What is Self-Hosting?</h3>
+            <p class="text-xs text-text-muted mt-2 leading-relaxed">
+              Discover why privacy enthusiasts are reclaiming their data from subscription clouds, the economics of hardware versus SaaS, and what it truly means to own your digital life.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-accent group-hover:translate-x-1 transition-transform">
+            <span>Read on GitHub</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- Guide 2 -->
+        <a
+          href="https://github.com/Zamiul-rashid/Homelabbing/blob/main/docs/02-understanding-docker.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group glass p-6 rounded-2xl border border-border hover:border-accent/60 transition-all flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-400 font-bold">GUIDE 02</span>
+              <span class="text-xl">🐳</span>
+            </div>
+            <h3 class="text-lg font-bold text-text group-hover:text-blue-400 transition-colors">Understanding Docker & Containers</h3>
+            <p class="text-xs text-text-muted mt-2 leading-relaxed">
+              Master the shipping container analogy! Learn what images, containers, volume bind mounts (`/config`), port mappings, and compose YAML blueprints do under the hood.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-blue-400 group-hover:translate-x-1 transition-transform">
+            <span>Read on GitHub</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- Guide 3 -->
+        <a
+          href="https://github.com/Zamiul-rashid/Homelabbing/blob/main/docs/03-your-first-server.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group glass p-6 rounded-2xl border border-border hover:border-accent/60 transition-all flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-green-500/10 text-green-400 font-bold">GUIDE 03</span>
+              <span class="text-xl">🖥️</span>
+            </div>
+            <h3 class="text-lg font-bold text-text group-hover:text-green-400 transition-colors">Your First Server Hardware & OS</h3>
+            <p class="text-xs text-text-muted mt-2 leading-relaxed">
+              From repurposed $100 used office mini-PCs (Intel N100/N5095) to custom builds. Learn how to install Ubuntu Server or Debian, configure static IPs, and connect via SSH.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-green-400 group-hover:translate-x-1 transition-transform">
+            <span>Read on GitHub</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- Guide 4 -->
+        <a
+          href="https://github.com/Zamiul-rashid/Homelabbing/blob/main/docs/04-storage-and-nas.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group glass p-6 rounded-2xl border border-border hover:border-accent/60 transition-all flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-amber-500/10 text-amber-400 font-bold">GUIDE 04</span>
+              <span class="text-xl">💾</span>
+            </div>
+            <h3 class="text-lg font-bold text-text group-hover:text-amber-400 transition-colors">Storage, Disks & NAS Concepts</h3>
+            <p class="text-xs text-text-muted mt-2 leading-relaxed">
+              Understand hard drive pooling (`mergerfs`), parity protection (`SnapRAID`), ZFS basics, folder permissions (`chown`/`chmod`), and why our `/data` tree allows zero-copy hardlinking.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-amber-400 group-hover:translate-x-1 transition-transform">
+            <span>Read on GitHub</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- Guide 5 -->
+        <a
+          href="https://github.com/Zamiul-rashid/Homelabbing/blob/main/docs/05-networking-concepts.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group glass p-6 rounded-2xl border border-border hover:border-accent/60 transition-all flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-400 font-bold">GUIDE 05</span>
+              <span class="text-xl">🖧</span>
+            </div>
+            <h3 class="text-lg font-bold text-text group-hover:text-purple-400 transition-colors">Networking Concepts & Remote Access</h3>
+            <p class="text-xs text-text-muted mt-2 leading-relaxed">
+              Demystify internal IP addresses vs public WAN IPs, port forwarding, DNS records, Nginx reverse proxy routing, Let's Encrypt SSL certificates, and zero-port Tailscale meshes.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-purple-400 group-hover:translate-x-1 transition-transform">
+            <span>Read on GitHub</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- Guide 6 -->
+        <a
+          href="https://github.com/Zamiul-rashid/Homelabbing/blob/main/docs/06-backups-and-redundancy.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group glass p-6 rounded-2xl border border-border hover:border-accent/60 transition-all flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-pink-500/10 text-pink-400 font-bold">GUIDE 06</span>
+              <span class="text-xl">🛡️</span>
+            </div>
+            <h3 class="text-lg font-bold text-text group-hover:text-pink-400 transition-colors">Backups & Disaster Recovery Strategy</h3>
+            <p class="text-xs text-text-muted mt-2 leading-relaxed">
+              RAID is not a backup! Learn the golden 3-2-1 backup rule, how to back up lightweight container volume state (`./config`), and how to restore your server in minutes after a drive failure.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-pink-400 group-hover:translate-x-1 transition-transform">
+            <span>Read on GitHub</span>
+            <span>→</span>
+          </div>
+        </a>
+
+        <!-- Guide 7 -->
+        <a
+          href="https://github.com/Zamiul-rashid/Homelabbing/blob/main/docs/07-security-basics.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group glass p-6 rounded-2xl border border-border hover:border-accent/60 transition-all flex flex-col justify-between md:col-span-2"
+        >
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-rose-500/10 text-rose-400 font-bold">GUIDE 07</span>
+              <span class="text-xl">🔐</span>
+            </div>
+            <h3 class="text-lg font-bold text-text group-hover:text-rose-400 transition-colors">Security Hardening & Best Practices</h3>
+            <p class="text-xs text-text-muted mt-2 leading-relaxed">
+              Essential security hygiene for every home server administrator: disabling root password logins in favor of SSH keys, configuring UFW/firewalls, setting up fail2ban against automated botnets, and never exposing unprotected database ports (`5432`/`3306`) to the open internet.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-rose-400 group-hover:translate-x-1 transition-transform">
+            <span>Read on GitHub</span>
+            <span>→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </div>
+</PageLayout>

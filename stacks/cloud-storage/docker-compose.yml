@@ -1,19 +1,35 @@
+# ==============================================================================
+# Homelabbing Cloud Storage Stack (Nextcloud + MariaDB)
+# This stack deploys Nextcloud paired with a dedicated MariaDB database,
+# creating a private Google Workspace / Dropbox replacement.
+# ==============================================================================
+
 services:
   nextcloud:
+    # We use LinuxServer.io's Nextcloud container image, which comes pre-bundled
+    # with PHP, Nginx, and required system extensions out of the box.
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
     environment:
+      # PUID and PGID ensure Nextcloud files are written under your user permissions.
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - nextcloud-config:/config
-      - ${CLOUD_DIR:-/srv/nextcloud}:/data
+      # Mount configuration state locally inside ./config/nextcloud on your disk.
+      - ./config/nextcloud:/config
+      # Mount the dedicated storage folder (/data/nextcloud) right to /data.
+      # This is where your actual synced documents, photos, and folders will live!
+      - ${DATA_ROOT:-/data}/nextcloud:/data
     ports:
+      # LinuxServer's Nextcloud listens internally on HTTPS port 443 with a self-signed cert.
+      # We map it to port 4443 on your host so you can access https://YOUR_SERVER_IP:4443.
       - "4443:443"
+    # depends_on tells Docker that Nextcloud requires nextcloud-db to start first.
     depends_on:
       - nextcloud-db
     restart: unless-stopped
+    # Healthcheck pings Nextcloud's status.php over local HTTPS (`-k` ignores self-signed cert).
     healthcheck:
       test: ["CMD-SHELL", "curl -fsSL -k https://localhost:443/status.php || exit 1"]
       interval: 30s
@@ -22,18 +38,21 @@ services:
       start_period: 30s
 
   nextcloud-db:
+    # We use MariaDB (a relational database engine optimized for Nextcloud).
     image: lscr.io/linuxserver/mariadb:latest
     container_name: nextcloud-db
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - TZ=${TZ:-America/New_York}
+      # Database root and user passwords loaded dynamically from stacks/.env.
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-ChangeRootPass123!}
+      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD:-ChangeNextcloudPass123!}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
     volumes:
-      - nextcloud-db-data:/config
+      # Save the database data files right inside ./config/mariadb.
+      - ./config/mariadb:/config
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -u nextcloud --password=\"$${MYSQL_PASSWORD}\" || exit 1"]
@@ -41,7 +60,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-
-volumes:
-  nextcloud-config:
-  nextcloud-db-data:

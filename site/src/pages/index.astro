@@ -17,7 +17,7 @@ import { services } from '../data/services';
     <div class="max-w-6xl mx-auto px-4 relative z-10 text-center">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-accent text-xs font-mono mb-6 animate-fade-in">
         <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-        <span>Open Source &bull; Beginner Friendly &bull; Production Ready</span>
+        <span>Teach, Don't Automate Blindly &bull; 100% Modular &bull; Open Source</span>
       </div>
 
       <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-text max-w-4xl mx-auto leading-tight animate-fade-up">
@@ -26,21 +26,39 @@ import { services } from '../data/services';
       </h1>
 
       <p class="mt-6 text-lg sm:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed animate-fade-up" style="animation-delay: 0.1s;">
-        Why pay $50+ a month for Netflix, Spotify, Google Photos, and Dropbox when you can host them locally on your hardware with superior privacy and zero monthly fees?
+        Why pay $50+ a month for Netflix, Spotify, Kindle Cloud, Google Photos, and Dropbox when you can host them locally on your own hardware with superior privacy and zero ongoing fees?
       </p>
 
       <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-fade-up" style="animation-delay: 0.2s;">
-        <a href="/Homelabbing/quickstart" class="btn-primary text-base shadow-[0_0_30px_rgba(99,102,241,0.3)]">
-          Launch Quickstart Guide 🚀
+        <a href="/Homelabbing/getting-started" class="btn-primary text-base shadow-[0_0_30px_rgba(99,102,241,0.3)]">
+          Explore Getting Started Guide 🚀
         </a>
-        <a href="/Homelabbing/networking" class="btn-secondary text-base">
-          Remote Access Options →
+        <a href="/Homelabbing/concepts" class="btn-secondary text-base">
+          Read Core Concepts →
         </a>
       </div>
 
       <!-- Terminal Animation Island -->
       <div class="mt-14 animate-fade-up" style="animation-delay: 0.3s;">
         <TerminalAnimation client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Concepts Banner -->
+  <section class="py-16 bg-bg-surface/60 border-b border-border">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="max-w-2xl">
+          <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Educational Foundations</span>
+          <h2 class="text-3xl font-bold text-text mt-2">Learn the "Why" Behind Self-Hosting</h2>
+          <p class="text-text-muted text-sm md:text-base mt-2 leading-relaxed">
+            We believe in teaching concepts cleanly so you never feel intimidated when managing your Linux server. Explore our 7 step-by-step conceptual guides covering everything from Docker basics to networking and automated backups.
+          </p>
+        </div>
+        <a href="/Homelabbing/concepts" class="btn-primary shrink-0">
+          Browse All 7 Guides →
+        </a>
       </div>
     </div>
   </section>
@@ -52,7 +70,7 @@ import { services } from '../data/services';
         <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Modular Stacks</span>
         <h2 class="text-3xl md:text-4xl font-bold text-text mt-2">Pick Where You Want to Start</h2>
         <p class="text-text-muted text-sm md:text-base mt-2 max-w-2xl">
-          Each stack is completely modular. Start with Jellyfin for movies, then add music or photo backup when you're ready. No complex orchestration required.
+          Each application lives in its own dedicated, heavily commented folder inside `stacks/`. Start with Jellyfin or Kavita, then add music, automated downloads, or photo backups when you're ready!
         </p>
       </div>
       <a href="/Homelabbing/services" class="text-accent hover:underline font-semibold text-sm flex items-center gap-1 shrink-0">
@@ -74,7 +92,7 @@ import { services } from '../data/services';
         <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Live Monitoring</span>
         <h2 class="text-3xl font-bold text-text mt-2">Check All Your Ports in One Command</h2>
         <p class="text-text-muted text-sm mt-2">
-          Our built-in health check script queries container states across all 9 homelab service endpoints and displays color-coded status reports right in your terminal.
+          Our diagnostic checker queries container states across all homelab service endpoints (`http://YOUR_SERVER_IP:PORT`) and reports container health directly in your terminal.
         </p>
       </div>
 
@@ -91,10 +109,10 @@ import { services } from '../data/services';
         Ready to Build Your Private Home Cloud?
       </h2>
       <p class="text-text-muted max-w-xl mx-auto mt-4 text-base leading-relaxed">
-        Join thousands of privacy enthusiasts taking back their data. All docker compose files, environment templates, and launch scripts are free and open source.
+        Join thousands of privacy enthusiasts taking back their data. All Docker Compose blueprints, environment templates, and teaching guides are 100% free and open source.
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-4">
-        <a href="/Homelabbing/quickstart" class="btn-primary">
+        <a href="/Homelabbing/getting-started" class="btn-primary">
           Get Started in 5 Minutes →
         </a>
         <a

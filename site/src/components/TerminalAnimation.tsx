@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CopyButton from './CopyButton';
 
-const commandText = 'bash <(curl -fsSL https://raw.githubusercontent.com/Zamiul-rashid/Homelabbing/main/quickstart/scripts/bootstrap.sh)';
+const commandText = 'git clone https://github.com/Zamiul-rashid/Homelabbing.git && cd Homelabbing/stacks/media-server && docker compose up -d';
 
 export default function TerminalAnimation() {
   const [typed, setTyped] = useState('');
@@ -21,12 +21,12 @@ export default function TerminalAnimation() {
         setStep('running');
         setTimeout(() => setStep('done'), 1200);
       }
-    }, 28);
+    }, 22);
     return () => clearInterval(timer);
   }, [replaying]);
 
   return (
-    <div className="terminal-window my-8 border border-border/80 shadow-2xl max-w-4xl mx-auto">
+    <div className="terminal-window my-8 border border-border/80 shadow-2xl max-w-4xl mx-auto text-left">
       <div className="terminal-titlebar justify-between bg-bg-surface px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="terminal-dot bg-red-500"></span>
@@ -46,7 +46,7 @@ export default function TerminalAnimation() {
         </div>
       </div>
 
-      <div className="p-6 bg-terminal-bg font-mono text-xs md:text-sm leading-relaxed space-y-3 min-h-[220px]">
+      <div className="p-6 bg-terminal-bg font-mono text-xs md:text-sm leading-relaxed space-y-3 min-h-[240px]">
         <div className="flex items-start gap-2 text-terminal-text">
           <span className="text-accent font-bold select-none">$</span>
           <span className="break-all">
@@ -57,23 +57,24 @@ export default function TerminalAnimation() {
 
         {step === 'running' && (
           <div className="text-text-muted space-y-1 pl-4 border-l-2 border-accent/40 animate-fade-in">
-            <p>--&gt; Installing prerequisites (ca-certificates, curl, gnupg)...</p>
-            <p>--&gt; Setting up official Docker repository and apt GPG key...</p>
-            <p>--&gt; Installing Docker Engine and Compose V2 plugin...</p>
+            <p>--&gt; Cloning repository from https://github.com/Zamiul-rashid/Homelabbing.git...</p>
+            <p>--&gt; Navigating into stacks/media-server and loading compose definition...</p>
+            <p>--&gt; Pulling image lscr.io/linuxserver/jellyfin:latest...</p>
+            <p>--&gt; Creating container jellyfin and binding network bridge...</p>
           </div>
         )}
 
         {step === 'done' && (
           <div className="space-y-2 animate-fade-in">
             <div className="text-text-muted space-y-1 pl-4 border-l-2 border-accent/40">
-              <p>--&gt; Installing prerequisites (ca-certificates, curl, gnupg)... <span className="text-success">[OK]</span></p>
-              <p>--&gt; Setting up official Docker repository and apt GPG key... <span className="text-success">[OK]</span></p>
-              <p>--&gt; Installing Docker Engine and Compose V2 plugin... <span className="text-success">[OK]</span></p>
-              <p>--&gt; Creating storage directories under /srv... <span className="text-success">[OK]</span></p>
+              <p>--&gt; Cloning repository from https://github.com/Zamiul-rashid/Homelabbing.git... <span className="text-success">[OK]</span></p>
+              <p>--&gt; Navigating into stacks/media-server and loading compose definition... <span className="text-success">[OK]</span></p>
+              <p>--&gt; Pulling image lscr.io/linuxserver/jellyfin:latest... <span className="text-success">[OK]</span></p>
+              <p>--&gt; Creating container jellyfin and binding network bridge... <span className="text-success">[OK]</span></p>
             </div>
             <div className="p-3 rounded-lg bg-success/10 border border-success/30 text-success text-xs mt-3">
-              <p className="font-bold">✨ Done! Log out and log back in, then run:</p>
-              <p className="font-mono mt-1 text-text">bash quickstart/scripts/launch.sh</p>
+              <p className="font-bold">✨ Stack Live! Open your web browser right now:</p>
+              <p className="font-mono mt-1 text-text">http://YOUR_SERVER_IP:8096 (Jellyfin Welcome Wizard)</p>
             </div>
             <div className="flex items-center gap-2 text-terminal-text pt-2">
               <span className="text-accent font-bold select-none">$</span>

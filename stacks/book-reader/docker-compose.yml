@@ -1,0 +1,55 @@
+# ==============================================================================
+# Homelabbing Book Reader Stack (Kavita)
+# This stack deploys Kavita, a fast, feature-rich self-hosted reading server
+# supporting eBooks (EPUB, PDF) and Comics/Manga (CBZ, CBR).
+# ==============================================================================
+
+services:
+  kavita:
+    # We use the official container image released and maintained directly by the
+    # Kavita development team (`jvmilazz0`). Using official images guarantees
+    # stability, accurate documentation, and timely security updates.
+    image: jvmilazz0/kavita:latest
+
+    # Assigning a friendly container name allows you to reference this container
+    # easily inside terminal logs (`docker logs kavita`) and diagnostic scripts
+    # without typing randomly generated Docker hash IDs.
+    container_name: kavita
+
+    # Environment variables configure how the container runs inside your system.
+    # We pass these down dynamically from your stacks/.env configuration file.
+    environment:
+      # TZ sets the internal timezone of the container. This ensures that
+      # scheduled library scans, reading progress timestamps, and logs match
+      # your physical wall clock rather than defaulting to Coordinated Universal Time (UTC).
+      - TZ=${TZ:-America/New_York}
+
+    # Volume bind mounts connect physical folders on your actual hard drives
+    # directly to internal virtual folders inside the Docker container.
+    volumes:
+      # Mount the configuration folder where Kavita stores its SQLite database,
+      # user accounts, reading progress, and custom settings.
+      # By binding this to your local disk (`./config`), your database and reading
+      # bookmarks survive completely intact even if you upgrade or rebuild the container!
+      - ./config:/kavita/config
+
+      # Mount the physical folder containing your book and manga collection (`/data/media/books`)
+      # directly to `/books` inside Kavita so the server can index and display them cleanly.
+      - ${DATA_ROOT:-/data}/media/books:/books
+
+      # Mount your comic book and manga library folder (`/data/media/comics`)
+      # to `/comics` inside the container for seamless comic reading.
+      - ${DATA_ROOT:-/data}/media/comics:/comics
+
+    # Port mappings bridge your home server's external physical network doors
+    # to the internal virtual port where Kavita listens inside its container.
+    ports:
+      # Format is [HOST_PORT]:[CONTAINER_PORT].
+      # Kavita listens internally on port 5000. We map it to port 5000 on your
+      # home server so you can access the web dashboard at http://YOUR_SERVER_IP:5000.
+      - "5000:5000"
+
+    # The restart policy tells Docker how to handle unexpected container crashes
+    # or system reboots. `unless-stopped` automatically boots Kavita whenever your
+    # server turns on, unless you explicitly ran `docker compose down` yourself.
+    restart: unless-stopped

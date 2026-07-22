@@ -1,15 +1,28 @@
+# ==============================================================================
+# Homelabbing Full Stack (All-in-One Consolidated Deployment)
+#
+# IMPORTANT NOTICE FOR BEGINNERS:
+# We do not recommend launching this all-in-one stack right away on day 1!
+# If you are new to self-hosting, please deploy and test each modular stack
+# inside `stacks/` one by one (`media-server`, `arr-stack`, etc.) to learn how
+# they work. Once comfortable, you can use this consolidated file to boot your
+# entire ecosystem (`homelab_net`) with a single command.
+# ==============================================================================
+
 services:
-  # --- 01-media-server ---
+  # ============================================================================
+  # 1. MEDIA SERVER (Jellyfin)
+  # ============================================================================
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - jellyfin-config:/config
-      - ${MEDIA_DIR:-/srv/media}:/data/media
+      - ./config/jellyfin:/config
+      - ${DATA_ROOT:-/data}/media:/data/media
     ports:
       - "8096:8096"
     networks:
@@ -22,18 +35,20 @@ services:
       retries: 3
       start_period: 30s
 
-  # --- 02-arr-stack ---
+  # ============================================================================
+  # 2. AUTOMATION PIPELINE (*Arr Stack & Jellyseerr)
+  # ============================================================================
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
       - WEBUI_PORT=8080
     volumes:
-      - qbittorrent-config:/config
-      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+      - ./config/qbittorrent:/config
+      - ${DATA_ROOT:-/data}/downloads:/downloads
     ports:
       - "8080:8080"
       - "6881:6881"
@@ -54,9 +69,9 @@ services:
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - prowlarr-config:/config
+      - ./config/prowlarr:/config
     ports:
       - "9696:9696"
     networks:
@@ -75,11 +90,11 @@ services:
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - radarr-config:/config
-      - ${MEDIA_DIR:-/srv/media}:/media
-      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+      - ./config/radarr:/config
+      - ${DATA_ROOT:-/data}/media:/media
+      - ${DATA_ROOT:-/data}/downloads:/downloads
     ports:
       - "7878:7878"
     networks:
@@ -98,11 +113,11 @@ services:
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - sonarr-config:/config
-      - ${MEDIA_DIR:-/srv/media}:/media
-      - ${DOWNLOADS_DIR:-/srv/downloads}:/downloads
+      - ./config/sonarr:/config
+      - ${DATA_ROOT:-/data}/media:/media
+      - ${DATA_ROOT:-/data}/downloads:/downloads
     ports:
       - "8989:8989"
     networks:
@@ -120,9 +135,9 @@ services:
     container_name: jellyseerr
     environment:
       - LOG_LEVEL=info
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - jellyseerr-config:/app/config
+      - ./config/jellyseerr:/app/config
     ports:
       - "5055:5055"
     networks:
@@ -135,7 +150,9 @@ services:
       retries: 3
       start_period: 30s
 
-  # --- 03-music-server ---
+  # ============================================================================
+  # 3. MUSIC SERVER (Navidrome)
+  # ============================================================================
   navidrome:
     image: deluan/navidrome:latest
     container_name: navidrome
@@ -146,8 +163,8 @@ services:
       - ND_MUSICFOLDER=/music
       - ND_DATAFOLDER=/data
     volumes:
-      - navidrome-data:/data
-      - ${MUSIC_DIR:-/srv/music}:/music:ro
+      - ./config/navidrome:/data
+      - ${DATA_ROOT:-/data}/media/music:/music:ro
     ports:
       - "4533:4533"
     networks:
@@ -160,26 +177,47 @@ services:
       retries: 3
       start_period: 30s
 
-  # --- 04-photo-server ---
+  # ============================================================================
+  # 4. BOOK READER (Kavita)
+  # ============================================================================
+  kavita:
+    image: jvmilazz0/kavita:latest
+    container_name: kavita
+    environment:
+      - TZ=${TZ:-America/New_York}
+    volumes:
+      - ./config/kavita:/kavita/config
+      - ${DATA_ROOT:-/data}/media/books:/books
+      - ${DATA_ROOT:-/data}/media/comics:/comics
+    ports:
+      - "5000:5000"
+    networks:
+      - homelab_net
+    restart: unless-stopped
+
+  # ============================================================================
+  # 5. PHOTO BACKUP SERVER (Immich Suite)
+  # ============================================================================
   immich-server:
     image: ghcr.io/immich-app/immich-server:release
     container_name: immich_server
     environment:
-      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      - DB_PASSWORD=${IMMICH_DB_PASSWORD:-SecretPassword123!}
       - DB_USERNAME=${IMMICH_DB_USER:-immich}
       - DB_DATABASE_NAME=${IMMICH_DB_NAME:-immich}
-      - DB_HOSTNAME=${DB_HOSTNAME:-immich-db}
-      - REDIS_HOSTNAME=${REDIS_HOSTNAME:-immich-redis}
+      - DB_HOSTNAME=immich-postgres
+      - REDIS_HOSTNAME=immich-redis
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - ${PHOTOS_DIR:-/srv/photos}:/usr/src/app/upload
+      - ${DATA_ROOT:-/data}/media/photos:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "2283:2283"
+    networks:
+      - homelab_net
     depends_on:
       - immich-redis
       - immich-db
-    networks:
-      - homelab_net
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -fsSL http://localhost:2283/api/server-info/ping || exit 1"]
@@ -192,7 +230,7 @@ services:
     image: ghcr.io/immich-app/immich-machine-learning:release
     container_name: immich_machine_learning
     volumes:
-      - immich-model-cache:/cache
+      - ./config/immich-model-cache:/cache
     networks:
       - homelab_net
     restart: unless-stopped
@@ -213,11 +251,11 @@ services:
     image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
     container_name: immich_postgres
     environment:
-      - POSTGRES_PASSWORD=${IMMICH_DB_PASSWORD}
+      - POSTGRES_PASSWORD=${IMMICH_DB_PASSWORD:-SecretPassword123!}
       - POSTGRES_USER=${IMMICH_DB_USER:-immich}
       - POSTGRES_DB=${IMMICH_DB_NAME:-immich}
     volumes:
-      - immich-postgres-data:/var/lib/postgresql/data
+      - ./config/immich-postgres:/var/lib/postgresql/data
     networks:
       - homelab_net
     restart: unless-stopped
@@ -228,23 +266,25 @@ services:
       retries: 3
       start_period: 30s
 
-  # --- 05-cloud-storage ---
+  # ============================================================================
+  # 6. CLOUD STORAGE (Nextcloud + MariaDB)
+  # ============================================================================
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:latest
     container_name: nextcloud
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
+      - TZ=${TZ:-America/New_York}
     volumes:
-      - nextcloud-config:/config
-      - ${CLOUD_DIR:-/srv/nextcloud}:/data
+      - ./config/nextcloud:/config
+      - ${DATA_ROOT:-/data}/nextcloud:/data
     ports:
       - "4443:443"
-    depends_on:
-      - nextcloud-db
     networks:
       - homelab_net
+    depends_on:
+      - nextcloud-db
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -fsSL -k https://localhost:443/status.php || exit 1"]
@@ -259,13 +299,13 @@ services:
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
-      - TZ=${TZ:-UTC}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - TZ=${TZ:-America/New_York}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-ChangeRootPass123!}
+      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PASSWORD:-ChangeNextcloudPass123!}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
     volumes:
-      - nextcloud-db-data:/config
+      - ./config/nextcloud-mariadb:/config
     networks:
       - homelab_net
     restart: unless-stopped
@@ -276,19 +316,7 @@ services:
       retries: 3
       start_period: 30s
 
+# Shared bridge network allowing containers to communicate cleanly by name (`http://radarr:7878`)
 networks:
   homelab_net:
     driver: bridge
-
-volumes:
-  jellyfin-config:
-  qbittorrent-config:
-  prowlarr-config:
-  radarr-config:
-  sonarr-config:
-  jellyseerr-config:
-  navidrome-data:
-  immich-model-cache:
-  immich-postgres-data:
-  nextcloud-config:
-  nextcloud-db-data:

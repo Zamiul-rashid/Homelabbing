@@ -28,15 +28,15 @@ Normally, Let's Encrypt requires port 80 open on your router to verify you own y
 5. Click **Continue to summary** → **Create Token**, and copy the generated token immediately.
 
 ### 3. Configure Environment Variables
-Edit `quickstart/.env` and add your token:
+Edit your root `stacks/.env` file (`nano /opt/homelab/stacks/.env`) and add your token:
 ```bash
 CF_API_TOKEN=your_cloudflare_dns_edit_token_here
 ```
 
 ### 4. Start Nginx Proxy Manager
-From inside `quickstart/networking/option-b-cloudflare/`:
+From inside `option-b-cloudflare/`:
 ```bash
-docker compose --env-file ../../.env up -d
+docker compose up -d
 ```
 
 ### 5. Generate Wildcard Certificate in NPM
@@ -52,7 +52,7 @@ docker compose --env-file ../../.env up -d
    - Check **I Agree to the Let's Encrypt Terms of Service** and save.
 3. Once generated, go to **Proxy Hosts** → **Add Proxy Host**:
    - **Domain:** `jellyfin.yourdomain.com`
-   - **Forward Host / IP:** `192.0.2.1` (your server local IP)
+   - **Forward Host / IP:** `192.168.1.100` *(your server local IP)*
    - **Forward Port:** `8096`
    - Under **SSL**, select your wildcard certificate (`*.yourdomain.com`).
    - Enable **Force SSL** and **Websockets Support**.

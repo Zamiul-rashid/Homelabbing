@@ -18,15 +18,15 @@ import { services } from '../../data/services';
   <div class="space-y-6 pt-10 border-t border-border">
     <h2>Why Modular Architecture?</h2>
     <p>
-      Traditional homelab repositories dump 30+ containers into a single monolithic `docker-compose.yml` file. When one database fails or one container has a port conflict, the entire system breaks.
+      Traditional homelab repositories dump 30+ containers into a single monolithic <code>docker-compose.yml</code> file. When one database fails or one container has a port conflict, the entire system breaks.
     </p>
     <p>
-      By separating each domain (`01-media-server`, `02-arr-stack`, `03-music-server`, `04-photo-server`, `05-cloud-storage`) into its own directory, you gain:
+      By separating each domain (<code>media-server</code>, <code>arr-stack</code>, <code>music-server</code>, <code>book-reader</code>, <code>photo-backup</code>, <code>cloud-storage</code>) into its own dedicated directory inside <code>stacks/</code>, you gain:
     </p>
     <ul>
-      <li><strong>Independent Upgrades:</strong> Update Navidrome without taking Jellyfin offline.</li>
-      <li><strong>Resource Isolation:</strong> Run lightweight services on a Raspberry Pi and heavy AI workloads (Immich) on a dedicated PC.</li>
-      <li><strong>Zero Overwhelm:</strong> Learn and troubleshoot one service at a time before combining them in `06-full-stack`.</li>
+      <li><strong>Independent Upgrades:</strong> Update Navidrome or Kavita without taking Jellyfin offline.</li>
+      <li><strong>Resource Isolation:</strong> Run lightweight services on a Raspberry Pi or N100 mini-PC and heavy AI workloads (Immich) on a dedicated server.</li>
+      <li><strong>Zero Overwhelm:</strong> Learn and troubleshoot one service at a time before combining them inside <code>full-stack</code>.</li>
     </ul>
 
     <!-- Quick health check reference -->

@@ -1,14 +1,26 @@
+# ==============================================================================
+# Homelabbing Networking Option D (Tailscale Mesh VPN)
+# This stack deploys a Tailscale sidecar container, creating a private,
+# zero-open-port VPN mesh connecting your authorized devices anywhere.
+# ==============================================================================
+
 services:
   tailscale:
+    # Official stable release image from Tailscale.
     image: tailscale/tailscale:stable
     container_name: tailscale
+    # Assigning the hostname 'homelab' registers it directly in your Tailscale DNS.
     hostname: homelab
     environment:
+      # Reusable authentication key loaded dynamically from stacks/.env.
       - TS_AUTHKEY=${TAILSCALE_AUTH_KEY}
       - TS_HOSTNAME=homelab
       - TS_STATE_DIR=/var/lib/tailscale
     volumes:
-      - tailscale-state:/var/lib/tailscale
+      # Save cryptographic identity and session state locally inside ./config/state.
+      # This ensures your server retains its exact Tailscale IP and hostname across reboots!
+      - ./config/state:/var/lib/tailscale
+    # Required network administration capabilities to create virtual tunnel interfaces.
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -21,6 +33,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
-
-volumes:
-  tailscale-state:

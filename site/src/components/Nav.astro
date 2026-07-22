@@ -11,7 +11,7 @@ const currentPath = Astro.url.pathname;
       </div>
       <div>
         <span class="font-bold text-xl tracking-tight text-text block">Homelabbing</span>
-        <span class="text-xs text-text-faint font-mono tracking-widest uppercase">Showcase</span>
+        <span class="text-xs text-text-faint font-mono tracking-widest uppercase">Self-Hosted Guide</span>
       </div>
     </a>
 
@@ -24,10 +24,16 @@ const currentPath = Astro.url.pathname;
         Home
       </a>
       <a
-        href="/Homelabbing/quickstart"
-        class={`transition-colors py-2 focus-visible:ring-2 focus-visible:ring-accent rounded-md px-2 ${currentPath.includes('/quickstart') || currentPath.includes('/services') ? 'text-accent border-b-2 border-accent font-semibold' : 'text-text-muted hover:text-text'}`}
+        href="/Homelabbing/getting-started"
+        class={`transition-colors py-2 focus-visible:ring-2 focus-visible:ring-accent rounded-md px-2 ${currentPath.includes('/getting-started') || currentPath.includes('/services') ? 'text-accent border-b-2 border-accent font-semibold' : 'text-text-muted hover:text-text'}`}
       >
-        Quickstart & Services
+        Getting Started & Stacks
+      </a>
+      <a
+        href="/Homelabbing/concepts"
+        class={`transition-colors py-2 focus-visible:ring-2 focus-visible:ring-accent rounded-md px-2 ${currentPath.includes('/concepts') ? 'text-accent border-b-2 border-accent font-semibold' : 'text-text-muted hover:text-text'}`}
+      >
+        Core Concepts
       </a>
       <a
         href="/Homelabbing/networking"
@@ -63,7 +69,8 @@ const currentPath = Astro.url.pathname;
       <!-- Mobile Dropdown -->
       <div class="hidden peer-checked:flex flex-col absolute top-20 left-0 right-0 bg-bg-surface border-b border-border p-6 gap-4 shadow-2xl">
         <a href="/Homelabbing/" class="text-text py-2 border-b border-border/50">Home</a>
-        <a href="/Homelabbing/quickstart" class="text-text py-2 border-b border-border/50">Quickstart & Services</a>
+        <a href="/Homelabbing/getting-started" class="text-text py-2 border-b border-border/50">Getting Started & Stacks</a>
+        <a href="/Homelabbing/concepts" class="text-text py-2 border-b border-border/50">Core Concepts</a>
         <a href="/Homelabbing/networking" class="text-text py-2 border-b border-border/50">Networking Wizard</a>
         <a href="https://github.com/Zamiul-rashid/Homelabbing" target="_blank" rel="noopener noreferrer" class="text-accent py-2 font-semibold">GitHub Repository →</a>
       </div>

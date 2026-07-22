@@ -1,0 +1,71 @@
+---
+title: "Kavita — Your Personal Book & Comic Cloud"
+tagline: "A blazing-fast self-hosted digital library for reading EPUB eBooks, comic books (CBZ/CBR), and manga."
+replaces: "Amazon Kindle Cloud Reader, ComiXology, Apple Books"
+port: 5000
+difficulty: 1
+folder: "book-reader"
+mockupDescription: "Kavita eBook and Comic Library Interface"
+setupSteps:
+  - "Place your EPUB eBooks, comic archives (CBZ/CBR), and PDFs into /data/media/books and /data/media/comics."
+  - "Verify stacks/.env has your correct user permissions."
+  - "Run docker compose up -d inside stacks/book-reader/."
+  - "Open http://YOUR_SERVER_IP:5000 to create your admin profile and scan your libraries."
+whatNow:
+  - label: "Connect OPDS Readers"
+    href: "https://wiki.kavitareader.com/en/guides/opds"
+    description: "Link mobile e-readers like Panels (iOS), Tachiyomi/Mihon (Android), or Moon+ Reader right to Kavita."
+  - label: "Send to Kindle Integration"
+    href: "https://wiki.kavitareader.com/en/guides/send-to-kindle"
+    description: "Send EPUB eBooks directly from your Kavita library wirelessly to your E-Ink Kindle e-reader."
+  - label: "Configure Automated Metadata"
+    href: "https://wiki.kavitareader.com/en/guides/metadata"
+    description: "Learn how Kavita parses folder hierarchies and ComicInfo.xml tags for perfect book organization."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+import UIMockup from '../../components/UIMockup.astro';
+
+## What You'll Have When Done
+A fast, beautiful reading server that organizes your EPUB novels, comic archives (CBZ/CBR), manga, and PDFs. You can read right in your web browser across any tablet or laptop, or sync reading progress and bookmarks natively across external OPDS e-readers!
+
+<UIMockup title="Kavita Digital Library" url="http://192.168.1.100:5000/login" type="library" />
+
+## Why Choose Kavita?
+
+Digital book marketplaces often lock purchases into DRM-protected apps or revoke access when licensing rights change. Kavita gives you complete ownership of your personal digital library with lightning-fast page loading and cross-device bookmark syncing.
+
+<ProConTable
+  pros={[
+    "Supports EPUB, CBZ, CBR, PDF, and manga archives with zero conversion required.",
+    "Built-in web reader optimized for both desktop monitors and touch-based tablets.",
+    "Full OPDS server support so third-party mobile e-readers can browse and download books.",
+    "Integrated user management so family members have independent reading progress and bookmarks."
+  ]}
+  cons={[
+    "Requires proper folder structures or ComicInfo.xml tags for accurate series grouping.",
+    "Does not convert proprietary DRM-protected formats (you must provide DRM-free files).",
+    "First-time indexing of massive multi-thousand volume manga libraries can take several minutes."
+  ]}
+/>
+
+---
+
+## Onboarding & Library Setup
+
+### 1. Launching the Container
+Once your books and comics are placed in `/data/media/books` and `/data/media/comics`, run `docker compose up -d` in `stacks/book-reader/`:
+```bash
+cd stacks/book-reader
+docker compose up -d
+```
+
+### 2. Creating Your Admin Account
+Open `http://YOUR_SERVER_IP:5000` in your web browser. You will be greeted by the initial setup screen where you create your admin profile username and password.
+
+### 3. Adding Your Libraries
+1. In the Kavita dashboard, click **Server Settings (Gear icon)** → **Libraries** → **+ Add Library**.
+2. **Name:** enter `Books` or `Comics`.
+3. **Type:** choose `Book` for novels/EPUBs, or `Comic/Manga` for CBZ/CBR archives.
+4. **Folders:** browse to `/data/media/books` (or `/data/media/comics`), select the folder, and click **Save**.
+5. Kavita will perform a lightning-fast background scan and build your digital bookshelf!

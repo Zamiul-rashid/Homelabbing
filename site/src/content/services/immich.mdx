@@ -4,11 +4,11 @@ tagline: "High-performance self-hosted backup and organization platform for your
 replaces: "Google Photos, Apple iCloud Photos, Amazon Photos"
 port: 2283
 difficulty: 2
-folder: "04-photo-server"
+folder: "photo-backup"
 mockupDescription: "Immich Machine Learning & Hardware Acceleration status"
 setupSteps:
-  - "Verify /srv/photos exists on your host and create your quickstart/.env with IMMICH_DB_PASSWORD."
-  - "Run docker compose up -d inside 04-photo-server/ (launches server, ML, Redis, and PostgreSQL)."
+  - "Verify /data/media/photos exists on your host and verify stacks/.env contains IMMICH_DB_PASSWORD."
+  - "Run docker compose up -d inside stacks/photo-backup/ (launches server, ML, Redis, and PostgreSQL)."
   - "Open http://YOUR_SERVER_IP:2283 and click Get Started to register your admin user."
   - "Install the Immich mobile app on iOS or Android and enable background backup."
 whatNow:
@@ -37,7 +37,7 @@ Immich is widely regarded as one of the most impressive self-hosted software pro
 
 <ProConTable
   pros={[
-    "Blazing fast user interface built with svelte/TypeScript and high-performance Go microservices.",
+    "Blazing fast user interface built with Svelte/TypeScript and high-performance Go microservices.",
     "Local machine learning (CLIP & facial recognition) runs right on your server — zero data sent to third parties.",
     "Seamless background mobile backup across iOS and Android with automatic duplicate detection.",
     "Multi-user support so your partner and family members can have their own private photo vaults."
@@ -53,7 +53,7 @@ Immich is widely regarded as one of the most impressive self-hosted software pro
 
 ## Multi-Container Architecture
 
-Immich relies on a robust microservice stack that our `04-photo-server/docker-compose.yml` configures automatically:
+Immich relies on a robust microservice stack that our `stacks/photo-backup/docker-compose.yml` configures automatically:
 
 - **`immich-server` (`:2283`)** — Core API, web frontend, and upload controller.
 - **`immich-machine-learning`** — Python service running CLIP and face detection models locally.
@@ -64,10 +64,17 @@ Immich relies on a robust microservice stack that our `04-photo-server/docker-co
 
 ## Step-by-Step Setup & Mobile Backup
 
-### 1. First-Time Registration
+### 1. Launching the Stack
+Navigate to `stacks/photo-backup/` and start the containers:
+```bash
+cd stacks/photo-backup
+docker compose up -d
+```
+
+### 2. First-Time Registration
 Navigate to `http://YOUR_SERVER_IP:2283` and click **Get Started**. Enter your email, full name, and password to create the initial admin account.
 
-### 2. Connecting the Mobile App
+### 3. Connecting the Mobile App
 1. Download **Immich** from the Apple App Store or Google Play Store.
 2. Open the app and enter your server address: `http://YOUR_SERVER_IP:2283` (or your remote HTTPS URL).
 3. Log in and toggle on **Foreground & Background Backup**. Watch as your phone backs up thousands of photos at lightning speed over your local Wi-Fi!

@@ -1,6 +1,6 @@
 # 🔄 *Arr Stack Flow & TRaSH Guides Integration
 
-This document explains exactly how our download automation pipeline (`radarr`, `sonarr`, `prowlarr`, `qBittorrent`, `jellyseerr`, and `recyclarr`) is wired together, how API keys are exchanged securely, and how TRaSH Guides quality rules are maintained automatically.
+This document explains exactly how our media acquisition pipeline (`radarr`, `sonarr`, `prowlarr`, `qBittorrent`, `jellyseerr`, and `recyclarr`) works conceptually, how services communicate using API keys, and how TRaSH Guides quality rules ensure high-definition releases without requiring manual filtering.
 
 ---
 
@@ -39,17 +39,26 @@ This document explains exactly how our download automation pipeline (`radarr`, `
 
 ---
 
-## 2. Automated API Key Wiring (`configure-stack.sh`)
+## 2. Connecting Your Services Manually (API Key Exchanging)
 
-When `radarr`, `sonarr`, and `prowlarr` start for the very first time on a fresh install, they generate unique, random 32-character API keys stored inside their respective `config.xml` files. Because these keys are unknown before container initialization, our `configure-stack.sh` script automates the entire discovery and wiring procedure without manual copy-pasting.
+When `radarr`, `sonarr`, and `prowlarr` start for the very first time, each service generates a unique 32-character **API Key** (Application Programming Interface Key). This key acts as a digital passport, allowing one application to securely talk to another without typing usernames and passwords.
 
-### How `configure-stack.sh` Works:
-1. **API Key Extraction:** Scans `/opt/homelab/media-stack/config/{radarr,sonarr,prowlarr}/config.xml` and extracts each `<ApiKey>` using regular expressions.
-2. **Environment Update:** Writes the discovered `RADARR_API_KEY`, `SONARR_API_KEY`, and `PROWLARR_API_KEY` back into your root `.env` file so subsequent tools (`recyclarr`) can authenticate cleanly.
-3. **qBittorrent Setup:** Logs into qBittorrent via its API (extracting the temporary admin password from Docker logs if required), sets the global save path to `/data/torrents`, enables temporary incomplete paths (`/data/torrents/incomplete`), and creates dedicated download categories (`radarr` and `sonarr`).
-4. **Download Client Registration:** Uses Radarr (`/api/v3/downloadclient`) and Sonarr (`/api/v3/downloadclient`) REST APIs to register `qbittorrent` (port 8080) as the primary torrent download client assigned to their respective categories.
-5. **Root Folder Registration:** Sets `/data/media/movies` as the default movie storage path in Radarr and `/data/media/tv` as the default series storage path in Sonarr.
-6. **Prowlarr Indexer Synchronization:** Registers Radarr and Sonarr as target applications (`/api/v1/applications`) inside Prowlarr with `fullSync` enabled. When you add a torrent tracker or indexer inside Prowlarr, it instantly pushes the indexer configuration and search categories directly to Radarr and Sonarr.
+Instead of running opaque scripts that hide how services link together, here is how you connect the pipeline manually:
+
+### Step 1: Connect qBittorrent to Radarr and Sonarr
+1. Open **Radarr** (`http://YOUR_SERVER_IP:7878`) and go to **Settings** → **Download Clients** → **Add** → **qBittorrent**.
+2. Enter your qBittorrent host (`qbittorrent`), port (`8080`), and category (`radarr`).
+3. Click **Test** and **Save**.
+4. Repeat this exact step inside **Sonarr** (`http://YOUR_SERVER_IP:8989`), using the category `sonarr`.
+
+### Step 2: Connect Prowlarr to Radarr and Sonarr (`fullSync`)
+Instead of adding indexers separately into both Radarr and Sonarr, you connect them once inside **Prowlarr**:
+1. Open **Radarr** → **Settings** → **General** and copy the **API Key**.
+2. Open **Sonarr** → **Settings** → **General** and copy the **API Key**.
+3. Open **Prowlarr** (`http://YOUR_SERVER_IP:9696`) → **Settings** → **Apps** → **Add** → **Radarr**. Paste your Radarr API key, set Sync Level to `Full Sync`, and click **Save**.
+4. Click **Add** → **Sonarr**, paste your Sonarr API key, set Sync Level to `Full Sync`, and click **Save**.
+
+Now, whenever you add a torrent tracker inside Prowlarr, it automatically pushes the configuration and search categories across your entire stack!
 
 ---
 
@@ -57,27 +66,26 @@ When `radarr`, `sonarr`, and `prowlarr` start for the very first time on a fresh
 
 Out of the box, default Radarr and Sonarr quality profiles often grab low-bitrate rips, unwanted releases, or incorrect audio formats. We utilize **[Recyclarr](https://recyclarr.dev/)** paired with **[TRaSH Guides](https://trash-guides.info/)** to automatically enforce strict custom format rules and quality scores.
 
-### What `scripts/04-recyclarr.yml` Enforces:
-- **HD Balanced Profile:** Prioritizes high-quality `1080p Bluray` and `WEBDL` releases up to a target score threshold (`10000`).
-- **Audio Custom Formats:** Assigns positive scores to premium surround formats (`TrueHD Atmos`, `DTS X`, `DTS-HD MA`, `FLAC`) so the system automatically upgrades standard AAC/DD audio tracks when higher-fidelity Blu-ray rips become available.
+### What Recyclarr Enforces:
+- **HD Balanced Profile:** Prioritizes high-quality `1080p Bluray` and `WEBDL` releases up to a target score threshold.
+- **Audio Custom Formats:** Assigns positive scores to premium surround formats (`TrueHD Atmos`, `DTS X`, `DTS-HD MA`, `FLAC`) so the system automatically upgrades standard audio when higher-fidelity Blu-ray rips become available.
 - **Video & HDR Scoring:** Properly scores `Dolby Vision (DV)`, `HDR10+`, and `HDR10` releases based on display compatibility.
-- **Garbage Release Penalty (`-10000` Score):** Immediately rejects `BR-DISK` ISO rips, low-quality encodings (`LQ`), `3D` movies, unwanted extras, and bad dual-audio release groups.
+- **Garbage Release Penalty (`-10000` Score):** Immediately rejects `BR-DISK` ISO rips, low-quality encodings (`LQ`), `3D` movies, unwanted extras, and bad dual-audio groups.
 
 ### Running Recyclarr Sync
-After running `configure-stack.sh` (which saves your API keys to `.env`), synchronize TRaSH Guides profiles with one command:
+Once your API keys are added to your stack environment (`.env`), synchronize your TRaSH Guides profiles with one manual Docker command:
 ```bash
 docker exec -it recyclarr recyclarr sync
 ```
-Recyclarr connects directly to Radarr and Sonarr using your injected `.env` API keys, creating and updating custom formats and profiles in seconds.
+Recyclarr connects directly to Radarr and Sonarr using your API keys, creating and updating custom formats and profiles in seconds.
 
 ---
 
-## 4. Manual Indexer Setup (Remaining Step)
+## 4. Adding Your Indexers
 
-Because torrent trackers and Usenet indexers require private user account credentials, API keys, or passkeys, **this is the only step that cannot be automated safely**.
-
-1. Open your browser to Prowlarr: `http://YOUR_SERVER_IP:9696`
+Because torrent trackers and Usenet indexers require private user account credentials or passkeys, you configure them cleanly inside Prowlarr:
+1. Open **Prowlarr**: `http://YOUR_SERVER_IP:9696`
 2. Navigate to **Indexers** → **Add Indexer**.
-3. Search for your public or private trackers and enter your account credentials.
+3. Search for your public or private trackers and enter your credentials.
 4. Click **Test** and **Save**.
 5. Prowlarr will immediately sync your new indexers to both Radarr and Sonarr automatically!

@@ -38,7 +38,7 @@ const difficultyLabel =
           <span class="font-bold text-text text-lg">{entry.data.title.split('—')[0]}</span>
           <span class="px-2.5 py-0.5 rounded-full bg-accent/20 text-accent text-xs font-semibold">Port {entry.data.port}</span>
         </div>
-        <p class="text-xs text-text-muted mt-1">Folder: <code class="text-accent font-mono">{entry.data.folder}</code></p>
+        <p class="text-xs text-text-muted mt-1">Folder: <code class="text-accent font-mono">stacks/{entry.data.folder}</code></p>
       </div>
     </div>
 
@@ -48,7 +48,7 @@ const difficultyLabel =
         <span class="font-semibold text-text">{difficultyLabel}</span>
       </div>
       <a
-        href={`https://github.com/Zamiul-rashid/Homelabbing/tree/main/quickstart/${entry.data.folder}`}
+        href={`https://github.com/Zamiul-rashid/Homelabbing/tree/main/stacks/${entry.data.folder}`}
         target="_blank"
         rel="noopener noreferrer"
         class="btn-secondary text-xs py-2.5 px-4"
@@ -74,11 +74,10 @@ const difficultyLabel =
         </li>
       ))}
     </ol>
-
     <div class="mt-6 pt-6 border-t border-border flex items-center justify-between">
       <span class="text-xs text-text-faint font-mono">Run container command:</span>
       <CodeBlock
-        code={`cd quickstart/${entry.data.folder} && docker compose up -d`}
+        code={`cd stacks/${entry.data.folder} && docker compose up -d`}
       />
     </div>
   </div>

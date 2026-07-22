@@ -2,18 +2,24 @@
 set -euo pipefail
 
 # ==============================================================================
-# Homelab Quickstart Health Checker
-# Checks container status and formats a color-coded table of all 9 service ports.
+# Homelabbing Health Checker
+# Checks container status and formats a color-coded table of all 10 service ports.
 # ==============================================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-QUICKSTART_DIR="$(dirname "$SCRIPT_DIR")"
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
+STACKS_DIR="$REPO_DIR/stacks"
 
 # Source .env if available for SERVER_IP override
-if [ -f "$QUICKSTART_DIR/.env" ]; then
+if [ -f "$STACKS_DIR/.env" ]; then
   set +u
   # shellcheck disable=SC1091
-  source "$QUICKSTART_DIR/.env"
+  source "$STACKS_DIR/.env"
+  set -u
+elif [ -f "$REPO_DIR/.env" ]; then
+  set +u
+  # shellcheck disable=SC1091
+  source "$REPO_DIR/.env"
   set -u
 fi
 
@@ -59,7 +65,7 @@ check_service() {
   printf "%-24s | ${color}%-20s${NC} | %s://%s:%s\n" "$name" "$status" "$protocol" "$SERVER_IP" "$port"
 }
 
-# Check all 9 service ports specified in the prompt
+# Check all 10 service ports across our modular Homelabbing stacks
 check_service "jellyfin"         "8096" "http"
 check_service "qbittorrent"      "8080" "http"
 check_service "prowlarr"         "9696" "http"
@@ -67,6 +73,7 @@ check_service "radarr"           "7878" "http"
 check_service "sonarr"           "8989" "http"
 check_service "jellyseerr"       "5055" "http"
 check_service "navidrome"        "4533" "http"
+check_service "kavita"           "5000" "http"
 check_service "immich_server"    "2283" "http"
 check_service "nextcloud"        "4443" "https"
 

@@ -1,25 +1,60 @@
+# ==============================================================================
+# Homelabbing Music Server Stack (Navidrome)
+# This stack deploys Navidrome, a blazing-fast, lightweight personal music
+# streaming server compatible with Subsonic mobile apps.
+# ==============================================================================
+
 services:
   navidrome:
+    # We use the official container image released directly by the Navidrome creator (`deluan`).
+    # Written in Go, Navidrome uses under 100 MB of RAM while indexing huge libraries!
     image: deluan/navidrome:latest
+
+    # Assigning a clear container name makes viewing terminal logs (`docker logs navidrome`)
+    # simple and predictable when checking indexing status.
     container_name: navidrome
+
+    # Environment variables configure Navidrome's internal behavior and paths.
     environment:
+      # ND_PUID tells Navidrome which Linux user owns generated cache files.
       - ND_PUID=${PUID:-1000}
+      # ND_PGID tells Navidrome which Linux group owns generated cache files.
       - ND_PGID=${PGID:-1000}
+      # ND_PORT sets the internal listening door where Navidrome serves its web UI.
       - ND_PORT=4533
+      # ND_MUSICFOLDER tells Navidrome where inside the container your music lives.
       - ND_MUSICFOLDER=/music
+      # ND_DATAFOLDER tells Navidrome where to save its SQLite database and album art cache.
       - ND_DATAFOLDER=/data
+
+    # Volume bind mounts map your physical storage folders into the virtual container.
     volumes:
-      - navidrome-data:/data
-      - ${MUSIC_DIR:-/srv/music}:/music:ro
+      # Mount ./config on your disk right to /data inside Navidrome.
+      # Your SQLite database and cache survive even if you rebuild the container!
+      - ./config:/data
+
+      # Mount your physical music directory (/data/media/music) to /music inside Navidrome.
+      # Notice the `:ro` at the very end! `:ro` means Read-Only. This guarantees
+      # Navidrome can read and stream your music but can NEVER accidentally delete
+      # or modify your precious audio files!
+      - ${DATA_ROOT:-/data}/media/music:/music:ro
+
+    # Port mappings expose internal container ports to your local network.
     ports:
+      # Format is [HOST_PORT]:[CONTAINER_PORT].
+      # We bind door 4533 on your server so you can access the dashboard
+      # at http://YOUR_SERVER_IP:4533 across your home network.
       - "4533:4533"
+
+    # The restart policy tells Docker to automatically boot Navidrome whenever your
+    # server turns on or if the process crashes (`unless-stopped`).
     restart: unless-stopped
+
+    # The healthcheck periodically pings Navidrome's internal /ping endpoint.
+    # If the healthcheck fails 3 times (`retries: 3`), diagnostic checkers mark it unhealthy.
     healthcheck:
       test: ["CMD-SHELL", "curl -fsSL http://localhost:4533/ping || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
-
-volumes:
-  navidrome-data:
