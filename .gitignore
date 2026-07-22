@@ -1,0 +1,47 @@
+# ============================================================
+#  HOMELAB SHOWCASE GITIGNORE
+#  If a file contains a secret or runtime state, it lives here.
+# ============================================================
+
+# --- Secrets ---
+.env
+*.env
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+*.secret
+
+# --- Runtime State (Docker volumes / app data) ---
+data/
+config/
+letsencrypt/
+*.sqlite
+*.db
+*.sql
+
+# --- Backup archives ---
+*.tar.gz
+*.tar.gz.enc
+*.tar
+*.zip
+*.gz
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+*~
+*.swp
+
+# --- Script artefacts ---
+*/finish.sh
+*.bak
+/tmp/
+
+# --- Stack .env copies (distributed by 05-ignition.sh) ---
+/proxy-stack/.env
+/media-stack/.env
+/nextcloud-stack/.env

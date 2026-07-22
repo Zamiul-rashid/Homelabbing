@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  mariadb:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: nextcloud_db
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./config/mariadb:/config
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - nextcloud_net
+
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/nextcloud:/config
+      - /mnt/disk2/nextcloud_data:/data
+      - /mnt/disk2:/mnt/disk2
+      - /mnt/disk3:/mnt/disk3
+      - /mnt/disk4:/mnt/disk4
+    ports:
+      - 4443:443
+    depends_on:
+      - mariadb
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - nextcloud_net
+
+networks:
+  nextcloud_net:
+    driver: bridge

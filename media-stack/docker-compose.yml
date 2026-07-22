@@ -1,0 +1,627 @@
+# =============================================================================
+#  media-stack/docker-compose.yml
+#
+#  All secrets come from .env — never hardcode values here.
+#  Copy .env.example to .env, fill in your values, then:
+#    bash scripts/05-ignition.sh
+#
+#  Networks:
+#    media_net     — User-facing web apps and media services
+#    download_net  — Download automation (*arr stack, qBittorrent)
+#    infra_net     — Internal backend databases (no external internet access)
+# =============================================================================
+
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8096/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/jellyfin:/config
+      - /mnt/disk1/media:/data/media
+    ports:
+      - 8096:8096
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    deploy:
+      resources:
+        limits:
+          memory: 6g
+          cpus: '8.0'
+        reservations:
+          memory: 512m
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    environment:
+      - ND_PLUGINS_ENABLED=true
+      - ND_PLUGINS_FOLDER=/data/plugins
+      - ND_ENABLEEXTERNALSERVICES=true
+      - ND_COVERARTPRIORITY==cover.*, folder.*, embedded, external
+      - ND_PUID=${PUID:-1000}
+      - ND_PGID=${PGID:-1000}
+    volumes:
+      - ./config/navidrome:/data
+      - /mnt/disk1/media/music:/music:ro
+    ports:
+      - 4533:4533
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+      - WEBUI_PORT=8080
+    volumes:
+      - ./config/qbittorrent:/config
+      - /mnt/disk1/torrents:/data/torrents
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '2.0'
+        reservations:
+          memory: 256m
+    restart: unless-stopped
+    networks:
+      - download_net
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:7878/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/radarr:/config
+      - /mnt/disk1/media/movies:/data/media/movies
+      - /mnt/disk1/torrents/radarr:/data/torrents/radarr
+    ports:
+      - 7878:7878
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1.0'
+        reservations:
+          memory: 128m
+    restart: unless-stopped
+    networks:
+      - download_net
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8989/ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/sonarr:/config
+      - /mnt/disk1/media/tv:/data/media/tv
+      - /mnt/disk1/torrents/sonarr:/data/torrents/sonarr
+    ports:
+      - 8989:8989
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: '1.0'
+        reservations:
+          memory: 128m
+    restart: unless-stopped
+    networks:
+      - download_net
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/prowlarr:/config
+    ports:
+      - 9696:9696
+    depends_on:
+      - radarr
+      - sonarr
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - download_net
+
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/jellyseerr:/app/config
+    ports:
+      - 5055:5055
+    depends_on:
+      - jellyfin
+      - radarr
+      - sonarr
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - media_net
+      - download_net
+
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    volumes:
+      - ./config/adguardhome/work:/opt/adguardhome/work
+      - ./config/adguardhome/conf:/opt/adguardhome/conf
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 3000:3000/tcp
+      - 853:853/tcp
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    volumes:
+      - ./config/mosquitto/config:/mosquitto/config
+      - ./config/mosquitto/data:/mosquitto/data
+      - ./config/mosquitto/log:/mosquitto/log
+    ports:
+      - 1883:1883
+      - 9001:9001
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  homeassistant:
+    image: lscr.io/linuxserver/homeassistant:latest
+    container_name: homeassistant
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/homeassistant:/config
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    network_mode: host
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config/portainer:/data
+    ports:
+      - 9000:9000
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  homarr:
+    image: ghcr.io/ajnart/homarr:latest
+    container_name: homarr
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/homarr/configs:/app/data/configs
+      - ./config/homarr/icons:/app/public/icons
+      - ./config/homarr/data:/data
+    ports:
+      - 7575:7575
+    environment:
+      - PORT=7575
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7575 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    volumes:
+      - ./config/uptime-kuma:/app/data
+    ports:
+      - 3001:3001
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  feishin:
+    image: ghcr.io/jeffvli/feishin:latest
+    container_name: feishin
+    volumes:
+      - ./config/feishin:/app/config
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    ports:
+      - "9180:9180"
+    environment:
+      - SERVER_PORT=9180
+    networks:
+      - media_net
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGE_ALLOWED_HOSTS:-${SERVER_IP}:3002}
+    volumes:
+      - ./config/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 3002:3000
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  # ==============================================================================
+  # WATCHTOWER EXCLUSION & OPT-IN STRATEGY (L-5 Documentation)
+  # ==============================================================================
+  # Watchtower runs in opt-in mode (`WATCHTOWER_LABEL_ENABLE=true`).
+  # Only containers with `com.centurylinklabs.watchtower.enable=true` are updated.
+  #
+  # Enabled (Automatic Updates):
+  # - Stateless/low-risk utilities & download agents: qbittorrent, uptime-kuma, feishin
+  #
+  # Excluded (`enable=false` or omitted — Manual Review/Updates Required):
+  # - Stateful databases, media engines, & automation pipelines where updates may
+  #   cause breaking schema or API migrations:
+  #   radarr, sonarr, prowlarr, jellyseerr, jellyfin, navidrome, paperless-ngx,
+  #   audiomuse-ai, audiomuse-db, redis, homeassistant, portainer, adguardhome
+  # ==============================================================================
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    environment:
+      - TZ=${TZ:-UTC}
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_STOPPED=false
+      - WATCHTOWER_SCHEDULE=0 0 4 * * *
+      - WATCHTOWER_LABEL_ENABLE=true
+      - DOCKER_API_VERSION=1.44
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  stirling-pdf:
+    image: stirlingtools/stirling-pdf:latest
+    container_name: stirling-pdf
+    environment:
+      - DOCKER_ENABLE_SECURITY=false
+    volumes:
+      - ./config/stirling-pdf/trainingData:/usr/share/tessdata
+      - ./config/stirling-pdf/configs:/configs
+    ports:
+      - 18888:8080
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  actual-budget:
+    image: actualbudget/actual-server:latest
+    container_name: actual-budget
+    volumes:
+      - ./config/actual-budget:/data
+    ports:
+      - 5006:5006
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: '0.5'
+        reservations:
+          memory: 64m
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - infra_net
+
+  paperless-ngx:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-ngx
+    depends_on:
+      - redis
+    environment:
+      - PAPERLESS_REDIS=redis://redis:6379
+      - PAPERLESS_TIME_ZONE=${TZ:-UTC}
+      - PAPERLESS_ADMIN_USER=${PAPERLESS_ADMIN_USER}
+      - PAPERLESS_ADMIN_PASSWORD=${PAPERLESS_ADMIN_PASSWORD}
+      - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
+      - PAPERLESS_URL=${PAPERLESS_URL}
+      - PAPERLESS_CSRF_TRUSTED_ORIGINS=${PAPERLESS_CSRF_TRUSTED_ORIGINS}
+      - USERMAP_UID=${PUID:-1000}
+      - USERMAP_GID=${PGID:-1000}
+    volumes:
+      - ./config/paperless-ngx/data:/usr/src/paperless/data
+      - ./config/paperless-ngx/media:/usr/src/paperless/media
+      - ./config/paperless-ngx/export:/usr/src/paperless/export
+      - ./config/paperless-ngx/consume:/usr/src/paperless/consume
+    ports:
+      - 8010:8000
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/api/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: '2.0'
+        reservations:
+          memory: 256m
+    restart: unless-stopped
+    networks:
+      - media_net
+      - infra_net
+
+  kavita:
+    image: lscr.io/linuxserver/kavita:latest
+    container_name: kavita
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./config/kavita:/config
+      - /mnt/disk1/books:/books
+    ports:
+      - 5050:5000
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  filebrowser:
+    image: filebrowser/filebrowser:latest
+    container_name: filebrowser
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+    volumes:
+      - /mnt/disk1:/srv
+      - ./config/paperless-ngx:/srv/configs_backup/paperless-ngx
+      - ./config/kavita:/srv/configs_backup/kavita
+      - ./config/stirling-pdf:/srv/configs_backup/stirling-pdf
+      - ./config/filebrowser:/config
+
+    ports:
+      - 8083:80
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - media_net
+
+  audiomuse-db:
+    image: pgvector/pgvector:pg16
+    container_name: audiomuse-db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${AUDIOMUSE_DB_USER} -d audiomusedb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER=${AUDIOMUSE_DB_USER}
+      - POSTGRES_PASSWORD=${AUDIOMUSE_DB_PASSWORD}
+      - POSTGRES_DB=audiomusedb
+    volumes:
+      - ./config/audiomuse-db:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: '1.0'
+        reservations:
+          memory: 256m
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    networks:
+      - infra_net
+
+  audiomuse-ai:
+    image: ghcr.io/neptunehub/audiomuse-ai:latest
+    container_name: audiomuse-ai
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    environment:
+      - SUBSONIC_URL=http://navidrome:4533
+      - SUBSONIC_USER=${NAVIDROME_ADMIN_USER}
+      - SUBSONIC_PASS=${NAVIDROME_ADMIN_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_URL=redis://redis:6379/1
+      - POSTGRES_HOST=audiomuse-db
+      - POSTGRES_USER=${AUDIOMUSE_DB_USER}
+      - POSTGRES_PASSWORD=${AUDIOMUSE_DB_PASSWORD}
+      - POSTGRES_DB=audiomusedb
+      - AI_MODEL_PROVIDER=${AI_MODEL_PROVIDER}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME}
+    volumes:
+      - ./config/audiomuse-ai:/app/data
+      - /mnt/disk1/media/music:/music:ro
+    ports:
+      - 5000:8000
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+          cpus: '6.0'
+        reservations:
+          memory: 256m
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+      audiomuse-db:
+        condition: service_started
+      navidrome:
+        condition: service_started
+    networks:
+      - media_net
+      - infra_net
+  audiomuse-ai-worker:
+    image: ghcr.io/neptunehub/audiomuse-ai:latest
+    container_name: audiomuse-ai-worker
+    environment:
+      - SERVICE_TYPE=worker
+      - SUBSONIC_URL=http://navidrome:4533
+      - SUBSONIC_USER=${NAVIDROME_ADMIN_USER}
+      - SUBSONIC_PASS=${NAVIDROME_ADMIN_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_URL=redis://redis:6379/1
+      - POSTGRES_HOST=audiomuse-db
+      - POSTGRES_USER=${AUDIOMUSE_DB_USER}
+      - POSTGRES_PASSWORD=${AUDIOMUSE_DB_PASSWORD}
+      - POSTGRES_DB=audiomusedb
+      - AI_MODEL_PROVIDER=${AI_MODEL_PROVIDER}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL_NAME=${GEMINI_MODEL_NAME}
+      - WHISPER_ENABLED=false
+    volumes:
+      - ./config/audiomuse-ai:/app/data
+      - /mnt/disk1/media/music:/music:ro
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+          cpus: '6.0'
+        reservations:
+          memory: 256m
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+      audiomuse-db:
+        condition: service_started
+      navidrome:
+        condition: service_started
+    networks:
+      - media_net
+      - infra_net
+
+networks:
+  media_net:
+    driver: bridge
+  download_net:
+    driver: bridge
+  infra_net:
+    driver: bridge
+    internal: true
+
+volumes:
+  redis_data:
