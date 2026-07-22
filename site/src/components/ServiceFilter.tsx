@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function ServiceFilter({ services }: Props) {
-  const [activeTab, setActiveTab] = useState<'all' | 'easy' | 'medium' | 'media' | 'cloud'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'easy' | 'medium' | 'media' | 'cloud' | 'automation'>('all');
 
   const filteredServices = services.filter((s) => {
     if (activeTab === 'all') return true;
@@ -14,6 +14,7 @@ export default function ServiceFilter({ services }: Props) {
     if (activeTab === 'medium') return s.difficulty === 2;
     if (activeTab === 'media') return ['jellyfin', 'arr-stack', 'navidrome', 'kavita'].includes(s.slug);
     if (activeTab === 'cloud') return ['immich', 'nextcloud'].includes(s.slug);
+    if (activeTab === 'automation') return ['home-assistant', 'adguard-home'].includes(s.slug);
     return true;
   });
 
@@ -74,6 +75,17 @@ export default function ServiceFilter({ services }: Props) {
         >
           <span>☁️</span>
           <span>Photos & Cloud Storage</span>
+        </button>
+        <button
+          onClick={() => setActiveTab('automation')}
+          className={`px-4 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${
+            activeTab === 'automation'
+              ? 'bg-accent text-white shadow-[0_0_20px_rgba(99,102,241,0.35)]'
+              : 'text-text-muted hover:text-text hover:bg-bg-elevated/50'
+          }`}
+        >
+          <span>🏠</span>
+          <span>Smart Home & DNS</span>
         </button>
       </div>
 

@@ -1,0 +1,69 @@
+---
+title: "Home Assistant — The Local Smart Home Brain"
+tagline: "The world's leading open-source smart home hub that unifies all your IoT devices locally with zero cloud lag."
+replaces: "SmartThings, Apple HomeKit Hub, Google Nest, Philips Hue Bridge"
+port: 8123
+difficulty: 2
+folder: "home-automation"
+mockupDescription: "Home Assistant Smart Home Dashboard Interface"
+setupSteps:
+  - "Verify your stacks/.env has correct user permissions (PUID/PGID and TZ)."
+  - "Run cd stacks/home-automation && docker compose up -d."
+  - "Open http://YOUR_SERVER_IP:8123 in your web browser (allow 1-2 minutes for initial boot)."
+  - "Create your local admin account and review auto-discovered smart devices ready for one-click pairing."
+whatNow:
+  - label: "Install HACS (Community Store)"
+    href: "https://hacs.xyz/"
+    description: "Unlock thousands of community-built dashboards, custom cards, and hardware integrations from GitHub."
+  - label: "Configure Automated Backups"
+    href: "https://www.home-assistant.io/common-tasks/os/#backups"
+    description: "Learn how to export and schedule automated backups of your automations.yaml and SQLite database."
+  - label: "Explore Dashboard Lovelace UI"
+    href: "https://www.home-assistant.io/dashboards/"
+    description: "Design custom tablet and smartphone control cards for lights, thermostats, and cameras."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+import UIMockup from '../../components/UIMockup.astro';
+
+## What You'll Have When Done
+A lightning-fast, privacy-first smart home hub running directly on your home server's network adapter (`port 8123`). Home Assistant automatically scans your Wi-Fi network to discover and pair with Apple HomeKit, Sonos, Google Cast, Philips Hue, and Zigbee/Z-Wave devices—allowing you to control everything from one single app even when your internet connection drops!
+
+<UIMockup title="Home Assistant Dashboard" url="http://192.168.1.100:8123/lovelace" type="wizard" />
+
+## Why Choose Home Assistant?
+
+Commercial smart home gadgets routinely rely on cloud servers: when you press a switch on your wall, the signal travels to a data center across the country just to turn on the bulb above your head. Home Assistant executes your automations 100% locally with zero latency and complete privacy.
+
+<ProConTable
+  pros={[
+    "Unconditional local control: automations run instantly and keep working during internet outages.",
+    "Universal compatibility with over 3,000+ integrations bridging incompatible smart home brands.",
+    "Runs on host networking (`network_mode: host`) so it auto-discovers local Wi-Fi devices effortlessly.",
+    "Massive community ecosystem via HACS with custom UI themes and advanced logic blueprints."
+  ]}
+  cons={[
+    "Requires host networking (`network_mode: host`) which shares your server network stack directly.",
+    "First-time onboarding of complex Zigbee/Z-Wave networks may require a USB coordinator dongle.",
+    "Endless customization options can become addictive as you build more complex home automations!"
+  ]}
+/>
+
+---
+
+## Onboarding & Setup Guide
+
+### 1. Launching the Container
+Navigate to the `home-automation` stack directory and launch the compose stack:
+```bash
+cd stacks/home-automation
+docker compose up -d
+```
+
+### 2. First-Run Wizard
+Open `http://YOUR_SERVER_IP:8123` in your web browser. Home Assistant takes about 1–2 minutes on first boot to prepare its internal database and required dependencies. Once ready, follow the wizard to set your name, username, and home location (used for sunrise/sunset triggers).
+
+### 3. Pairing Your First Devices
+1. Once logged in, go to **Settings** → **Devices & Services**.
+2. Home Assistant automatically displays discovered devices on your network right under the **Discovered** banner!
+3. Click **Configure** on any device (such as Apple TV, Sonos, or Philips Hue) to pair it instantly without needing cloud accounts.

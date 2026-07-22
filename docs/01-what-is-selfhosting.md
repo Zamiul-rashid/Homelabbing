@@ -56,8 +56,9 @@ Let’s look at the real annual financial impact of commercial SaaS (Software-as
 | **☁️ Cloud File Storage** | Dropbox Family / OneDrive | $16.99 | $203.88 | **Nextcloud** |
 | **📚 eBook & Manga Reader** | Kindle Unlimited | $11.99 | $143.88 | **Kavita** |
 | **📄 Document Management** | Adobe Acrobat / Evernote | $19.99 | $239.88 | **Paperless-ngx** |
+| **🏠 Smart Home Automation** | SmartThings Cloud / Apple Home Hub | $9.99 | $119.88 | **Home Assistant** |
 | **🛡️ Network Ad Blocking** | AdGuard DNS Pro / VPNs | $4.99 | $59.88 | **AdGuard Home** |
-| **Total Commercial Outlay** | | **~$115.92 / mo** | **$1,391.04 / yr** | **$0.00 / mo software cost** |
+| **Total Commercial Outlay** | | **~$125.91 / mo** | **$1,510.92 / yr** | **$0.00 / mo software cost** |
 
 ### The Break-Even Reality
 A refurbished small-form-factor office PC (like a Dell OptiPlex or HP EliteDesk with an Intel Core i5 processor, 16 GB of RAM, and an NVMe SSD) paired with two high-capacity hard drives costs roughly **$250 to $450** upfront. Even when factoring in continuous 24/7 electricity (~25 to 40 watts, or about $35/year depending on your local power rates), **your entire hardware setup pays for itself in just 4 months.**

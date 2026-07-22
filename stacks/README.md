@@ -26,8 +26,9 @@ We recommend launching these modular stacks in the following order as you build 
 | **4** | **[`photo-backup/`](photo-backup/)** | Immich | Self-hosted photo and video backup with AI facial recognition and timeline sync. |
 | **5** | **[`book-reader/`](book-reader/)** | Kavita | High-performance ebook, comic book, and multi-volume manga reader. |
 | **6** | **[`cloud-storage/`](cloud-storage/)** | Nextcloud, MariaDB | Complete Google Workspace and Dropbox replacement for multi-device document sync. |
-| **7** | **[`networking/`](networking/)** | Nginx Proxy Manager, DuckDNS / Cloudflare, Tailscale | Remote access, custom subdomains, reverse proxy routing, and SSL padlocks. |
-| **8** | **[`full-stack/`](full-stack/)** | Combined All-in-One Compose | *For experienced users only:* A consolidated compose file combining all services into a single stack. |
+| **7** | **[`home-automation/`](home-automation/)** | Home Assistant, AdGuard Home | Local-first smart home IoT brain (`8123`) and network-wide DNS ad/tracker blocking (`53`, `8083`). |
+| **8** | **[`networking/`](networking/)** | Nginx Proxy Manager, DuckDNS / Cloudflare, Tailscale | Remote access, custom subdomains, reverse proxy routing, and SSL padlocks. |
+| **9** | **[`full-stack/`](full-stack/)** | Combined All-in-One Compose | *For experienced users only:* A consolidated compose file combining all services into a single stack. |
 
 ---
 

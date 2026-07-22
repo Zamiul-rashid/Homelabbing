@@ -1,0 +1,76 @@
+# ==============================================================================
+# 🏠 Homelabbing Home Automation & Ad Blocking Stack
+# This stack deploys:
+# 1. Home Assistant — The ultimate open-source, local-first smart home hub.
+# 2. AdGuard Home — Network-wide DNS resolver and ad/tracker blocker.
+# ==============================================================================
+
+services:
+  homeassistant:
+    # We use the official container image maintained directly by the Home Assistant project.
+    # Using official stable builds ensures long-term reliability and compatibility with HACS.
+    image: ghcr.io/home-assistant/home-assistant:stable
+
+    # Assigning a friendly container name allows you to reference this container
+    # easily inside terminal logs (`docker logs homeassistant`) and diagnostic scripts.
+    container_name: homeassistant
+
+    # Host networking (`network_mode: host`) gives Home Assistant direct access to your
+    # server's network stack. This is mandatory for Home Assistant to automatically discover
+    # local smart devices (Apple HomeKit, Sonos, Google Nest, Philips Hue) using mDNS/UPnP broadcasts.
+    # Note: When using `network_mode: host`, port mappings (`ports:`) are not used because the container
+    # shares your host's ports directly. Home Assistant listens on host port 8123 automatically.
+    network_mode: host
+
+    # Environment variables configure internal container behavior.
+    environment:
+      # TZ sets the internal timezone so automated sunrise/sunset routines and logs
+      # match your local physical wall clock.
+      - TZ=${TZ:-America/New_York}
+
+    # Volume bind mounts connect physical folders on your hard drive directly
+    # to internal configuration directories inside the Docker container.
+    volumes:
+      # Mount the configuration folder where Home Assistant stores its SQLite database,
+      # automations.yaml, HACS integrations, and dashboard cards.
+      # Binding to `./config/homeassistant` ensures your entire smart home setup survives container updates.
+      - ./config/homeassistant:/config
+      # Mount the host's timezone data in read-only mode (`:ro`) for accurate system time synchronization.
+      - /etc/localtime:/etc/localtime:ro
+
+    # The restart policy ensures Home Assistant automatically boots whenever your home server
+    # turns on or recovers from a power outage, unless stopped manually.
+    restart: unless-stopped
+
+  adguardhome:
+    # We use the official AdGuard Home container image (`adguard/adguardhome:latest`).
+    image: adguard/adguardhome:latest
+
+    container_name: adguardhome
+
+    environment:
+      - TZ=${TZ:-America/New_York}
+
+    # Volume mounts preserve AdGuard Home's configuration files, blocklists, and DNS query logs.
+    volumes:
+      # `/work` stores active DNS filtering databases, query logs, and compiled blocklists.
+      - ./config/adguardhome/work:/opt/adguardhome/work
+      # `/conf` stores your main configuration file (`AdGuardHome.yaml`), custom filtering rules, and admin settings.
+      - ./config/adguardhome/conf:/opt/adguardhome/conf
+
+    # Port mappings bridge physical host ports to internal container ports.
+    # Format is [HOST_PORT]:[CONTAINER_PORT].
+    ports:
+      # Port 53 (both TCP and UDP) is the universal protocol port used by all devices
+      # across your network when submitting DNS lookup requests (`example.com`).
+      - "53:53/tcp"
+      - "53:53/udp"
+      # Port 3000 is used exclusively on first boot for the AdGuard Home Setup Wizard.
+      # Access this in your browser at http://YOUR_SERVER_IP:3000 to configure initial settings.
+      - "3000:3000/tcp"
+      # We map container port 80 (AdGuard's admin dashboard after setup) to host port 8083.
+      # This allows you to access the management interface at http://YOUR_SERVER_IP:8083
+      # without clashing with reverse proxies (Nginx/Traefik) running on host port 80.
+      - "8083:80/tcp"
+
+    restart: unless-stopped

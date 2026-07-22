@@ -134,8 +134,8 @@ flowchart TD
 
 ### Option D: Tailscale Zero-Trust VPN (The Safest Choice)
 - **What it does:** Installs a secure WireGuard mesh VPN on your server, laptop, and phone. Your server stays entirely hidden from the public internet.
-- **When to choose:** You only need access for yourself or close household members who can install the Tailscale app on their devices.
-- **Trade-offs:** Requires installing the lightweight Tailscale client on any phone or computer that wants to connect to the lab.
+- **When to choose:** You only need access for yourself or close household members who can install the Tailscale app on their devices. Great for Single User networks where every device is connected to Tailscale.
+- **Trade-offs:** Requires installing the lightweight Tailscale client on any phone or computer that wants to connect to the lab. Also when connecting from a new device say You want to acces Nextcloud then you would have to login to your own tailnet to bring into the VPN network which is a bit annoying.
 
 ---
 

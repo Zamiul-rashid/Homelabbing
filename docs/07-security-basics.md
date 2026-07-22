@@ -151,13 +151,13 @@ By understanding and applying these security fundamentals:
 1. You eliminated hardcoded passwords by storing sensitive credentials securely inside local `.env` files.
 2. You enabled **UFW** default-deny firewall policies so outside traffic can only enter via encrypted web ports (`80` and `443`).
 3. You understood how `internal: true` Docker bridges seal off databases from the internet, and why deliberate manual updates keep your data corruption-free!
+4. You can further reinforce your network security by running **AdGuard Home** as your local DNS filter to intercept phishing links and malware domains before they load, as covered in **[08. Home Automation & Ad Blocking](08-home-automation-and-ad-blocking.md)**.
 
 ---
 
 ## 🚀 Congratulations! You Are Ready to Build
 
-You have completed the entire **Homelabbing** core curriculum! You now understand the philosophy of self-hosting, how containers work, how to manage Linux disks and mount points, how DNS and reverse proxies route traffic cleanly, how to back up configuration state safely, and how to defend your server against threats.
+You have completed the core **Homelabbing** foundational security concepts! To explore our final guide covering local IoT sovereignty and DNS filtering, continue to:
 
-It is time to put your concepts into action. Jump into our modular stacks directory and start booting up your favorite services right now!
-
-👉 **Explore the Modular Stacks in [`stacks/`](../stacks/README.md)**
+👉 **Proceed to [08. Home Automation & Ad Blocking](08-home-automation-and-ad-blocking.md)**
+👉 **Or explore the Modular Stacks directly in [`stacks/`](../stacks/README.md)**

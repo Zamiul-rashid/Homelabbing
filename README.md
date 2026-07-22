@@ -16,6 +16,8 @@ Here, **you learn the concepts first, understand what every command does, and bu
 
 By following our modular guides, you can turn an affordable refurbished PC into a private, high-performance cloud capable of replacing major subscription services:
 
+![Beginner Hosted Architecture](docs/architecture.png)
+
 | What You Get | Commercial Equivalent | The Self-Hosted Stack |
 | :--- | :--- | :--- |
 | **🎬 4K Media Streaming** | Netflix, Disney+ | [Jellyfin + *arr Pipeline](stacks/media-server/) |
@@ -23,7 +25,8 @@ By following our modular guides, you can turn an affordable refurbished PC into 
 | **📸 Photo Backup & Sync** | Google Photos, iCloud | [Immich](stacks/photo-backup/) |
 | **📚 eBook & Manga Reader** | Kindle, Comixology | [Kavita](stacks/book-reader/) |
 | **☁️ Cloud Storage & Sync** | Google Drive, Dropbox | [Nextcloud](stacks/cloud-storage/) |
-| **🛡️ Network Ad Blocking** | AdGuard DNS Pro | [AdGuard Home](stacks/networking/) |
+| **🏠 Smart Home Automation** | SmartThings, Apple Home | [Home Assistant](stacks/home-automation/) |
+| **🛡️ Network Ad Blocking** | AdGuard DNS Pro | [AdGuard Home](stacks/home-automation/) |
 
 ---
 
@@ -38,13 +41,14 @@ We structured this repository so you can start from absolute zero and grow into 
 5. **[05. Networking, DNS & Reverse Proxies](docs/05-networking-concepts.md)** — Understand ports, DNS, SSL/TLS padlocks, and how to safely access your services remotely using DuckDNS, Cloudflare, or Tailscale.
 6. **[06. Backups & Data Redundancy](docs/06-backups-and-redundancy.md)** — Learn how to separate configuration state from bulk media, encrypt your snapshots, and protect against hardware failures.
 7. **[07. Security & Hardening Basics](docs/07-security-basics.md)** — Master UFW firewalls, zero-trust network isolation, and essential best practices like never hardcoding secrets.
+8. **[08. Home Automation & Ad Blocking](docs/08-home-automation-and-ad-blocking.md)** — Master local smart home IoT sovereignty with Home Assistant and network-wide DNS ad/tracker blocking with AdGuard Home.
 
 ---
 
 ## 🗂️ How This Repository Is Organized
 
-- **[`docs/`](docs/)** — Concept-driven learning guides explaining the *why* and *how* behind home server administration.
-- **[`stacks/`](stacks/)** — Modular, self-contained Docker Compose stacks (`media-server`, `arr-stack`, `music-server`, `photo-backup`, `cloud-storage`, `book-reader`, `full-stack`, `networking`). Every single line in every compose file is heavily commented to teach you what it does.
+- **[`docs/`](docs/)** — Concept-driven learning guides explaining the *why* and *how* behind home server administration (`01` through `08`).
+- **[`stacks/`](stacks/)** — Modular, self-contained Docker Compose stacks (`media-server`, `arr-stack`, `music-server`, `photo-backup`, `book-reader`, `cloud-storage`, `home-automation`, `networking`, `full-stack`). Every single line in every compose file is heavily commented to teach you what it does.
 - **[`helpers/`](helpers/)** — Diagnostic and utility scripts (like `check-health.sh`) to help you troubleshoot and verify your environment.
 - **[`reference/`](reference/)** — *For advanced reference and inspiration only:* Contains the author's personal 25+ service production setup and recovery workflows. You are not expected to deploy this directly!
 

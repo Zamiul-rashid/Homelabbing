@@ -1,0 +1,74 @@
+---
+title: "AdGuard Home — Network-Wide DNS Ad Blocker"
+tagline: "Network-level DNS ad and tracking protection that shields every phone, PC, and smart TV in your entire household."
+replaces: "uBlock Origin (for mobile/IoT), Pi-hole, NextDNS, Commercial VPN Ad Blockers"
+port: 8083
+difficulty: 1
+folder: "home-automation"
+mockupDescription: "AdGuard Home Network DNS Shield and Query Dashboard"
+setupSteps:
+  - "Verify your stacks/.env has correct user permissions (`PUID`/`PGID` and `TZ`)."
+  - "Run `cd stacks/home-automation && docker compose up -d`."
+  - "Open `http://YOUR_SERVER_IP:3000` to complete the initial setup wizard (set admin port to `80`)."
+  - "Point your router's Primary DNS setting (`DHCP Server`) to `YOUR_SERVER_IP` (`port 53`)."
+whatNow:
+  - label: "Add Custom Blocklists"
+    href: "https://adguard-dns.io/kb/general/dns-filtering-syntax/"
+    description: "Explore community-curated filtering lists to block smart TV telemetry, phishing, and adult domains."
+  - label: "Configure Client Device Rules"
+    href: "https://github.com/AdguardTeam/AdGuardHome/wiki/Clients"
+    description: "Set up specific schedules, parental controls, or safe search policies per individual family device."
+  - label: "Enable Upstream DNS over HTTPS (DoH)"
+    href: "https://github.com/AdguardTeam/AdGuardHome/wiki/Configuration#upstream-dns"
+    description: "Encrypt your outgoing DNS queries using Cloudflare (`https://1.1.1.1/dns-query`) or Quad9 so your ISP cannot track you."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+import UIMockup from '../../components/UIMockup.astro';
+
+## What You'll Have When Done
+A rock-solid local DNS server that intercepts domain requests before they ever reach the internet. By checking incoming DNS queries against comprehensive blocklists, AdGuard Home stops ads, trackers, and malware across every iPhone, Android, smart TV, tablet, and PC on your home Wi-Fi automatically!
+
+<UIMockup title="AdGuard Home DNS Shield" url="http://192.168.1.100:8083" type="login" />
+
+## Why Choose AdGuard Home?
+
+While browser extensions like uBlock Origin work wonders on desktop computers, they cannot protect smart TVs, IoT gadgets, streaming devices, or mobile applications. AdGuard Home operates at the network level (`port 53`), blocking tracking telemetry before pages load and boosting browsing speeds.
+
+<ProConTable
+  pros={[
+    "Universal device coverage: blocks ads inside smart TVs, mobile apps, and streaming sticks seamlessly.",
+    "Zero client installation required: changing one setting in your home router protects every Wi-Fi device.",
+    "Accelerates page load times and conserves monthly internet bandwidth by stopping ad scripts early.",
+    "Intuitive web dashboard displaying live query logs, top blocked domains, and client statistics."
+  ]}
+  cons={[
+    "Requires static IP assignment so your router always knows where to direct household DNS requests.",
+    "Overly aggressive blocklists may occasionally block legitimate shopping links or newsletter redirects.",
+    "If your home server turns off while set as the primary router DNS, internet browsing will pause until restarted."
+  ]}
+/>
+
+---
+
+## Onboarding & Setup Guide
+
+### 1. Launching the Container
+Navigate to the `home-automation` stack directory and launch the stack:
+```bash
+cd stacks/home-automation
+docker compose up -d
+```
+
+### 2. First-Run Setup Wizard (`Port 3000`)
+Open `http://YOUR_SERVER_IP:3000` in your web browser. You will enter AdGuard Home's initial setup wizard:
+1. Under **Admin Web Interface**, set the listen port to `80` (mapped externally to `8083` in our `docker-compose.yml`).
+2. Under **DNS Server**, ensure it listens on All Interfaces (`0.0.0.0`) on Port `53`.
+3. Create your administrative username and secure password, then finish the wizard. Your permanent admin dashboard is now live at `http://YOUR_SERVER_IP:8083`!
+
+### 3. Pointing Your Router to AdGuard Home
+To protect your entire household:
+1. Log into your home router's admin panel (typically `192.168.1.1` or `192.168.0.1`).
+2. Navigate to **LAN / DHCP Server Configuration**.
+3. Replace your ISP's default Primary DNS Server with your home server's IP (`YOUR_SERVER_IP`).
+4. Save settings and reconnect your phone or laptop to Wi-Fi. Check your AdGuard Home dashboard to see live DNS queries being filtered immediately!
