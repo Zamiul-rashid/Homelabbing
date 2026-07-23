@@ -12,7 +12,7 @@ Here, **you learn the architecture first, understand what every command does, an
 
 ---
 
-## 🌟 What You Will Be Able to Build
+## 🌟 What You Will Be Able to Build (Day-to-Day Media/NAS Hybrid)
 
 By following our modular guides, you can turn an affordable refurbished PC into a private, high-performance cloud capable of replacing major subscription services:
 
@@ -54,11 +54,15 @@ We structured this repository so you can start from absolute zero and grow into 
 
 ---
 
-## 🌐 Explore the Live Interactive Guide
+## 🌐 Explore the Live Interactive Guide & Community
 
 Prefer browsing online? Visit our companion website for interactive tools, architecture diagrams, decision flowcharts, and visual walkthroughs:
 
 👉 **[Visit the Homelabbing Website](https://Zamiul-rashid.github.io/Homelabbing/)**
+
+Want to discover more self-hosted community services and products? Check out the Awesome-Homelab community directory:
+
+👉 **[Explore Awesome-Homelab](https://www.awesome-homelab.com/)**
 
 ---
 
