@@ -5,7 +5,7 @@ When you complete this guide, you will have a blazing-fast, digital library runn
 
 ---
 
-## 💡 What Is Kavita and Why Would I Want It?
+## 💡 What Is Kavita and Why Would You Want It?
 
 If you have ever purchased digital eBooks or comic books across different platforms (like Amazon Kindle, Comixology, or Google Play Books), you know how frustrating locked ecosystems can be. Your books are trapped inside proprietary apps, and if a platform loses licensing rights, books can vanish from your digital shelf without warning.
 
@@ -107,7 +107,7 @@ Now that your reading library is online, you can expand your homelab by adding o
 
 ## 🔧 Troubleshooting
 
-- **Issue: My books or manga don't show up after clicking Scan inside Kavita.**
+- **Issue: Your books or manga don't show up after clicking Scan inside Kavita.**
   - **Solution:** Verify file permissions on your host system! Make sure your `/data/media/books` folder is readable by your Docker user ID. Run `sudo chown -R $USER:$USER /data/media/books` in your terminal, then trigger another scan inside Kavita settings.
 - **Issue: Comic covers load slowly or appear broken.**
   - **Solution:** Ensure your `.cbz` or `.cbr` archives aren't corrupted by testing them on a local desktop comic reader first. Kavita works best when comic archives contain standard `.jpg`, `.png`, or `.webp` image pages.

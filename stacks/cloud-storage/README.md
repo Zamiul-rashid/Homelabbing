@@ -5,7 +5,7 @@ When you complete this guide, you will have your own private cloud storage hub a
 
 ---
 
-## 💡 What Is Nextcloud and Why Would I Want It?
+## 💡 What Is Nextcloud and Why Would You Want It?
 
 Public cloud providers like Google Drive, Microsoft OneDrive, and Dropbox continuously scan your documents for automated policy enforcement, charge tiered monthly fees once you exceed basic tiers, and can suspend your accounts or lock you out of your files at any time.
 

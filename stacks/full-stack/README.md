@@ -5,7 +5,7 @@ When you complete this guide, you will have a complete, enterprise-grade persona
 
 ---
 
-## 💡 What Is the Full Stack and Why Would I Want It?
+## 💡 What Is the Full Stack and Why Would You Want It?
 
 While our modular stacks (`media-server`, `arr-stack`, `music-server`, `photo-backup`, `book-reader`, `cloud-storage`) allow you to boot services one by one, experienced system administrators often prefer a single master compose file (`docker-compose.yml`) that boots their entire household infrastructure simultaneously.
 
@@ -105,5 +105,5 @@ With all your applications running smoothly on internal ports, let's configure e
 
 ## 🔧 Troubleshooting
 
-- **Issue: My server slows down or freezes briefly when starting `docker compose up -d`.**
+- **Issue: Your server slows down or freezes briefly when starting `docker compose up -d`.**
   - **Solution:** Booting 15 containers simultaneously creates a momentary CPU and disk I/O spike as databases (`PostgreSQL` and `MariaDB`) format system tables and web servers initialize. Give the system 60–90 seconds to settle before accessing dashboards or running diagnostic checkers.

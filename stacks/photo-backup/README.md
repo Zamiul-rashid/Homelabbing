@@ -1,11 +1,11 @@
 # Immich Photo & Video Backup — High-Performance Self-Hosted Cloud Gallery
 
 ## 🎯 What You'll Have When You're Done
-When you complete this guide, you will have a cutting-edge, self-hosted photo and video backup server running locally on your hardware with native mobile apps for iOS and Android. Your entire lifetime photo library will automatically back up in full original quality directly from your smartphone over Wi-Fi, featuring local AI facial recognition, natural language object search (e.g., search "dog on beach"), interactive map albums, and zero cloud storage fees!
+When you complete this guide, you will have a self-hosted photo and video backup server running locally on your hardware with native mobile apps for iOS and Android. Your entire lifetime photo library will automatically back up in full original quality directly from your smartphone over Wi-Fi, featuring local AI facial recognition, natural language object search (e.g., search "dog on beach"), interactive map albums, and zero cloud storage fees!
 
 ---
 
-## 💡 What Is Immich and Why Would I Want It?
+## 💡 What Is Immich and Why Would You Want It?
 
 Storing thousands of photos and 4K videos on mobile devices quickly fills up local storage, and cloud backup providers like Google Photos, iCloud, and Amazon Photos charge ongoing monthly subscriptions for extra storage while sometimes compressing your memories.
 
@@ -125,5 +125,5 @@ Now that your media, music, and personal photos are securely hosted and backed u
 
 - **Issue: Mobile uploads hang or fail for large 4K video clips.**
   - **Solution:** If you are accessing Immich through a reverse proxy (`Nginx Proxy Manager` or Cloudflare) instead of directly via LAN, reverse proxies often enforce strict upload size limits (`client_max_body_size`). Ensure your Nginx Proxy Manager configuration for Immich explicitly enables `client_max_body_size 0;` or `50000M;` under Advanced Configuration!
-- **Issue: Machine learning search returns no results when I type words like 'dog' or 'mountain'.**
+- **Issue: Machine learning search returns no results when you type words like 'dog' or 'mountain'.**
   - **Solution:** Semantic search (`CLIP` embeddings) runs asynchronously after photos are uploaded. If you just uploaded 5,000 photos, the CPU may still be generating embeddings. Check progress under **Administration → Jobs → Smart Search**. Once complete, your natural language queries will work instantly!

@@ -5,7 +5,7 @@ When you complete this guide, you will have a blazing-fast, private cloud music 
 
 ---
 
-## 💡 What Is Navidrome and Why Would I Want It?
+## 💡 What Is Navidrome and Why Would You Want It?
 
 Commercial music streaming services like Spotify and Apple Music suffer from missing album versions, compressed audio bitrates, and sudden price increases. If you own a collection of CD rips or digital audio purchases, putting them on your phone usually means wrestling with cumbersome USB cables or running out of local mobile storage space.
 
@@ -119,7 +119,7 @@ With your movies and music sorted and streaming cleanly across your home, let's 
 
 ## 🔧 Troubleshooting
 
-- **Issue: My albums don't appear in Navidrome after starting.**
+- **Issue: Your albums don't appear in Navidrome after starting.**
   - **Solution:** Verify that your audio files are stored inside `/data/media/music` and check file permissions on the host system (`sudo chown -R $USER:$USER /data/media/music`). Then inside the Navidrome web UI, click the **Quick Scan** button in the top right to trigger a manual library index!
 - **Issue: Album covers appear blank or generic.**
   - **Solution:** Navidrome checks for embedded ID3/FLAC metadata tags first, then looks for `cover.jpg` or `folder.jpg` inside the album folder. Use a desktop tagging tool like MusicBrainz Picard on your computer to ensure your audio files have clean embedded artwork before copying them to `/data/media/music`.

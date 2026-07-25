@@ -5,7 +5,7 @@ When you complete this guide, you will have a complete, automated media acquisit
 
 ---
 
-## 💡 What Is the *Arr Stack and Why Would I Want It?
+## 💡 What Is the *Arr Stack and Why Would You Want It?
 
 Without automation, self-hosting media is tedious: you have to manually search indexers across the web, copy magnet links into torrent clients, wait for downloads, unzip files, manually rename them from messy release titles (`Movie.Title.2023.1080p.WEB-DL.x264.mkv` → `Movie Title (2023).mkv`), and move them into correct folders.
 
@@ -95,7 +95,7 @@ Open **Jellyseerr** (`http://YOUR_SERVER_IP:5055`), log in using your **Jellyfin
 
 ## 🧩 What's Next?
 
-With your automated video acquisition and streaming pipeline completely functional, let's explore high-speed personal music streaming so you can replace Spotify or Apple Music on your smartphone!
+With your automated video acquisition and streaming pipeline completely functional, configure high-speed personal music streaming so you can replace Spotify or Apple Music on your smartphone!
 
 👉 **Proceed to the [`music-server/`](../music-server/README.md) Stack**
 

@@ -68,7 +68,7 @@ To help you understand the purpose of all 25 containers defined inside [`docker-
 ### 📄 Productivity, Documents & Finance (`media_net` + `infra_net`)
 - **`paperless-ngx`:** An intelligent document management system. Scans PDF/image invoices and letters, performs automated OCR (Optical Character Recognition), extracts text, and organizes documents with machine learning tags.
 - **`redis`:** High-speed in-memory data store (`infra_net`). Powers the task queues and caching engines for both `paperless-ngx` and `watchtower`.
-- **`stirling-pdf`:** A robust locally-hosted PDF manipulation suite. Split, merge, compress, OCR, convert, and redact sensitive PDF files entirely on your own hardware without uploading data to third-party cloud tools.
+- **`stirling-pdf`:** A locally-hosted PDF manipulation suite. Split, merge, compress, OCR, convert, and redact sensitive PDF files entirely on your own hardware without uploading data to third-party cloud tools.
 - **`actual-budget`:** A local-first, privacy-focused personal finance and budgeting system based on the envelope budgeting method.
 
 ### 🏠 Smart Home Automation & Network Core (`media_net`)

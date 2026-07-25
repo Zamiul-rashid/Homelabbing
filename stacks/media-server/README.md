@@ -5,7 +5,7 @@ When you complete this guide, you will have a fully functional media streaming s
 
 ---
 
-## 💡 What Is Jellyfin and Why Would I Want It?
+## 💡 What Is Jellyfin and Why Would You Want It?
 
 Commercial streaming services are becoming increasingly fragmented, expensive, and restrictive. Content disappears every month due to shifting licensing deals, and streaming quality is often heavily compressed.
 
@@ -109,7 +109,7 @@ Now that your media server is streaming smoothly, nobody wants to manually downl
 
 ## 🔧 Troubleshooting
 
-- **Issue: Jellyfin cannot see my movie files inside `/data/media/movies`.**
+- **Issue: Jellyfin cannot see your movie files inside `/data/media/movies`.**
   - **Solution:** Check your Linux folder ownership! If `/data/media` is owned by root, Jellyfin running under your `PUID` (`1000`) will get permission denied errors. Run `sudo chown -R $USER:$USER /data/media` and scan your library again inside Jellyfin settings.
-- **Issue: Video playback stutters when watching on my smartphone or external browser.**
+- **Issue: Video playback stutters when watching on your smartphone or external browser.**
   - **Solution:** High-bitrate 4K HDR files require transcoding when streamed to devices that don't natively support video codecs like H.265. If you have an Intel CPU with QuickSync, go to **Dashboard → Playback** and enable **Intel QuickSync (QSV)** hardware transcoding.
