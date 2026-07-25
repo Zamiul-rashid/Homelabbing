@@ -26,46 +26,46 @@ whatNow:
 import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
-## What You'll Have When Done
-A fast, beautiful reading server that organizes your EPUB novels, comic archives (CBZ/CBR), manga, and PDFs. You can read right in your web browser across any tablet or laptop, or sync reading progress and bookmarks natively across external OPDS e-readers!
+## What I Ended Up With
+A fast, beautiful reading server that organized my EPUB novels, comic archives (CBZ/CBR), manga, and PDFs. I could read right in my web browser across any tablet or laptop, or sync my reading progress and bookmarks natively across external OPDS e-readers.
 
 <UIMockup title="Kavita Digital Library" url="http://192.168.1.100:5000/login" type="library" />
 
-## Why Choose Kavita?
+## Why I Chose Kavita
 
-Digital book marketplaces often lock purchases into DRM-protected apps or revoke access when licensing rights change. Kavita gives you complete ownership of your personal digital library with lightning-fast page loading and cross-device bookmark syncing.
+Digital book marketplaces often lock purchases into DRM-protected apps or revoke access when licensing rights change. Kavita gave me complete ownership of my personal digital library with lightning-fast page loading and cross-device bookmark syncing.
 
 <ProConTable
   pros={[
-    "Supports EPUB, CBZ, CBR, PDF, and manga archives with zero conversion required.",
-    "Built-in web reader optimized for both desktop monitors and touch-based tablets.",
-    "Full OPDS server support so third-party mobile e-readers can browse and download books.",
-    "Integrated user management so family members have independent reading progress and bookmarks."
+    "Supported EPUB, CBZ, CBR, PDF, and manga archives with zero conversion required.",
+    "Built-in web reader optimized for both my desktop monitors and touch-based tablets.",
+    "Full OPDS server support so my third-party mobile e-readers could browse and download books.",
+    "Integrated user management so my family members had independent reading progress and bookmarks."
   ]}
   cons={[
-    "Requires proper folder structures or ComicInfo.xml tags for accurate series grouping.",
-    "Does not convert proprietary DRM-protected formats (you must provide DRM-free files).",
-    "First-time indexing of massive multi-thousand volume manga libraries can take several minutes."
+    "Required proper folder structures or ComicInfo.xml tags for accurate series grouping.",
+    "Did not convert proprietary DRM-protected formats (I had to provide DRM-free files).",
+    "First-time indexing of my massive multi-thousand volume manga libraries took several minutes."
   ]}
 />
 
 ---
 
-## Onboarding & Library Setup
+## How I Set It Up
 
 ### 1. Launching the Container
-Once your books and comics are placed in `/data/media/books` and `/data/media/comics`, run `docker compose up -d` in `stacks/book-reader/`:
+Once my books and comics were placed in `/data/media/books` and `/data/media/comics`, I ran `docker compose up -d` in `stacks/book-reader/`:
 ```bash
 cd stacks/book-reader
 docker compose up -d
 ```
 
-### 2. Creating Your Admin Account
-Open `http://YOUR_SERVER_IP:5000` in your web browser. You will be greeted by the initial setup screen where you create your admin profile username and password.
+### 2. Creating My Admin Account
+I opened `http://YOUR_SERVER_IP:5000` in my web browser. I was greeted by the initial setup screen where I created my admin profile username and password.
 
-### 3. Adding Your Libraries
-1. In the Kavita dashboard, click **Server Settings (Gear icon)** → **Libraries** → **+ Add Library**.
-2. **Name:** enter `Books` or `Comics`.
-3. **Type:** choose `Book` for novels/EPUBs, or `Comic/Manga` for CBZ/CBR archives.
-4. **Folders:** browse to `/data/media/books` (or `/data/media/comics`), select the folder, and click **Save**.
-5. Kavita will perform a lightning-fast background scan and build your digital bookshelf!
+### 3. Adding My Libraries
+1. In the Kavita dashboard, I clicked **Server Settings (Gear icon)** → **Libraries** → **+ Add Library**.
+2. **Name:** I entered `Books` or `Comics`.
+3. **Type:** I chose `Book` for novels/EPUBs, or `Comic/Manga` for CBZ/CBR archives.
+4. **Folders:** I browsed to `/data/media/books` (or `/data/media/comics`), selected the folder, and clicked **Save**.
+5. Kavita performed a lightning-fast background scan and built my digital bookshelf!

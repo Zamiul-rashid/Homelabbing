@@ -26,47 +26,47 @@ whatNow:
 import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
-## What You'll Have When Done
-A blazing-fast, private music server that indexes your entire FLAC, MP3, and ALAC audio collection. You can stream lossless audio directly from any web browser or connect dozens of sleek third-party mobile apps (`Symfonium`, `Substreamer`, `Amperfy`) for offline downloading, smart playlists, and scrobbling without monthly subscription fees.
+## What I Ended Up With
+A blazing-fast, private music server that indexed my entire FLAC, MP3, and ALAC audio collection. I could stream lossless audio directly from any web browser or connect sleek third-party mobile apps (`Symfonium`, `Substreamer`, `Amperfy`) for offline downloading, smart playlists, and scrobbling without monthly subscription fees.
 
 <UIMockup title="Navidrome Audio Cloud" url="http://192.168.1.100:4533/login" type="login" />
 
-## Why Choose Navidrome?
+## Why I Chose Navidrome
 
-Audio streaming platforms compress your music, remove classic albums due to licensing disputes, and charge recurring monthly fees. Navidrome runs on less than 50 MB of RAM while serving bit-perfect audio directly from your hard drive.
+Audio streaming platforms compressed my music, removed classic albums due to licensing disputes, and charged recurring monthly fees. Navidrome ran on less than 50 MB of RAM while serving bit-perfect audio directly from my hard drive.
 
 <ProConTable
   pros={[
-    "Extremely lightweight Go backend — starts in under 1 second and consumes minimal RAM.",
+    "Extremely lightweight Go backend — started in under 1 second and consumed minimal RAM.",
     "Full compatibility with the universal Subsonic API ecosystem (hundreds of mobile and desktop apps).",
-    "Supports multi-disc albums, lyrics, instant search, and automated background scanning.",
-    "Handles massive libraries (100,000+ tracks) without slowing down."
+    "Supported multi-disc albums, lyrics, instant search, and automated background scanning.",
+    "Handled my massive library (100,000+ tracks) without slowing down."
   ]}
   cons={[
-    "Requires providing and managing your own digital music collection.",
-    "Built-in web interface is clean and functional, but third-party apps are recommended for mobile use.",
-    "Does not include automated downloading by default (can be paired with Lidarr if desired)."
+    "Required me to provide and manage my own digital music collection.",
+    "Built-in web interface was clean and functional, but I had to rely on third-party apps for mobile use.",
+    "Did not include automated downloading by default (I had to pair it with Lidarr for that)."
   ]}
 />
 
 ---
 
-## Onboarding & Mobile App Connection
+## How I Set It Up
 
 ### 1. Launching the Container
-Once you place your audio files in `/data/media/music`, run `docker compose up -d` in `stacks/music-server/`:
+Once I placed my audio files in `/data/media/music`, I ran `docker compose up -d` in `stacks/music-server/`:
 ```bash
 cd stacks/music-server
 docker compose up -d
 ```
 
 ### 2. Initial Scan & Login
-Open `http://YOUR_SERVER_IP:4533`. Create your admin profile (`username` and `password`). Navidrome immediately begins scanning `/data/media/music` and populates your album art in seconds.
+I opened `http://YOUR_SERVER_IP:4533` and created my admin profile (`username` and `password`). Navidrome immediately began scanning `/data/media/music` and populated my album art in seconds.
 
-### 3. Recommended Mobile Clients
-Because Navidrome implements the industry-standard **Subsonic API**, you aren't forced into using a single proprietary app:
+### 3. Connecting My Mobile Apps
+Because Navidrome implemented the industry-standard **Subsonic API**, I wasn't forced into using a single proprietary app:
 
-- **Android:** We highly recommend **Symfonium** (unmatched equalizer, offline caching, and widget support) or **Substreamer** (free and minimalist).
-- **iOS:** We recommend **Amperfy** (free, designed to feel exactly like Apple Music) or **Substreamer**.
+- **Android:** I highly recommend **Symfonium** (unmatched equalizer, offline caching, and widget support) or **Substreamer** (free and minimalist).
+- **iOS:** I recommend **Amperfy** (free, designed to feel exactly like Apple Music) or **Substreamer**.
 
-To connect: open the app, enter `http://YOUR_SERVER_IP:4533` (or your domain/Tailscale URL), and sign in with your Navidrome credentials!
+To connect: I opened the app, entered `http://YOUR_SERVER_IP:4533` (or my domain/Tailscale URL), and signed in with my Navidrome credentials.

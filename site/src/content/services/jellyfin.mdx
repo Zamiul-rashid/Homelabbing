@@ -26,44 +26,44 @@ whatNow:
 import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
-## What You'll Have When Done
-A fully functional, 100% self-hosted media streaming server running locally on your hardware. You will be able to open any web browser, smart TV, or mobile app on your home network and instantly stream your high-definition video files with automatic poster art, cast details, and subtitles.
+## What I Ended Up With
+A fully functional, 100% self-hosted media streaming server running locally on my hardware. I was able to open any web browser, smart TV, or mobile app on my home network and instantly stream my high-definition video files with automatic poster art, cast details, and subtitles.
 
 <UIMockup title="Jellyfin Setup Wizard" url="http://192.168.1.100:8096/setup" type="wizard" />
 
-## Why Choose Jellyfin?
+## Why I Chose Jellyfin
 
-Unlike commercial streaming services that raise prices, remove favorite shows without warning, or lock you into proprietary ecosystems, Jellyfin puts **you** in complete control of your media library.
+Unlike commercial streaming services that raised prices, removed my favorite shows without warning, or locked me into proprietary ecosystems, Jellyfin put me in complete control of my media library.
 
 <ProConTable
   pros={[
     "100% Free and Open Source forever — zero subscription fees or premium paywalls.",
     "No telemetry, no tracking, and no external account sign-in required.",
-    "Hardware-accelerated transcoding for Intel QuickSync, NVIDIA, and AMD GPUs.",
+    "Hardware-accelerated transcoding for my Intel QuickSync CPU.",
     "Native apps across Roku, Apple TV, Android TV, LG webOS, iOS, and Android."
   ]}
   cons={[
-    "Requires providing your own media files (e.g., ripped DVDs/Blu-rays or personal videos).",
-    "Needs adequate CPU/GPU power if transcoding multiple 4K HDR streams simultaneously.",
-    "Remote access outside your home requires configuring a reverse proxy or Tailscale."
+    "Required me to provide my own media files (e.g., ripped DVDs/Blu-rays or personal videos).",
+    "Needed adequate CPU/GPU power when I tried transcoding multiple 4K HDR streams simultaneously.",
+    "Remote access outside my home required configuring a reverse proxy or Tailscale."
   ]}
 />
 
 ---
 
-## Step-by-Step Onboarding Walkthrough
+## How I Set It Up
 
 ### 1. Storage & Environment Setup
-Verify that your host machine has `/data/media` created. Place at least one test video file inside `/data/media/movies` so Jellyfin has something to index right away.
+I verified that my host machine had `/data/media` created. I placed a test video file inside `/data/media/movies` so Jellyfin had something to index right away.
 
 ```bash
-# Verify your UID and GID match your stacks/.env file
+# I verified my UID and GID matched my stacks/.env file
 id -u
 id -g
 ```
 
 ### 2. Launching the Container
-Navigate to the `media-server/` directory inside `stacks/` and launch the stack:
+I navigated to the `media-server/` directory inside `stacks/` and launched the stack:
 
 ```bash
 cd stacks/media-server
@@ -71,14 +71,14 @@ docker compose up -d
 ```
 
 ### 3. First-Time UI Setup Walkthrough
-Once running, open your web browser to `http://YOUR_SERVER_IP:8096` and follow these 6 straightforward steps:
+Once running, I opened my web browser to `http://YOUR_SERVER_IP:8096` and followed these 6 straightforward steps:
 
-1. **Language Selection:** Choose **English** (or your native language) and click **Next**.
-2. **Admin Account Creation:** Enter your preferred admin username and a strong password.
-3. **Add Media Libraries:** Click **+ Add Media Library**:
-   - **Content type:** Select `Movies`.
-   - **Folders:** Click `+` and choose `/data/media/movies` (or `/data/media`).
-   - Click **OK** and then **Next**.
-4. **Metadata Settings:** Leave preferred language and country at defaults so Jellyfin automatically fetches movie posters, ratings, and plot summaries from TMDB.
-5. **Remote Access:** Leave **Allow remote connections to this server** checked. Click **Next**, then **Finish**.
-6. Sign in with your new credentials and enjoy your personal Netflix!
+1. **Language Selection:** I chose **English** and clicked **Next**.
+2. **Admin Account Creation:** I entered my preferred admin username and a strong password.
+3. **Add Media Libraries:** I clicked **+ Add Media Library**:
+   - **Content type:** I selected `Movies`.
+   - **Folders:** I clicked `+` and chose `/data/media/movies` (or `/data/media`).
+   - I clicked **OK** and then **Next**.
+4. **Metadata Settings:** I left preferred language and country at defaults so Jellyfin automatically fetched movie posters, ratings, and plot summaries from TMDB.
+5. **Remote Access:** I left **Allow remote connections to this server** checked. I clicked **Next**, then **Finish**.
+6. I signed in with my new credentials and enjoyed my personal Netflix!

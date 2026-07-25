@@ -26,26 +26,26 @@ whatNow:
 import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
-## What You'll Have When Done
-An automated media pipeline where browsing and requesting a movie or TV show on **Jellyseerr** automatically triggers search indexers in **Prowlarr**, sends the optimal quality torrent to **qBittorrent**, monitors progress in **Radarr/Sonarr**, and cleanly renames and moves the finished file straight into `/data/media` for Jellyfin to stream!
+## What I Ended Up With
+I built an automated media pipeline. When I browsed and requested a movie or TV show on **Jellyseerr**, it automatically triggered search indexers in **Prowlarr**, sent the optimal quality torrent to **qBittorrent**, monitored progress in **Radarr/Sonarr**, and cleanly renamed and moved the finished file straight into `/data/media` for Jellyfin to stream.
 
 <UIMockup title="Jellyseerr Media Portal" url="http://192.168.1.100:5055/requests" type="library" />
 
-## Why Use the *arr Suite?
+## Why I Used the *arr Suite
 
-Gone are the days of hunting down torrents on sketchy websites, manually unzipping files, fixing confusing file names like `Movie.2023.1080p.WEB-DL.x264.AC3-EVO.mkv`, and dragging them across folders.
+I was completely done hunting down torrents on sketchy websites, manually unzipping files, fixing confusing file names like `Movie.2023.1080p.WEB-DL.x264.AC3-EVO.mkv`, and dragging them across folders.
 
 <ProConTable
   pros={[
-    "Fully hands-off automation — request a movie once and it appears in Jellyfin within minutes.",
-    "Centralized indexer synchronization via Prowlarr across all your apps.",
-    "Automatic quality upgrades (e.g., replace a 720p WEB-DL with a 4K Remux automatically when released).",
+    "Fully hands-off automation — I requested a movie once and it appeared in Jellyfin within minutes.",
+    "Centralized indexer synchronization via Prowlarr across all my apps.",
+    "Automatic quality upgrades (e.g., replacing a 720p WEB-DL with a 4K Remux automatically when released).",
     "Beautiful family-friendly request UI (Jellyseerr) with Jellyfin single sign-on."
   ]}
   cons={[
-    "Initial configuration takes ~15 minutes to link API keys between all containers.",
-    "Requires understanding folder mapping principles (`/data/downloads` vs `/data/media`).",
-    "Requires a reliable internet connection and appropriate indexer sources."
+    "Initial configuration took me ~15 minutes to link API keys between all the containers.",
+    "Required me to really understand folder mapping principles (`/data/downloads` vs `/data/media`).",
+    "Required a reliable internet connection and appropriate indexer sources."
   ]}
 />
 
@@ -53,39 +53,39 @@ Gone are the days of hunting down torrents on sketchy websites, manually unzippi
 
 ## The 5 Synchronized Containers
 
-When you run this stack, you unlock five specialized tools working in harmony inside `stacks/arr-stack/`:
+When I ran this stack, I unlocked five specialized tools working in harmony inside `stacks/arr-stack/`:
 
 1. **qBittorrent (`:8080`)** — High-performance download engine with web interface and hardlink support.
-2. **Prowlarr (`:9696`)** — Indexer manager that syncs search providers directly to Radarr and Sonarr.
+2. **Prowlarr (`:9696`)** — Indexer manager that synced search providers directly to Radarr and Sonarr.
 3. **Radarr (`:7878`)** — Movie monitoring, searching, downloading, and automated renaming.
 4. **Sonarr (`:8989`)** — TV show and anime monitoring with season/episode tracking.
-5. **Jellyseerr (`:5055`)** — Request portal where family and friends can discover and request content.
+5. **Jellyseerr (`:5055`)** — Request portal where family and friends could discover and request content.
 
 ---
 
-## Step-by-Step Configuration Guide
+## How I Configured It
 
 ### 1. Launching the Stack
-Navigate to `stacks/arr-stack/` and start all 5 containers:
+I navigated to `stacks/arr-stack/` and started all 5 containers:
 ```bash
 cd stacks/arr-stack
 docker compose up -d
 ```
 
 ### 2. Connecting Prowlarr (`http://YOUR_IP:9696`)
-1. Click **Add Indexer**, search for public indexers (e.g., `1337x`, `EZTV`), and click **Save**.
-2. Go to **Settings → Apps → + Add**:
-   - Add **Radarr** (`http://radarr:7878`) and paste your Radarr API key (found in Radarr under Settings → General).
-   - Add **Sonarr** (`http://sonarr:8989`) and paste your Sonarr API key.
-3. Click **Sync App Indexers** — your search providers are now automatically linked!
+1. I clicked **Add Indexer**, searched for public indexers (e.g., `1337x`, `EZTV`), and clicked **Save**.
+2. I went to **Settings → Apps → + Add**:
+   - Added **Radarr** (`http://radarr:7878`) and pasted my Radarr API key (found in Radarr under Settings → General).
+   - Added **Sonarr** (`http://sonarr:8989`) and pasted my Sonarr API key.
+3. I clicked **Sync App Indexers** — my search providers were automatically linked.
 
 ### 3. Linking Radarr & Sonarr to qBittorrent
 In both Radarr (`http://YOUR_IP:7878`) and Sonarr (`http://YOUR_IP:8989`):
-1. Go to **Settings → Download Clients → + Add → qBittorrent**:
+1. I went to **Settings → Download Clients → + Add → qBittorrent**:
    - **Host:** `qbittorrent`
    - **Port:** `8080`
-2. Click **Test** and **Save**.
+2. I clicked **Test** and **Save**.
 
 ### 4. Connecting Jellyseerr (`http://YOUR_IP:5055`)
-1. Open the Jellyseerr dashboard and log in using your Jellyfin account (`http://jellyfin:8096`).
-2. Add your Radarr (`http://radarr:7878`) and Sonarr (`http://sonarr:8989`) endpoints using their API keys. You're ready to request!
+1. I opened the Jellyseerr dashboard and logged in using my Jellyfin account (`http://jellyfin:8096`).
+2. I added my Radarr (`http://radarr:7878`) and Sonarr (`http://sonarr:8989`) endpoints using their API keys. Then I was ready to request!

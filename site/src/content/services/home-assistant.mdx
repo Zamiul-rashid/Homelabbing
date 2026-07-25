@@ -26,44 +26,44 @@ whatNow:
 import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
-## What You'll Have When Done
-A lightning-fast, privacy-first smart home hub running directly on your home server's network adapter (`port 8123`). Home Assistant automatically scans your Wi-Fi network to discover and pair with Apple HomeKit, Sonos, Google Cast, Philips Hue, and Zigbee/Z-Wave devices—allowing you to control everything from one single app even when your internet connection drops!
+## What I Ended Up With
+A lightning-fast, privacy-first smart home hub running directly on my home server's network adapter (`port 8123`). Home Assistant automatically scanned my Wi-Fi network to discover and pair with my Apple HomeKit, Sonos, Google Cast, Philips Hue, and Zigbee devices. This allowed me to control everything from one single app even when my internet connection dropped.
 
 <UIMockup title="Home Assistant Dashboard" url="http://192.168.1.100:8123/lovelace" type="wizard" />
 
-## Why Choose Home Assistant?
+## Why I Chose Home Assistant
 
-Commercial smart home gadgets routinely rely on cloud servers: when you press a switch on your wall, the signal travels to a data center across the country just to turn on the bulb above your head. Home Assistant executes your automations 100% locally with zero latency and complete privacy.
+Commercial smart home gadgets routinely relied on cloud servers: when I pressed a switch on my wall, the signal traveled to a data center across the country just to turn on the bulb above my head. I moved to Home Assistant so it executed my automations 100% locally with zero latency and complete privacy.
 
 <ProConTable
   pros={[
-    "Unconditional local control: automations run instantly and keep working during internet outages.",
-    "Universal compatibility with over 3,000+ integrations bridging incompatible smart home brands.",
-    "Runs on host networking (`network_mode: host`) so it auto-discovers local Wi-Fi devices effortlessly.",
+    "Unconditional local control: automations ran instantly and kept working during internet outages.",
+    "Universal compatibility with over 3,000+ integrations bridging incompatible smart home brands I owned.",
+    "Ran on host networking (`network_mode: host`) so it auto-discovered my local Wi-Fi devices effortlessly.",
     "Massive community ecosystem via HACS with custom UI themes and advanced logic blueprints."
   ]}
   cons={[
-    "Requires host networking (`network_mode: host`) which shares your server network stack directly.",
-    "First-time onboarding of complex Zigbee/Z-Wave networks may require a USB coordinator dongle.",
-    "Endless customization options can become addictive as you build more complex home automations!"
+    "Required host networking (`network_mode: host`) which shared my server network stack directly.",
+    "First-time onboarding of complex Zigbee/Z-Wave networks required me to buy a USB coordinator dongle.",
+    "Endless customization options became addictive as I built more complex home automations."
   ]}
 />
 
 ---
 
-## Onboarding & Setup Guide
+## How I Set It Up
 
 ### 1. Launching the Container
-Navigate to the `home-automation` stack directory and launch the compose stack:
+I navigated to the `home-automation` stack directory and launched the compose stack:
 ```bash
 cd stacks/home-automation
 docker compose up -d
 ```
 
 ### 2. First-Run Wizard
-Open `http://YOUR_SERVER_IP:8123` in your web browser. Home Assistant takes about 1–2 minutes on first boot to prepare its internal database and required dependencies. Once ready, follow the wizard to set your name, username, and home location (used for sunrise/sunset triggers).
+I opened `http://YOUR_SERVER_IP:8123` in my web browser. Home Assistant took about 1–2 minutes on first boot to prepare its internal database and required dependencies. Once it was ready, I followed the wizard to set my name, username, and home location (used for sunrise/sunset triggers).
 
-### 3. Pairing Your First Devices
-1. Once logged in, go to **Settings** → **Devices & Services**.
-2. Home Assistant automatically displays discovered devices on your network right under the **Discovered** banner!
-3. Click **Configure** on any device (such as Apple TV, Sonos, or Philips Hue) to pair it instantly without needing cloud accounts.
+### 3. Pairing My First Devices
+1. Once logged in, I went to **Settings** → **Devices & Services**.
+2. Home Assistant automatically displayed discovered devices on my network right under the **Discovered** banner.
+3. I clicked **Configure** on devices like my Apple TV, Sonos, or Philips Hue to pair them instantly without needing cloud accounts.

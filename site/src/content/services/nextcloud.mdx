@@ -26,14 +26,14 @@ whatNow:
 import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
-## What You'll Have When Done
-Your own private cloud storage hub accessible across Windows, Mac, Linux, iOS, and Android. You can sync documents across computers in real-time, share password-protected download links with clients or friends, edit office files, manage calendars, and keep your sensitive files stored safely on `/data/nextcloud` under your physical control.
+## What I Ended Up With
+My own private cloud storage hub accessible across Windows, Mac, Linux, iOS, and Android. I could sync documents across computers in real-time, share password-protected download links with clients or friends, edit office files, manage calendars, and keep my sensitive files stored safely on `/data/nextcloud` under my physical control.
 
 <UIMockup title="Nextcloud Workspace" url="https://192.168.1.100:4443/status.php" type="wizard" />
 
-## Why Choose Nextcloud?
+## Why I Chose Nextcloud
 
-Nextcloud is the industry-standard enterprise cloud replacement used by governments, universities, and privacy-conscious professionals worldwide. It gives you complete data sovereignty without sacrificing modern collaboration features.
+Public cloud providers like Google Drive, Microsoft OneDrive, and Dropbox continuously scanned my documents for automated policy enforcement, charged tiered monthly fees, and could suspend my accounts at any time. Nextcloud gave me complete data sovereignty without sacrificing modern collaboration features.
 
 <ProConTable
   pros={[
@@ -43,18 +43,18 @@ Nextcloud is the industry-standard enterprise cloud replacement used by governme
     "End-to-end encryption support and zero external cloud tracking."
   ]}
   cons={[
-    "Heavier resource footprint than simple file servers (benefits from 2 GB+ of dedicated RAM).",
-    "First startup takes ~1–2 minutes while MariaDB initializes database schema tables.",
-    "Requires HTTPS certificate for external public access (handled in our Option B/C guides)."
+    "Heavier resource footprint than simple file servers (benefited from 2 GB+ of dedicated RAM).",
+    "First startup took ~1–2 minutes while MariaDB initialized database schema tables.",
+    "Required an HTTPS certificate for external public access (handled in my Option B/C guides)."
   ]}
 />
 
 ---
 
-## Step-by-Step Installation Walkthrough
+## How I Set It Up
 
 ### 1. Launching Nextcloud & MariaDB
-Navigate to `stacks/cloud-storage/` and start the containers:
+I navigated to `stacks/cloud-storage/` and started the containers:
 
 ```bash
 cd stacks/cloud-storage
@@ -62,12 +62,12 @@ docker compose up -d
 ```
 
 ### 2. First-Time Wizard Configuration
-Open your browser to `https://YOUR_SERVER_IP:4443`. Note: Because LinuxServer Nextcloud generates an automatic self-signed SSL certificate on initial startup, your browser will show a standard warning (`Your connection is not private`). Click **Advanced → Proceed to YOUR_IP (unsafe)** to reach the wizard:
+I opened my browser to `https://YOUR_SERVER_IP:4443`. Because LinuxServer Nextcloud generated an automatic self-signed SSL certificate on initial startup, my browser showed a standard warning (`Your connection is not private`). I clicked **Advanced → Proceed to YOUR_IP (unsafe)** to reach the wizard:
 
-1. **Create Admin Account:** Enter your desired username and a strong password.
-2. **Database Configuration:** Our compose stack connects Nextcloud to MariaDB automatically! If prompted for database connection parameters:
+1. **Create Admin Account:** I entered my desired username and a strong password.
+2. **Database Configuration:** My compose stack connected Nextcloud to MariaDB automatically. If prompted for database connection parameters:
    - **Database user:** `nextcloud`
-   - **Database password:** Enter your `${DB_PASSWORD}` value from `.env`.
+   - **Database password:** I entered my `${DB_PASSWORD}` value from `.env`.
    - **Database name:** `nextcloud`
    - **Database host:** `nextcloud-db`
-3. Click **Install / Finish Setup** and wait (~1 minute) while Nextcloud initializes your personal cloud!
+3. I clicked **Install / Finish Setup** and waited (~1 minute) while Nextcloud initialized my personal cloud.
