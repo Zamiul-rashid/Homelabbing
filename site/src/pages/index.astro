@@ -69,7 +69,7 @@ import HealthTable from '../components/HealthTable.astro';
             <h2 class="text-4xl md:text-5xl font-black font-display tracking-tight text-text uppercase mb-6">STARTING A HOMELAB</h2>
             <div class="space-y-4 text-text-muted text-sm md:text-base leading-relaxed font-mono">
               <p>Homelabbing can be an overwhelming hobby to get started in. Browse places like <a href="https://www.reddit.com/r/homelab/" class="text-text hover:text-accent border-b border-border hover:border-accent transition-colors">r/homelab</a> and you will quickly find an abundance of large racks storing rows of computers and networking hardware, along with the odd smaller lab peppered in between. But the great thing about homelabbing is it can be as big, or more importantly, as small as you want.</p>
-              <p>In this post we’ll explore a range of options to get started, along with a variety of use cases, so let's dig in.</p>
+              <p>A breakdown of hardware options and use cases for starting a self-hosted homelab.</p>
             </div>
           </div>
 
@@ -81,7 +81,7 @@ import HealthTable from '../components/HealthTable.astro';
               <li class="flex gap-4"><span class="text-accent opacity-50 shrink-0">[2]</span> <span>To self host applications, reducing reliance on the cloud or big tech. Replacing Dropbox with Nextcloud, or firing up PiHole to block ads.</span></li>
             </ul>
             <div class="mt-8 pt-6 border-t border-border/50 text-text-muted text-sm font-mono italic pl-4 border-l-2 border-border">
-              "I generally fall into the latter, opting to self host a suite of applications, maintaining control over my data. It’s convenient having an environment to quickly spin up a docker image."
+              "Self-hosting provides direct control over data and a flexible environment to rapidly deploy containerized services."
             </div>
           </div>
 
@@ -201,7 +201,7 @@ import HealthTable from '../components/HealthTable.astro';
           <span class="text-xs font-mono uppercase tracking-widest text-accent mb-2 block">Architecture First Foundation</span>
           <h2 class="text-3xl font-black font-display uppercase tracking-tight text-text">A Modular Ecosystem & Guide</h2>
           <p class="text-text-muted text-sm font-mono mt-4 leading-relaxed">
-            Welcome to a modular Docker Compose ecosystem and guide for beginners building self-hosted home servers. We believe in understanding architecture over magic scripts. First understand the architecture, then implement. Explore our conceptual guides breaking down ports, container volumes, networking, smart home automation, and ad blocking.
+            A modular Docker Compose reference architecture and guide for self-hosted home servers. Designed around understanding core architecture over magic scripts. Conceptual guides cover container networking, volume persistence, reverse proxy routing, and service security.
           </p>
         </div>
         <a href="/Homelabbing/concepts" class="btn-primary shrink-0 text-sm">
@@ -217,7 +217,7 @@ import HealthTable from '../components/HealthTable.astro';
       <div class="max-w-3xl mb-12">
         <span class="text-xs font-mono uppercase tracking-widest text-accent mb-2 block">Project Audit</span>
         <h2 class="text-4xl font-black font-display uppercase tracking-tight text-text">State of the Repository</h2>
-        <p class="text-text-muted font-mono text-sm mt-4">An overview of our structure, maintainability, and security practices.</p>
+        <p class="text-text-muted font-mono text-sm mt-4">An overview of repository structure, maintainability, and security practices.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="spec-sheet p-8 group transition-colors animate-fade-up" style="animation-delay: 0.1s;">
@@ -226,7 +226,7 @@ import HealthTable from '../components/HealthTable.astro';
         </div>
         <div class="spec-sheet p-8 group transition-colors animate-fade-up" style="animation-delay: 0.2s;">
           <h3 class="text-lg font-bold font-mono text-text mb-3 uppercase">Architecture & Maintainability</h3>
-          <p class="text-sm font-mono text-text-muted leading-relaxed">We use the <code class="text-accent bg-bg px-1 py-0.5 border border-border">.env.example</code> pattern across all stacks and employ read-only mounts to ensure data safety.</p>
+          <p class="text-sm font-mono text-text-muted leading-relaxed">Employs the <code class="text-accent bg-bg px-1 py-0.5 border border-border">.env.example</code> pattern across all stacks and uses read-only mounts to ensure data safety.</p>
         </div>
         <div class="spec-sheet p-8 group transition-colors animate-fade-up" style="animation-delay: 0.3s;">
           <h3 class="text-lg font-bold font-mono text-text mb-3 uppercase">Security Best Practices</h3>
@@ -248,7 +248,7 @@ import HealthTable from '../components/HealthTable.astro';
           <span class="text-xs font-mono uppercase tracking-widest text-accent mb-2 block">Modular Stacks</span>
           <h2 class="text-4xl font-black font-display uppercase tracking-tight text-text">Pick Where You Want to Start</h2>
           <p class="text-text-muted font-mono text-sm mt-4 max-w-2xl">
-            Explore our modular stacks. Each application lives in its own dedicated folder.
+            Modular Docker stacks organized by function. Each application resides in a dedicated directory.
           </p>
         </div>
         <a href="/Homelabbing/services" class="text-accent hover:text-text font-mono text-sm flex items-center gap-2 shrink-0 transition-colors border-b border-accent hover:border-text pb-0.5">
@@ -267,11 +267,11 @@ import HealthTable from '../components/HealthTable.astro';
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
         {[
           { title: "Main README & Stacks Hub", desc: "Core philosophy and an overview of all modular components in the repository." },
-          { title: "Media Server", desc: "Stream your media everywhere using Jellyfin." },
+          { title: "Media Server", desc: "Stream media across devices using Jellyfin." },
           { title: "*Arr Stack", desc: "Automated downloads. Uses shared parent directory mounts for zero-copy hardlinking." },
           { title: "Music Server", desc: "Personal music streaming with Navidrome." },
           { title: "Photo Backup", desc: "4-container Google Photos alternative (Immich) with local AI facial recognition." },
-          { title: "Book Reader", desc: "Host and read your manga/ebooks using Kavita." },
+          { title: "Book Reader", desc: "Host and read digital manga and ebooks using Kavita." },
           { title: "Cloud Storage", desc: "Self-hosted private cloud storage with Nextcloud." },
           { title: "Home Automation", desc: "Smart home control running on Home Assistant." },
           { title: "Networking", desc: "Includes Tailscale and Cloudflare options for secure external access without port forwarding." }
@@ -312,7 +312,7 @@ import HealthTable from '../components/HealthTable.astro';
         <span class="text-xs font-mono uppercase tracking-widest text-accent mb-2 block">Live Monitoring</span>
         <h2 class="text-4xl font-black font-display uppercase tracking-tight text-text">Check All Your Ports in One Command</h2>
         <p class="text-text-muted font-mono text-sm mt-4 leading-relaxed">
-          Our diagnostic checker queries container states across all homelab service endpoints (<code class="text-accent">http://YOUR_SERVER_IP:PORT</code>) and reports container health directly in your terminal.
+          The diagnostic script queries container states across all homelab service endpoints (<code class="text-accent">http://YOUR_SERVER_IP:PORT</code>) and reports container health directly in the terminal.
         </p>
       </div>
 
@@ -333,7 +333,7 @@ import HealthTable from '../components/HealthTable.astro';
         Ready to Build Your Private Home Cloud?
       </h2>
       <p class="text-text-muted font-mono max-w-2xl mx-auto mt-8 text-sm leading-relaxed">
-        Join thousands of privacy enthusiasts taking back their data. All Docker Compose blueprints, environment templates, and concept guides are 100% free and open source. Looking for more self-hosted community services and products? Check out the <a href="https://www.awesome-homelab.com/" target="_blank" class="text-accent hover:text-text border-b border-accent hover:border-text transition-colors pb-0.5">Awesome-Homelab</a> directory.
+        Docker Compose blueprints, environment templates, and architecture guides for self-hosting. For additional community services, explore the <a href="https://www.awesome-homelab.com/" target="_blank" class="text-accent hover:text-text border-b border-accent hover:border-text transition-colors pb-0.5">Awesome-Homelab</a> directory.
       </p>
       
       <div class="mt-12 flex flex-wrap justify-center gap-4">

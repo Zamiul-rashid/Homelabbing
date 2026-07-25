@@ -8,14 +8,14 @@ import { services } from '../data/services';
 
 <PageLayout
   title="Getting Started Guide & Modular Architecture"
-  description="Follow our practical 3-step setup to understand the architecture, configure, and launch your personal home server using Docker Compose."
+  description="Practical 3-step setup to understand architecture, configure environment variables, and launch home server stacks using Docker Compose."
 >
   <div class="space-y-12">
     <!-- Intro Banner -->
     <section class="glass p-8 border border-accent/40 bg-gradient-to-br from-bg-surface via-bg-surface to-accent/5">
-      <h2 class="text-2xl font-bold text-text mt-0">How Our Modular Architecture Works</h2>
+      <h2 class="text-2xl font-bold text-text mt-0">Modular Architecture Principles</h2>
       <p class="text-text-muted leading-relaxed mb-6">
-        We believe in understanding your system: <strong>Architecture First, Then Implement.</strong> Instead of blind automation scripts that hide what is happening under the hood, our repository is structured into completely standalone, heavily commented application stacks inside the <code>stacks/</code> directory so you understand how ports, networks, and storage volumes work while building your cloud.
+        Built around an <strong>Architecture First</strong> methodology. Rather than utilizing black-box scripts, the repository is organized into standalone, heavily commented application stacks inside the <code>stacks/</code> directory to demonstrate port bindings, container networking, and volume storage.
       </p>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans not-prose">
@@ -45,7 +45,7 @@ import { services } from '../data/services';
       </p>
       <CodeBlock
         title="bash — Repository Cloning & Storage Setup"
-        code={`git clone https://github.com/Zamiul-rashid/Homelabbing.git\ncd Homelabbing\n\n# Create our standard directory tree for movies, TV, music, books, photos, and cloud storage\nsudo mkdir -p /data/media/{movies,tv,music,books,comics,photos} /data/downloads/{incomplete,complete} /data/nextcloud\n\n# Assign ownership to your current Linux user\nsudo chown -R $USER:$USER /data`}
+        code={`git clone https://github.com/Zamiul-rashid/Homelabbing.git\ncd Homelabbing\n\n# Create standard directory tree for movies, TV, music, books, photos, and cloud storage\nsudo mkdir -p /data/media/{movies,tv,music,books,comics,photos} /data/downloads/{incomplete,complete} /data/nextcloud\n\n# Assign ownership to your current Linux user\nsudo chown -R $USER:$USER /data`}
       />
       <div class="p-4 rounded-xl bg-blue-950/20 border border-blue-500/30 text-xs text-blue-200 not-prose mt-4">
         <strong>Why `/data`?</strong> By keeping your media and download directories under the same parent folder path (`/data`), download clients like qBittorrent and organizers like Radarr can perform instantaneous, zero-copy hardlinks—saving hard disk space and CPU cycles.
@@ -107,7 +107,7 @@ import { services } from '../data/services';
     <section>
       <h2>5. Health Checking Across All Ports</h2>
       <p>
-        To verify that all containers are running cleanly without error loops or database connection timeouts, run our diagnostic health checker from the repository root at any time:
+        To verify that all containers are running cleanly without error loops or database connection timeouts, execute the diagnostic health checker script from the repository root:
       </p>
       <CodeBlock
         title="bash — Automated Health Diagnostics"

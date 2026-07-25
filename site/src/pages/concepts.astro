@@ -4,7 +4,7 @@ import PageLayout from '../layouts/PageLayout.astro';
 
 <PageLayout
   title="Core Architecture & Foundational Guides"
-  description="Master the fundamental principles of self-hosting, Linux administration, Docker containers, networking, and storage with our 8 foundational concept guides."
+  description="Fundamental principles of self-hosting, Linux administration, Docker containers, networking, and storage across 8 foundational concept guides."
 >
   <div class="space-y-12">
     <!-- Intro Section -->
@@ -12,9 +12,9 @@ import PageLayout from '../layouts/PageLayout.astro';
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-accent text-xs font-mono mb-4">
         <span>Architecture First &bull; Knowledge Base</span>
       </div>
-      <h2 class="text-2xl font-bold text-text mt-0">🧠 Understand the Architecture First, Then Implement</h2>
+      <h2 class="text-2xl font-bold text-text mt-0">🧠 Architecture-First Reference Design</h2>
       <p class="text-text-muted leading-relaxed mb-0">
-        Most homelab tutorials give you complex terminal commands to copy and paste or run blind scripts without explaining what they do. When something breaks at 2:00 AM, you are left helpless. We believe in learning on your own terms: <strong>first understand the architecture, then implement.</strong> We break down ports, volume bind mounts, and container networks into clear, practical explanations so you can run, troubleshoot, and scale your home server independently.
+        Designed around understanding system architecture over black-box automation scripts. These reference guides break down container port mapping, volume bind mounts, and container networking into clear explanations to enable independent operation, troubleshooting, and scaling of home servers.
       </p>
     </section>
 
@@ -106,7 +106,7 @@ import PageLayout from '../layouts/PageLayout.astro';
             </div>
             <h3 class="text-lg font-bold text-text group-hover:text-amber-400 transition-colors">Storage, Disks & NAS Concepts</h3>
             <p class="text-xs text-text-muted mt-2 leading-relaxed">
-              Understand hard drive pooling (`mergerfs`), parity protection (`SnapRAID`), ZFS basics, folder permissions (`chown`/`chmod`), and why our `/data` tree allows zero-copy hardlinking.
+              Understand hard drive pooling (`mergerfs`), parity protection (`SnapRAID`), ZFS basics, folder permissions (`chown`/`chmod`), and why the `/data` tree enables zero-copy hardlinking.
             </p>
           </div>
           <div class="mt-6 flex items-center gap-1 text-xs font-semibold text-amber-400 group-hover:translate-x-1 transition-transform">
