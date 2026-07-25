@@ -3,17 +3,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg:       { DEFAULT: '#0a0e1a', surface: '#111827', elevated: '#1f2937' },
-        accent:   { DEFAULT: '#6366f1', hover: '#4f46e5', muted: '#312e81' },
-        success:  { DEFAULT: '#10b981', muted: '#064e3b' },
-        warning:  { DEFAULT: '#f59e0b' },
-        text:     { DEFAULT: '#f1f5f9', muted: '#94a3b8', faint: '#475569' },
-        border:   { DEFAULT: '#1f2937', accent: '#6366f1' },
-        terminal: { bg: '#0d1117', green: '#39d353', text: '#e6edf3' },
+        bg:       { DEFAULT: '#08090A', surface: '#1C1E22', elevated: '#2A2D32' },
+        primary:  { DEFAULT: '#121417' },
+        accent:   { DEFAULT: '#FF5C00', hover: '#FF7A2F', muted: '#662500' },
+        success:  { DEFAULT: '#00E559', muted: '#005C23' },
+        warning:  { DEFAULT: '#FFB800' },
+        text:     { DEFAULT: '#F0F2F5', muted: '#8A919E', faint: '#565E6D' },
+        border:   { DEFAULT: '#2D313A', accent: '#FF5C00' },
+        terminal: { bg: '#08090A', green: '#00E559', text: '#F0F2F5' },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        display: ['"Clash Display"', 'system-ui', 'sans-serif'],
+        sans: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
+      boxShadow: {
+        'module': 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.5)',
+        'module-active': 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px #FF5C00, 0 8px 24px -4px rgba(255, 92, 0, 0.2)',
       },
       animation: {
         'fade-up':      'fadeUp 0.6s ease-out forwards',

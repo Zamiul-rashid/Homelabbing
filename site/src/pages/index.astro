@@ -28,11 +28,11 @@ import HealthTable from '../components/HealthTable.astro';
       </p>
 
       <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-fade-up" style="animation-delay: 0.2s;">
-        <a href="/Homelabbing/getting-started" class="btn-primary text-base shadow-[0_0_30px_rgba(99,102,241,0.3)]">
-          Explore Getting Started Guide 🚀
+        <a href="/Homelabbing/getting-started" class="btn-primary text-base">
+          INITIALIZE SETUP 🚀
         </a>
         <a href="/Homelabbing/concepts" class="btn-secondary text-base">
-          Read Architecture & Concepts →
+          VIEW ARCHITECTURE →
         </a>
       </div>
 
@@ -55,7 +55,7 @@ import HealthTable from '../components/HealthTable.astro';
           </p>
         </div>
         <a href="/Homelabbing/concepts" class="btn-primary shrink-0">
-          Browse All Guides →
+          BROWSE GUIDES →
         </a>
       </div>
     </div>
@@ -70,21 +70,21 @@ import HealthTable from '../components/HealthTable.astro';
         <p class="text-text-muted text-sm mt-2">An overview of our structure, maintainability, and security practices.</p>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-          <h3 class="text-xl font-bold text-text mb-2">Structure & Organization</h3>
-          <p class="text-sm text-text-muted">The project is 100% modular, with heavily commented <code>stacks/</code> directories. Documentation quality focuses on architecture-first conceptual guides.</p>
+        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.1s;">
+          <h3 class="text-xl font-black text-text mb-2">Structure & Organization</h3>
+          <p class="text-sm text-text-muted">The project is 100% modular, with heavily commented <code class="font-mono text-accent bg-bg/50 px-1 rounded">stacks/</code> directories. Documentation quality focuses on architecture-first conceptual guides.</p>
         </div>
-        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-          <h3 class="text-xl font-bold text-text mb-2">Architecture & Maintainability</h3>
-          <p class="text-sm text-text-muted">We use the <code>.env.example</code> pattern across all stacks and employ read-only mounts to ensure data safety.</p>
+        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.2s;">
+          <h3 class="text-xl font-black text-text mb-2">Architecture & Maintainability</h3>
+          <p class="text-sm text-text-muted">We use the <code class="font-mono text-accent bg-bg/50 px-1 rounded">.env.example</code> pattern across all stacks and employ read-only mounts to ensure data safety.</p>
         </div>
-        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-          <h3 class="text-xl font-bold text-text mb-2">Security Best Practices</h3>
+        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.3s;">
+          <h3 class="text-xl font-black text-text mb-2">Security Best Practices</h3>
           <p class="text-sm text-text-muted">Tailscale and Cloudflare options are provided for secure external access without needing port forwarding.</p>
         </div>
-        <div class="glass p-6 rounded-2xl border border-accent/50 bg-accent/5 group hover:border-accent transition-colors">
-          <h3 class="text-xl font-bold text-text mb-2 text-accent">Improvement Area</h3>
-          <p class="text-sm text-text-muted">Currently, there is an overuse of <code>:latest</code> image tags in <code>docker-compose.yml</code> files, which can lead to breaking changes upon auto-updates.</p>
+        <div class="glass p-6 border-accent/50 bg-accent/5 group transition-colors animate-fade-up" style="animation-delay: 0.4s;">
+          <h3 class="text-xl font-black text-accent mb-2">Improvement Area</h3>
+          <p class="text-sm text-text-muted">Currently, there is an overuse of <code class="font-mono text-accent bg-bg/50 px-1 rounded">:latest</code> image tags in <code class="font-mono text-accent bg-bg/50 px-1 rounded">docker-compose.yml</code> files, which can lead to breaking changes upon auto-updates.</p>
         </div>
       </div>
     </div>
@@ -107,9 +107,9 @@ import HealthTable from '../components/HealthTable.astro';
       <!-- DIAGRAM_PLACEHOLDER: hardware-options — NO MATCHING SOURCE DIAGRAM FOUND, needs a new diagram created or manual placement -->
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-          <h3 class="text-xl font-bold text-text">Old or Spare Computer</h3>
-          <p class="text-xs text-text-faint font-mono mt-1">Price: Free</p>
+        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.1s;">
+          <h3 class="text-xl font-black text-text">Old or Spare Computer</h3>
+          <p class="text-xs text-accent font-mono font-bold mt-1 uppercase tracking-wider">Price: Free</p>
           <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
             <li>Docker server for self-hosting</li>
             <li>Hypervisor (Proxmox, XCP-ng)</li>
@@ -117,9 +117,9 @@ import HealthTable from '../components/HealthTable.astro';
           <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Older computers may spike your energy bill and have limited resources.</p>
         </div>
 
-        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-          <h3 class="text-xl font-bold text-text">Raspberry Pi</h3>
-          <p class="text-xs text-text-faint font-mono mt-1">Price: $15 - $35+</p>
+        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.2s;">
+          <h3 class="text-xl font-black text-text">Raspberry Pi</h3>
+          <p class="text-xs text-accent font-mono font-bold mt-1 uppercase tracking-wider">Price: $15 - $35+</p>
           <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
             <li>Small services (PiHole, Docker)</li>
             <li>Smart home (Home Assistant)</li>
@@ -127,9 +127,9 @@ import HealthTable from '../components/HealthTable.astro';
           <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Don't rely on it as your only data copy; performance is limited.</p>
         </div>
 
-        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-          <h3 class="text-xl font-bold text-text">NAS</h3>
-          <p class="text-xs text-text-faint font-mono mt-1">Price: $250 - $500+</p>
+        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.3s;">
+          <h3 class="text-xl font-black text-text">NAS</h3>
+          <p class="text-xs text-accent font-mono font-bold mt-1 uppercase tracking-wider">Price: $250 - $500+</p>
           <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
             <li>Network storage & backups</li>
             <li>Media server</li>
@@ -137,9 +137,9 @@ import HealthTable from '../components/HealthTable.astro';
           <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Price premium. Warning: QNAP has a history of vulnerabilities and slow patches.</p>
         </div>
 
-        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-          <h3 class="text-xl font-bold text-text">Second Hand PC</h3>
-          <p class="text-xs text-text-faint font-mono mt-1">Price: $50+</p>
+        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.4s;">
+          <h3 class="text-xl font-black text-text">Second Hand PC</h3>
+          <p class="text-xs text-accent font-mono font-bold mt-1 uppercase tracking-wider">Price: $50+</p>
           <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
             <li>Small form factor (SFF) flexibility</li>
             <li>Media transcoding (Intel QuickSync)</li>
@@ -171,45 +171,65 @@ import HealthTable from '../components/HealthTable.astro';
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">Main README & Stacks Hub</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.1s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Main README & Stacks Hub <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">Core philosophy and an overview of all modular components in the repository.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">Media Server</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.15s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Media Server <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">Stream your media everywhere using Jellyfin.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">*Arr Stack</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.2s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          *Arr Stack <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">Automated downloads. Uses shared parent directory mounts for zero-copy hardlinking.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">Music Server</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.25s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Music Server <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">Personal music streaming with Navidrome.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">Photo Backup</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.3s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Photo Backup <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">4-container Google Photos alternative (Immich) with local AI facial recognition.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">Book Reader</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.35s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Book Reader <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">Host and read your manga/ebooks using Kavita.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">Cloud Storage</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.4s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Cloud Storage <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">Self-hosted private cloud storage with Nextcloud.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">Home Automation</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.45s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Home Automation <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">Smart home control running on Home Assistant.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
-        <h3 class="text-xl font-bold text-text">Networking</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.5s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Networking <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <!-- DIAGRAM_PLACEHOLDER: networking-options — NO MATCHING SOURCE DIAGRAM FOUND, needs a new diagram created or manual placement -->
         <p class="text-sm text-text-muted mt-2">Includes Tailscale and Cloudflare options for secure external access without port forwarding.</p>
       </div>
-      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors lg:col-span-3">
-        <h3 class="text-xl font-bold text-text">Full Stack</h3>
+      <div class="glass p-6 group transition-colors animate-fade-up lg:col-span-3" style="animation-delay: 0.55s;">
+        <h3 class="text-xl font-black text-text flex justify-between items-center">
+          Full Stack <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+        </h3>
         <p class="text-sm text-text-muted mt-2">A complete setup combining all individual stacks together.</p>
       </div>
     </div>
@@ -243,7 +263,7 @@ import HealthTable from '../components/HealthTable.astro';
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-4">
         <a href="/Homelabbing/getting-started" class="btn-primary">
-          Get Started in 5 Minutes →
+          INITIALIZE NOW →
         </a>
         <a
           href="https://github.com/Zamiul-rashid/Homelabbing"
@@ -251,7 +271,7 @@ import HealthTable from '../components/HealthTable.astro';
           rel="noopener noreferrer"
           class="btn-secondary"
         >
-          Star on GitHub ⭐
+          STAR ON GITHUB ⭐
         </a>
         <a
           href="https://www.awesome-homelab.com/"
@@ -259,7 +279,7 @@ import HealthTable from '../components/HealthTable.astro';
           rel="noopener noreferrer"
           class="btn-secondary"
         >
-          Explore Awesome-Homelab 🌐
+          EXPLORE AWESOME-HOMELAB 🌐
         </a>
       </div>
     </div>
