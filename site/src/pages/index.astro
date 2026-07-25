@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TerminalAnimation from '../components/TerminalAnimation';
-import ServiceCard from '../components/ServiceCard.astro';
 import HealthTable from '../components/HealthTable.astro';
-import { services } from '../data/services';
 ---
 
 <BaseLayout
@@ -45,32 +43,121 @@ import { services } from '../data/services';
     </div>
   </section>
 
-  <!-- Core Concepts Banner -->
+  <!-- Core Concepts Banner (Merged Project Summary) -->
   <section class="py-16 bg-bg-surface/60 border-b border-border">
     <div class="max-w-6xl mx-auto px-4">
       <div class="flex flex-col md:flex-row items-center justify-between gap-8">
         <div class="max-w-2xl">
           <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Architecture First Foundation</span>
-          <h2 class="text-3xl font-bold text-text mt-2">Understand the Architecture Before Implementing</h2>
+          <h2 class="text-3xl font-bold text-text mt-2">A Modular Ecosystem & Educational Guide</h2>
           <p class="text-text-muted text-sm md:text-base mt-2 leading-relaxed">
-            We believe in learning on your own terms: first understand the architecture, then implement. Explore our 8 step-by-step conceptual guides breaking down ports, container volumes (`/config` vs `/data`), networking, smart home automation, and ad blocking.
+            Welcome to a modular Docker Compose ecosystem and educational guide for beginners building self-hosted home servers. We believe in understanding architecture over magic scripts. First understand the architecture, then implement. Explore our conceptual guides breaking down ports, container volumes (`/config` vs `/data`), networking, smart home automation, and ad blocking.
           </p>
         </div>
         <a href="/Homelabbing/concepts" class="btn-primary shrink-0">
-          Browse All 8 Guides →
+          Browse All Guides →
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Modular Services Section -->
+  <!-- Project Audit -->
+  <section class="py-16 border-b border-border">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Project Audit</span>
+        <h2 class="text-3xl font-bold text-text mt-2">State of the Repository</h2>
+        <p class="text-text-muted text-sm mt-2">An overview of our structure, maintainability, and security practices.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+          <h3 class="text-xl font-bold text-text mb-2">Structure & Organization</h3>
+          <p class="text-sm text-text-muted">The project is 100% modular, with heavily commented <code>stacks/</code> directories. Documentation quality focuses on architecture-first conceptual guides.</p>
+        </div>
+        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+          <h3 class="text-xl font-bold text-text mb-2">Architecture & Maintainability</h3>
+          <p class="text-sm text-text-muted">We use the <code>.env.example</code> pattern across all stacks and employ read-only mounts to ensure data safety.</p>
+        </div>
+        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+          <h3 class="text-xl font-bold text-text mb-2">Security Best Practices</h3>
+          <p class="text-sm text-text-muted">Tailscale and Cloudflare options are provided for secure external access without needing port forwarding.</p>
+        </div>
+        <div class="glass p-6 rounded-2xl border border-accent/50 bg-accent/5 group hover:border-accent transition-colors">
+          <h3 class="text-xl font-bold text-text mb-2 text-accent">Improvement Area</h3>
+          <p class="text-sm text-text-muted">Currently, there is an overuse of <code>:latest</code> image tags in <code>docker-compose.yml</code> files, which can lead to breaking changes upon auto-updates.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hardware Guide -->
+  <section class="py-16 bg-bg-surface/50 border-b border-border">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="max-w-3xl mb-8">
+        <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Getting Started</span>
+        <h2 class="text-3xl font-bold text-text mt-2">Choosing Your Hardware</h2>
+        <p class="text-text-muted text-sm mt-2 mb-4">
+          People get into homelabbing to learn technologies or de-cloud to maintain control over their data. Start small, understand your requirements, and grow!
+        </p>
+        <div class="p-4 rounded-lg bg-red-900/20 border border-red-500/30 text-red-200 text-sm">
+          <strong>Security Caution:</strong> It’s tempting to expose your new homelab to the internet, but unless you understand the risks and how to mitigate them (firewalls, VPNs), you really shouldn’t. Take the time to understand the risks first.
+        </div>
+      </div>
+      
+      <!-- DIAGRAM_PLACEHOLDER: hardware-options — NO MATCHING SOURCE DIAGRAM FOUND, needs a new diagram created or manual placement -->
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+          <h3 class="text-xl font-bold text-text">Old or Spare Computer</h3>
+          <p class="text-xs text-text-faint font-mono mt-1">Price: Free</p>
+          <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
+            <li>Docker server for self-hosting</li>
+            <li>Hypervisor (Proxmox, XCP-ng)</li>
+          </ul>
+          <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Older computers may spike your energy bill and have limited resources.</p>
+        </div>
+
+        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+          <h3 class="text-xl font-bold text-text">Raspberry Pi</h3>
+          <p class="text-xs text-text-faint font-mono mt-1">Price: $15 - $35+</p>
+          <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
+            <li>Small services (PiHole, Docker)</li>
+            <li>Smart home (Home Assistant)</li>
+          </ul>
+          <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Don't rely on it as your only data copy; performance is limited.</p>
+        </div>
+
+        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+          <h3 class="text-xl font-bold text-text">NAS</h3>
+          <p class="text-xs text-text-faint font-mono mt-1">Price: $250 - $500+</p>
+          <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
+            <li>Network storage & backups</li>
+            <li>Media server</li>
+          </ul>
+          <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Price premium. Warning: QNAP has a history of vulnerabilities and slow patches.</p>
+        </div>
+
+        <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+          <h3 class="text-xl font-bold text-text">Second Hand PC</h3>
+          <p class="text-xs text-text-faint font-mono mt-1">Price: $50+</p>
+          <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
+            <li>Small form factor (SFF) flexibility</li>
+            <li>Media transcoding (Intel QuickSync)</li>
+          </ul>
+          <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Watch for resellers overcharging on RAM/storage upgrades.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modular Services Section (Stack Summaries) -->
   <section class="py-20 max-w-6xl mx-auto px-4">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
       <div>
         <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Modular Stacks</span>
         <h2 class="text-3xl md:text-4xl font-bold text-text mt-2">Pick Where You Want to Start</h2>
         <p class="text-text-muted text-sm md:text-base mt-2 max-w-2xl">
-          Each application lives in its own dedicated, heavily commented folder inside `stacks/`. Start with Jellyfin or Kavita, then add music, automated downloads, or photo backups when you're ready!
+          Explore our modular stacks. Each application lives in its own dedicated folder.
         </p>
       </div>
       <a href="/Homelabbing/services" class="text-accent hover:underline font-semibold text-sm flex items-center gap-1 shrink-0">
@@ -78,10 +165,53 @@ import { services } from '../data/services';
       </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {services.map((service) => (
-        <ServiceCard service={service} />
-      ))}
+    <div class="my-8">
+      <img src="../../../docs/architecture.png" alt="Detailed architecture diagram showing reverse proxy, modular stacks, and docker services routing" class="w-full h-auto rounded-xl shadow-lg border border-border" />
+      <p class="text-sm text-text-muted mt-2 text-center italic">Homelabbing Architecture Diagram (from Reference docs)</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">Main README & Stacks Hub</h3>
+        <p class="text-sm text-text-muted mt-2">Core philosophy and an overview of all modular components in the repository.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">Media Server</h3>
+        <p class="text-sm text-text-muted mt-2">Stream your media everywhere using Jellyfin.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">*Arr Stack</h3>
+        <p class="text-sm text-text-muted mt-2">Automated downloads. Uses shared parent directory mounts for zero-copy hardlinking.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">Music Server</h3>
+        <p class="text-sm text-text-muted mt-2">Personal music streaming with Navidrome.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">Photo Backup</h3>
+        <p class="text-sm text-text-muted mt-2">4-container Google Photos alternative (Immich) with local AI facial recognition.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">Book Reader</h3>
+        <p class="text-sm text-text-muted mt-2">Host and read your manga/ebooks using Kavita.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">Cloud Storage</h3>
+        <p class="text-sm text-text-muted mt-2">Self-hosted private cloud storage with Nextcloud.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">Home Automation</h3>
+        <p class="text-sm text-text-muted mt-2">Smart home control running on Home Assistant.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors">
+        <h3 class="text-xl font-bold text-text">Networking</h3>
+        <!-- DIAGRAM_PLACEHOLDER: networking-options — NO MATCHING SOURCE DIAGRAM FOUND, needs a new diagram created or manual placement -->
+        <p class="text-sm text-text-muted mt-2">Includes Tailscale and Cloudflare options for secure external access without port forwarding.</p>
+      </div>
+      <div class="glass p-6 rounded-2xl border border-border group hover:border-accent/50 transition-colors lg:col-span-3">
+        <h3 class="text-xl font-bold text-text">Full Stack</h3>
+        <p class="text-sm text-text-muted mt-2">A complete setup combining all individual stacks together.</p>
+      </div>
     </div>
   </section>
 
