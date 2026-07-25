@@ -1,6 +1,6 @@
 ---
 title: "Jellyfin — Your Personal Netflix"
-tagline: "A powerful, open-source media system that organizes, manages, and streams your movies, shows, and music."
+tagline: "An open-source media system that organizes, manages, and streams your movies, shows, and music."
 replaces: "Netflix, Plex, Emby, Apple TV+"
 port: 8096
 difficulty: 1
@@ -20,14 +20,14 @@ whatNow:
     description: "Connect Radarr and Sonarr so movies download right into Jellyfin."
   - label: "Configure Hardware Transcoding"
     href: "https://jellyfin.org/docs/general/administration/hardware-acceleration/"
-    description: "Enable Intel QuickSync or NVIDIA NVENC for silky smooth 4K streaming."
+    description: "Enable Intel QuickSync or NVIDIA NVENC for smooth 4K streaming."
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
-A fully functional, 100% self-hosted media streaming server running locally on my hardware. I was able to open any web browser, smart TV, or mobile app on my home network and instantly stream my high-definition video files with automatic poster art, cast details, and subtitles.
+A self-hosted media streaming server running locally on my hardware. I was able to open any web browser, smart TV, or mobile app on my home network and instantly stream my high-definition video files with automatic poster art, cast details, and subtitles.
 
 <UIMockup title="Jellyfin Setup Wizard" url="http://192.168.1.100:8096/setup" type="wizard" />
 
@@ -81,4 +81,4 @@ Once running, I opened my web browser to `http://YOUR_SERVER_IP:8096` and follow
    - I clicked **OK** and then **Next**.
 4. **Metadata Settings:** I left preferred language and country at defaults so Jellyfin automatically fetched movie posters, ratings, and plot summaries from TMDB.
 5. **Remote Access:** I left **Allow remote connections to this server** checked. I clicked **Next**, then **Finish**.
-6. I signed in with my new credentials and enjoyed my personal Netflix!
+6. I signed in with my new credentials and started streaming.

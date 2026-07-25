@@ -1,6 +1,6 @@
 # Option C: Buying and Managing a Custom Domain
 
-> **End Result:** You own a professional domain name like `yourdomain.com` or `yourname.dev`, giving your homelab clean, memorable URLs and complete ownership of your online identity.
+> **End Result:** You own a domain name like `yourdomain.com` or `yourname.dev`, giving your homelab URLs like `https://media.yourdomain.com` and `https://cloud.yourdomain.com` and complete ownership of your online identity.
 
 ---
 
@@ -31,4 +31,4 @@ Not all domain registrars are created equal. Many charge low introductory prices
 ## ⏭️ Next Steps
 
 Once you have purchased your domain:
-1. Follow **[Option B: Cloudflare DNS Challenge & CDN Protection](../option-b-cloudflare/GUIDE.md)** to connect your new domain to Cloudflare's free DNS and protect your home server!
+1. Follow **[Option B: Cloudflare DNS Challenge & CDN Protection](../option-b-cloudflare/GUIDE.md)** to connect your new domain to Cloudflare's free DNS and protect your home server.

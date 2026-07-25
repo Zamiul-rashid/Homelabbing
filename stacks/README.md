@@ -22,9 +22,9 @@ We recommend launching these modular stacks in the following order as you build 
 | :--- | :--- | :--- | :--- |
 | **1** | **[`media-server/`](media-server/)** | Jellyfin | Pristine, uncompressed 4K movie and TV show streaming across your LAN. |
 | **2** | **[`arr-stack/`](arr-stack/)** | Radarr, Sonarr, Prowlarr, qBittorrent, Jellyseerr | Automated media discovery, zero-copy hardlinking, and household requests. |
-| **3** | **[`music-server/`](music-server/)** | Navidrome | Blazing-fast personal music streaming with Subsonic mobile app compatibility. |
+| **3** | **[`music-server/`](music-server/)** | Navidrome | Fast personal music streaming with Subsonic mobile app compatibility. |
 | **4** | **[`photo-backup/`](photo-backup/)** | Immich | Self-hosted photo and video backup with AI facial recognition and timeline sync. |
-| **5** | **[`book-reader/`](book-reader/)** | Kavita | High-performance ebook, comic book, and multi-volume manga reader. |
+| **5** | **[`book-reader/`](book-reader/)** | Kavita | Ebook, comic book, and multi-volume manga reader. |
 | **6** | **[`cloud-storage/`](cloud-storage/)** | Nextcloud, MariaDB | Complete Google Workspace and Dropbox replacement for multi-device document sync. |
 | **7** | **[`home-automation/`](home-automation/)** | Home Assistant, AdGuard Home | Local-first smart home IoT brain (`8123`) and network-wide DNS ad/tracker blocking (`53`, `8083`). |
 | **8** | **[`networking/`](networking/)** | Nginx Proxy Manager, DuckDNS / Cloudflare, Tailscale | Remote access, custom subdomains, reverse proxy routing, and SSL padlocks. |
@@ -64,4 +64,4 @@ Before launching any stack, make sure you have prepared your hardware and format
    ./helpers/check-health.sh
    ```
 
-Enjoy building and learning each component!
+Enjoy building and learning each component.

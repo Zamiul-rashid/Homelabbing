@@ -12,7 +12,7 @@ When building your first home server, we strongly recommend starting with the mo
 
 This directory contains the exact, unmodified Docker Compose blueprints and recovery scripts that the repository author personally uses to run their 25+ service production ecosystem at home:
 
-- **[`media-stack/`](media-stack/README.md)** — A comprehensive, **Tri-Network (`media_net`, `download_net`, `infra_net`)** 25-container production compose stack combining `Jellyfin`, `Navidrome`, `Kavita`, `Feishin`, the complete `*arr` download automation pipeline (`Radarr`, `Sonarr`, `Prowlarr`, `qBittorrent`, `Jellyseerr`), artificial intelligence audio vector indexing (`AudioMuse AI` + `PostgreSQL pgvector`), `Paperless-ngx`, `Stirling PDF`, `Actual Budget`, `Home Assistant`, `Mosquitto MQTT`, `AdGuard Home`, `Redis`, `Portainer`, `Watchtower`, `Uptime Kuma`, `Homarr`, and `Homepage`. Features zero-trust database isolation (`internal: true`).
+- **[`media-stack/`](media-stack/README.md)** — A **Tri-Network (`media_net`, `download_net`, `infra_net`)** 25-container production compose stack combining `Jellyfin`, `Navidrome`, `Kavita`, `Feishin`, the complete `*arr` download automation pipeline (`Radarr`, `Sonarr`, `Prowlarr`, `qBittorrent`, `Jellyseerr`), artificial intelligence audio vector indexing (`AudioMuse AI` + `PostgreSQL pgvector`), `Paperless-ngx`, `Stirling PDF`, `Actual Budget`, `Home Assistant`, `Mosquitto MQTT`, `AdGuard Home`, `Redis`, `Portainer`, `Watchtower`, `Uptime Kuma`, `Homarr`, and `Homepage`. Features zero-trust database isolation (`internal: true`).
 - **[`nextcloud-stack/`](nextcloud-stack/)** — A standalone production Nextcloud + MariaDB stack wired to dedicated cloud storage pools.
 - **[`proxy-stack/`](proxy-stack/)** — The primary Nginx Proxy Manager + DuckDNS edge routing gateway.
 - **[`recovery/`](recovery/)** — The author's personal bare-metal recovery scripts (`01-bootstrap.sh`, `02-restore.sh`, `03-backup.sh`, `04-recyclarr.yml`, `05-ignition.sh`) used to resurrect the entire 25+ service lab from a cold backup in under 30 minutes (`Bus Factor: 0`).
@@ -62,8 +62,8 @@ To help you understand the purpose of all 25 containers defined inside [`media-s
 
 ### 🎬 Media Streaming & Library Management (`media_net`)
 - **`jellyfin`:** The open-source media server. Indexes your `/data/media/movies` and `/data/media/tv` folders, scrapes metadata/posters, and transcodes video on-the-fly to stream to TVs, phones, and web browsers.
-- **`navidrome`:** A lightweight, high-performance web-based music server and Subsonic API endpoint. Indexes `/data/media/music` (`Artist/Album/Track.flac`) for instant streaming to mobile apps like Symfonium, Amperfy, and Feishin.
-- **`kavita`:** A lightning-fast digital library server for eBooks (EPUB/PDF), manga, and comic books (`.cbz`/`.cbr`). Features a distraction-free web reader and syncs progress across devices.
+- **`navidrome`:** A lightweight web-based music server and Subsonic API endpoint. Indexes `/data/media/music` (`Artist/Album/Track.flac`) for instant streaming to mobile apps like Symfonium, Amperfy, and Feishin.
+- **`kavita`:** A digital library server for eBooks (EPUB/PDF), manga, and comic books (`.cbz`/`.cbr`). Features a distraction-free web reader and syncs progress across devices.
 - **`feishin`:** A modern desktop and web UI built specifically as a sleek client front-end for Navidrome and Jellyfin music libraries.
 
 ### 🤖 Automated Download & Indexing Pipeline (`download_net` & `media_net`)
@@ -71,7 +71,7 @@ To help you understand the purpose of all 25 containers defined inside [`media-s
 - **`radarr`:** Automated movie collection manager. Monitors RSS feeds from Prowlarr, finds releases matching your exact quality rules (e.g., `1080p Web-DL`), instructs qBittorrent to download them, and renames/moves completed files into `/data/media/movies`.
 - **`sonarr`:** Automated TV series manager. Tracks episodes, seasons, and airing schedules, coordinating downloads and organizing files into `/data/media/tv`.
 - **`prowlarr`:** The central indexer and tracker manager. Synchronizes torrent trackers and API keys across Radarr and Sonarr from a single interface.
-- **`qbittorrent`:** The rock-solid, high-performance BitTorrent download client that performs the heavy lifting inside `/data/downloads`.
+- **`qbittorrent`:** The BitTorrent download client that performs the heavy lifting inside `/data/downloads`.
 
 ### 🧠 Artificial Intelligence & Audio Vector Indexing (`media_net` + `infra_net`)
 - **`audiomuse-ai`:** Custom AI audio intelligence API server. Processes your music collection to generate acoustic embeddings, mood classifications, and semantic similarity search vectors.
@@ -85,7 +85,7 @@ To help you understand the purpose of all 25 containers defined inside [`media-s
 - **`actual-budget`:** A local-first, privacy-focused personal finance and budgeting system based on the envelope budgeting method.
 
 ### 🏠 Smart Home Automation & Network Core (`media_net`)
-- **`homeassistant`:** The ultimate open-source smart home automation hub. Connects lights, sensors, thermostats, and cameras across different brands into unified dashboards and local automations.
+- **`homeassistant`:** Open-source smart home automation hub. Connects lights, sensors, thermostats, and cameras across different brands into unified dashboards and local automations.
 - **`mosquitto`:** Eclipse Mosquitto MQTT message broker. Acts as the lightweight real-time communication spine for IoT devices and Zigbee/Z-Wave sensors talking to Home Assistant.
 - **`adguardhome`:** Network-wide DNS server and ad/tracker blocker. Acts as your home's primary DNS resolver to strip ads and malware domains from every phone, PC, and smart TV on your Wi-Fi without installing client software.
 
@@ -106,4 +106,4 @@ While our beginner-friendly `stacks/` teach you how to build service by service,
 2. **Studying Advanced Security:** Notice how the `infra_net` bridge uses `internal: true` to completely seal off Redis and PostgreSQL from the public internet.
 3. **Automated Recovery Inspiration:** Reviewing [`recovery/03-backup.sh`](recovery/03-backup.sh) shows how to pause live SQLite databases before archiving and encrypt tarballs in memory using `AES-256-CBC` and `PBKDF2`.
 
-Feel free to explore, learn from the patterns, and adopt what fits your own personal homelab architecture!
+Feel free to explore, learn from the patterns, and adopt what fits your own personal homelab architecture.

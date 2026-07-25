@@ -1,7 +1,7 @@
 # Kavita Book Reader — Self-Hosted eBook, Manga & Comic Server
 
 ## 🎯 What You'll Have When You're Done
-When you complete this guide, you will have a blazing-fast, digital library running on your home server accessible from any web browser or reading tablet. You will be able to organize thousands of EPUB novels, PDF documents, and multi-volume manga series (CBZ/CBR) with instant page loading, automatic progress tracking, and OPDS support for mobile eReaders like Tachiyomi, Cómics, and Moon+ Reader.
+When you complete this guide, you will have a fast, digital library running on your home server accessible from any web browser or reading tablet. You will be able to organize thousands of EPUB novels, PDF documents, and multi-volume manga series (CBZ/CBR) with instant page loading, automatic progress tracking, and OPDS support for mobile eReaders like Tachiyomi, Cómics, and Moon+ Reader.
 
 ---
 
@@ -10,8 +10,8 @@ When you complete this guide, you will have a blazing-fast, digital library runn
 If you have ever purchased digital eBooks or comic books across different platforms (like Amazon Kindle, Comixology, or Google Play Books), you know how frustrating locked ecosystems can be. Your books are trapped inside proprietary apps, and if a platform loses licensing rights, books can vanish from your digital shelf without warning.
 
 **[Kavita](https://www.kavitareader.com/)** is a modern, self-hosted reading platform designed to replace those commercial subscription services:
-- **Universal Format Support:** Reads EPUBs, PDFs, comic archives (`.cbz`, `.cbr`), and raw image folders seamlessly.
-- **Lightning-Fast Web Reader:** Features a beautiful, responsive web interface tailored for both desktop monitors and touch-screen tablets with dark themes, custom fonts, and page layout toggles.
+- **Universal Format Support:** Reads EPUBs, PDFs, comic archives (`.cbz`, `.cbr`), and raw image folders directly.
+- **Fast Web Reader:** Features a responsive web interface tailored for both desktop monitors and touch-screen tablets with dark themes, custom fonts, and page layout toggles.
 - **Multi-User Household Support:** Create distinct accounts for every family member with independent reading progress tracking and age-rating restrictions.
 - **OPDS Catalog Support:** Connect mobile eReader apps directly to your server so you can browse, download, and read offline while traveling.
 
@@ -93,13 +93,13 @@ Let's make sure your reading server booted up cleanly and is ready to accept use
    *(Replace `192.168.1.100` with your server's actual IP address.)*
 
 3. **Create Your Admin Account:**
-   On first launch, Kavita will prompt you to create your primary administrator username and password. Once logged in, click **Settings** → **Libraries** → **Add Library** and select your `/books` or `/comics` folder to start indexing!
+   On first launch, Kavita will prompt you to create your primary administrator username and password. Once logged in, click **Settings** → **Libraries** → **Add Library** and select your `/books` or `/comics` folder to start indexing.
 
 ---
 
 ## 🧩 What's Next?
 
-Now that your reading library is online, you can expand your homelab by adding our high-performance personal music streaming server so you can listen to your favorite albums anywhere!
+Now that your reading library is online, you can expand your homelab by adding our personal music streaming server so you can listen to your favorite albums anywhere!
 
 👉 **Proceed to the [`music-server/`](../music-server/README.md) Stack**
 

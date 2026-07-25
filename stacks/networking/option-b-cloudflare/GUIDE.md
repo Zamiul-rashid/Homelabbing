@@ -8,7 +8,7 @@
 ---
 
 ## 📖 Why Cloudflare DNS Challenge?
-Normally, Let's Encrypt requires port 80 open on your router to verify you own your domain (`HTTP-01` challenge). By connecting Nginx Proxy Manager to Cloudflare via an API token (`DNS-01` challenge), Let's Encrypt verifies domain ownership by adding a temporary DNS TXT record automatically. This allows you to generate valid wildcard certificates (`*.yourdomain.com`) without exposing port 80 just for cert verification!
+Normally, Let's Encrypt requires port 80 open on your router to verify you own your domain (`HTTP-01` challenge). By connecting Nginx Proxy Manager to Cloudflare via an API token (`DNS-01` challenge), Let's Encrypt verifies domain ownership by adding a temporary DNS TXT record automatically. This allows you to generate valid wildcard certificates (`*.yourdomain.com`) without exposing port 80 just for cert verification.
 
 ---
 
@@ -57,4 +57,4 @@ docker compose up -d
    - Under **SSL**, select your wildcard certificate (`*.yourdomain.com`).
    - Enable **Force SSL** and **Websockets Support**.
 
-🎉 Your service is now live behind Cloudflare's global CDN and DDoS protection!
+Your service is live behind Cloudflare's global CDN and DDoS protection.

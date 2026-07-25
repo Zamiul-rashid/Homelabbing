@@ -13,7 +13,7 @@ import { services } from '../data/services';
   <div class="space-y-12">
     <!-- Intro Banner -->
     <section class="glass p-8 border border-accent/40 bg-gradient-to-br from-bg-surface via-bg-surface to-accent/5">
-      <h2 class="text-2xl font-bold text-text mt-0">⚡ How Our Modular Architecture Works</h2>
+      <h2 class="text-2xl font-bold text-text mt-0">How Our Modular Architecture Works</h2>
       <p class="text-text-muted leading-relaxed mb-6">
         We believe in understanding your system: <strong>Architecture First, Then Implement.</strong> Instead of blind automation scripts that hide what is happening under the hood, our repository is structured into completely standalone, heavily commented application stacks inside the <code>stacks/</code> directory so you understand how ports, networks, and storage volumes work while building your cloud.
       </p>
@@ -32,7 +32,7 @@ import { services } from '../data/services';
         <div class="p-4 rounded-lg bg-bg border border-border">
           <span class="text-xs font-mono text-accent font-bold">STEP 03</span>
           <h3 class="font-bold text-text text-base mt-1">Start & Learn</h3>
-          <p class="text-xs text-text-muted mt-1">Navigate into any stack directory and run <code>docker compose up -d</code>!</p>
+          <p class="text-xs text-text-muted mt-1">Navigate into any stack directory and run <code>docker compose up -d</code>.</p>
         </div>
       </div>
     </section>
@@ -48,7 +48,7 @@ import { services } from '../data/services';
         code={`git clone https://github.com/Zamiul-rashid/Homelabbing.git\ncd Homelabbing\n\n# Create our standard directory tree for movies, TV, music, books, photos, and cloud storage\nsudo mkdir -p /data/media/{movies,tv,music,books,comics,photos} /data/downloads/{incomplete,complete} /data/nextcloud\n\n# Assign ownership to your current Linux user\nsudo chown -R $USER:$USER /data`}
       />
       <div class="p-4 rounded-xl bg-blue-950/20 border border-blue-500/30 text-xs text-blue-200 not-prose mt-4">
-        <strong>💡 Why `/data`?</strong> By keeping your media and download directories under the same parent folder path (`/data`), download clients like qBittorrent and organizers like Radarr can perform instantaneous, zero-copy hardlinks—saving hard disk space and CPU cycles!
+        <strong>Why `/data`?</strong> By keeping your media and download directories under the same parent folder path (`/data`), download clients like qBittorrent and organizers like Radarr can perform instantaneous, zero-copy hardlinks—saving hard disk space and CPU cycles.
       </div>
     </section>
 
@@ -68,7 +68,7 @@ import { services } from '../data/services';
     <section>
       <h2>3. Launch Your Chosen Stack</h2>
       <p>
-        You do not need to boot everything at once! Move inside any modular application folder inside <code>stacks/</code> (such as <code>media-server/</code> or <code>book-reader/</code>) and start it in detached background mode:
+        You do not need to boot everything at once. Move inside any modular application folder inside <code>stacks/</code> (such as <code>media-server/</code> or <code>book-reader/</code>) and start it in detached background mode:
       </p>
       <CodeBlock
         title="bash — Starting a Modular Stack"
@@ -83,8 +83,8 @@ import { services } from '../data/services';
           <p class="text-text-muted">[+] Running 2/2</p>
           <p class="text-success"> ✔ Network media-server_default   Created                            0.1s</p>
           <p class="text-success"> ✔ Container jellyfin               Started                            0.4s</p>
-          <p class="pt-2 text-accent font-bold">✨ Jellyfin is now live! Open your browser right now:</p>
-          <p class="font-bold">👉 http://YOUR_SERVER_IP:8096</p>
+          <p class="pt-2 text-accent font-bold">Jellyfin is live. Open:</p>
+          <p class="font-bold">http://YOUR_SERVER_IP:8096</p>
         </div>
       </div>
     </section>
@@ -93,7 +93,7 @@ import { services } from '../data/services';
     <section>
       <h2>4. Explore All Modular Stacks</h2>
       <p>
-        Want to inspect the exact architectural comments or read the detailed onboarding walkthrough for a specific service? Click any card below:
+        Want to inspect the architectural comments or read the detailed onboarding walkthrough for a specific service? Click any card below:
       </p>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 not-prose my-8">

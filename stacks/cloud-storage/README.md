@@ -1,7 +1,7 @@
-# Nextcloud Cloud Storage — Your Personal Google Drive Replacement
+# Nextcloud — Self-Hosted Cloud Storage
 
 ## 🎯 What You'll Have When You're Done
-When you complete this guide, you will have your own private cloud storage hub accessible across Windows, macOS, Linux, iOS, and Android. You will be able to synchronize folders across multiple laptops in real-time, share password-protected download links with clients or friends, edit documents, and keep your sensitive files stored safely under your physical control on `/data/nextcloud` without monthly storage subscription fees!
+When you complete this guide, you will have your own private cloud storage hub accessible across Windows, macOS, Linux, iOS, and Android. You will be able to synchronize folders across multiple laptops in real-time, share password-protected download links with clients or friends, edit documents, and keep your sensitive files stored safely under your physical control on `/data/nextcloud` without monthly storage subscription fees.
 
 ---
 
@@ -9,9 +9,9 @@ When you complete this guide, you will have your own private cloud storage hub a
 
 Public cloud providers like Google Drive, Microsoft OneDrive, and Dropbox continuously scan your documents for automated policy enforcement, charge tiered monthly fees once you exceed basic tiers, and can suspend your accounts or lock you out of your files at any time.
 
-**[Nextcloud](https://nextcloud.com/)** is a comprehensive, self-hosted collaboration platform designed to replace those third-party services:
+**[Nextcloud](https://nextcloud.com/)** is a self-hosted collaboration platform designed to replace those third-party services:
 - **Multi-Device File Synchronization:** Official desktop and mobile sync clients run silently in the background, automatically syncing local folders across all your computers just like Dropbox.
-- **Dedicated MariaDB Database:** By pairing Nextcloud with a dedicated MariaDB container instead of basic SQLite, your file indices remain blazing fast even when managing millions of documents across dozens of users.
+- **Dedicated MariaDB Database:** By pairing Nextcloud with a dedicated MariaDB container instead of basic SQLite, your file indices remain fast even when managing millions of documents across dozens of users.
 - **Expandable App Ecosystem:** Add free collaborative office suites (`Nextcloud Office`), calendar syncing (`CalDAV`), contact management (`CardDAV`), and note-taking apps right inside your private cloud dashboard.
 
 ---
@@ -65,7 +65,7 @@ cd /opt/homelab/stacks/cloud-storage
 ```
 
 ### Step 2: Launch the Nextcloud Stack
-Boot up the server and database containers:
+Start the containers:
 ```bash
 docker compose up -d
 ```
@@ -107,7 +107,7 @@ https://192.168.1.100:4443
    - **Database password:** Enter the exact value you set for `NEXTCLOUD_DB_PASSWORD` inside `stacks/.env`.
    - **Database name:** `nextcloud`
    - **Database host:** `nextcloud-db`
-3. Click **Install** and wait (~1 minute) while Nextcloud initializes your cloud workspace!
+3. Click **Install** and wait (~1 minute) while Nextcloud initializes your cloud workspace.
 
 ---
 

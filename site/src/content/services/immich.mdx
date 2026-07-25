@@ -1,6 +1,6 @@
 ---
 title: "Immich — AI Photo & Video Backup"
-tagline: "High-performance self-hosted backup and organization platform for your mobile photos and videos."
+tagline: "Self-hosted photo and video backup with local AI and mobile sync apps."
 replaces: "Google Photos, Apple iCloud Photos, Amazon Photos"
 port: 2283
 difficulty: 2
@@ -27,19 +27,19 @@ import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
-A blazing-fast photo backup server running locally on my hardware with native iOS and Android backup apps. My entire lifetime photo library automatically backed up in full original quality right from my phone over Wi-Fi, featuring local AI facial recognition, object detection search (like searching "dog on beach"), interactive map albums, and zero cloud storage fees.
+A fast photo backup server running locally on my hardware with native iOS and Android backup apps. My entire lifetime photo library automatically backed up in full original quality right from my phone over Wi-Fi, featuring local AI facial recognition, object detection search (like searching "dog on beach"), interactive map albums, and zero cloud storage fees.
 
 <UIMockup title="Immich AI & Backup Hub" url="http://192.168.1.100:2283/admin" type="onboarding" />
 
 ## Why I Chose Immich
 
-Immich delivered an experience that rivaled or beat Google Photos while keeping my priceless family memories stored safely on my own hard drive.
+Immich delivered an experience that matched or beat Google Photos while keeping my photos stored on my own hard drive.
 
 <ProConTable
   pros={[
-    "Blazing fast user interface built with Svelte/TypeScript and high-performance Go microservices.",
+    "Fast Svelte/TypeScript UI backed by Go microservices.",
     "Local machine learning (CLIP & facial recognition) ran right on my server — zero data sent to third parties.",
-    "Seamless background mobile backup across iOS and Android with automatic duplicate detection.",
+    "Automatic background mobile backup across iOS and Android with duplicate detection.",
     "Multi-user support so my partner and family members could have their own private photo vaults."
   ]}
   cons={[
@@ -77,4 +77,4 @@ I navigated to `http://YOUR_SERVER_IP:2283` and clicked **Get Started**. I enter
 ### 3. Connecting the Mobile App
 1. I downloaded **Immich** from my phone's App Store.
 2. I opened the app and entered my server address: `http://YOUR_SERVER_IP:2283` (or my remote HTTPS URL).
-3. I logged in and toggled on **Foreground & Background Backup**. I watched as my phone backed up thousands of photos at lightning speed over my local Wi-Fi.
+3. I logged in and toggled on **Foreground & Background Backup**. My phone backed up thousands of photos over local Wi-Fi in minutes.
