@@ -27,13 +27,13 @@ import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
-A fast, private music server that indexed my entire FLAC, MP3, and ALAC audio collection. I could stream lossless audio directly from any web browser or connect sleek third-party mobile apps (`Symfonium`, `Substreamer`, `Amperfy`) for offline downloading, smart playlists, and scrobbling without monthly subscription fees.
+A fast, private music server that indexed my entire FLAC, MP3, and ALAC audio collection. I could stream lossless audio from any browser or use third-party Subsonic apps for offline downloads, smart playlists, and scrobbling—no subscription required.
 
 <UIMockup title="Navidrome Audio Cloud" url="http://192.168.1.100:4533/login" type="login" />
 
 ## Why I Chose Navidrome
 
-Audio streaming platforms compressed my music, removed classic albums due to licensing disputes, and charged recurring monthly fees. Navidrome ran on less than 50 MB of RAM while serving bit-perfect audio directly from my hard drive.
+Streaming services compressed my music, yanked classic albums over licensing disputes, and billed me monthly. Navidrome ran on less than 50 MB of RAM while serving bit-perfect audio directly from my hard drive.
 
 <ProConTable
   pros={[
@@ -64,9 +64,9 @@ docker compose up -d
 I opened `http://YOUR_SERVER_IP:4533` and created my admin profile (`username` and `password`). Navidrome immediately began scanning `/data/media/music` and populated my album art in seconds.
 
 ### 3. Connecting My Mobile Apps
-Because Navidrome implemented the industry-standard **Subsonic API**, I wasn't forced into using a single proprietary app:
+Because Navidrome speaks the industry-standard **Subsonic API**, I could pick any compatible app instead of being locked into one:
 
-- **Android:** I highly recommend **Symfonium** (unmatched equalizer, offline caching, and widget support) or **Substreamer** (free and minimalist).
+- **Android:** **Symfonium** is my pick (unmatched equalizer, offline caching, and widget support) or **Substreamer** (free and minimalist).
 - **iOS:** I recommend **Amperfy** (free, designed to feel exactly like Apple Music) or **Substreamer**.
 
 To connect: I opened the app, entered `http://YOUR_SERVER_IP:4533` (or my domain/Tailscale URL), and signed in with my Navidrome credentials.

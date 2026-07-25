@@ -27,7 +27,7 @@ import ProConTable from '../../components/ProConTable.astro';
 import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
-I built an automated media pipeline. When I browsed and requested a movie or TV show on **Jellyseerr**, it automatically triggered search indexers in **Prowlarr**, sent the optimal quality torrent to **qBittorrent**, monitored progress in **Radarr/Sonarr**, and cleanly renamed and moved the finished file straight into `/data/media` for Jellyfin to stream.
+I built an automated media pipeline. When I browsed and requested a movie or TV show on **Jellyseerr**, it triggered search indexers in **Prowlarr**, sent the optimal quality torrent to **qBittorrent**, and monitored progress in **Radarr/Sonarr**. Radarr then renamed and moved the finished file into `/data/media`, where Jellyfin picked it up immediately.
 
 <UIMockup title="Jellyseerr Media Portal" url="http://192.168.1.100:5055/requests" type="library" />
 
@@ -53,7 +53,7 @@ I was completely done hunting down torrents on sketchy websites, manually unzipp
 
 ## The 5 Synchronized Containers
 
-When I ran this stack, I unlocked five specialized tools working in harmony inside `stacks/arr-stack/`:
+Running this stack launched five specialized tools inside `stacks/arr-stack/`, each with a distinct job:
 
 1. **qBittorrent (`:8080`)** — High-performance download engine with web interface and hardlink support.
 2. **Prowlarr (`:9696`)** — Indexer manager that synced search providers directly to Radarr and Sonarr.

@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > **Advanced Production Blueprint — Not for First-Time Beginners**
-> This directory contains the author's complete, 25-container production `docker-compose.yml` file. If you are setting up your first server, start with the modular, step-by-step stacks inside [`../../stacks/`](../../stacks/README.md).
+> This directory contains the author's complete, 25-container production `docker-compose.yml` file. Start with the modular stacks in [`../../stacks/`](../../stacks/README.md) for your first server.
 
 ---
 
@@ -49,8 +49,8 @@ To help you understand the purpose of all 25 containers defined inside [`docker-
 
 ### 🎬 Media Streaming & Library Management (`media_net`)
 - **`jellyfin`:** The open-source media server. Indexes your `/data/media/movies` and `/data/media/tv` folders, scrapes metadata/posters, and transcodes video on-the-fly to stream to TVs, phones, and web browsers.
-- **`navidrome`:** A lightweight, high-performance web-based music server and Subsonic API endpoint. Indexes `/data/media/music` (`Artist/Album/Track.flac`) for instant streaming to mobile apps like Symfonium, Amperfy, and Feishin.
-- **`kavita`:** A lightning-fast digital library server for eBooks (EPUB/PDF), manga, and comic books (`.cbz`/`.cbr`). Features a distraction-free web reader and syncs progress across devices.
+- **`navidrome`:** A lightweight web-based music server and Subsonic API endpoint. Indexes `/data/media/music` (`Artist/Album/Track.flac`) for instant streaming to mobile apps like Symfonium, Amperfy, and Feishin.
+- **`kavita`:** A digital library server for eBooks (EPUB/PDF), manga, and comic books (`.cbz`/`.cbr`). Features a distraction-free web reader and syncs progress across devices.
 - **`feishin`:** A modern desktop and web UI built specifically as a sleek client front-end for Navidrome and Jellyfin music libraries.
 
 ### 🤖 Automated Download & Indexing Pipeline (`download_net` & `media_net`)
@@ -58,7 +58,7 @@ To help you understand the purpose of all 25 containers defined inside [`docker-
 - **`radarr`:** Automated movie collection manager. Monitors RSS feeds from Prowlarr, finds releases matching your exact quality rules (e.g., `1080p Web-DL`), instructs qBittorrent to download them, and renames/moves completed files into `/data/media/movies`.
 - **`sonarr`:** Automated TV series manager. Tracks episodes, seasons, and airing schedules, coordinating downloads and organizing files into `/data/media/tv`.
 - **`prowlarr`:** The central indexer and tracker manager. Synchronizes torrent trackers and API keys across Radarr and Sonarr from a single interface.
-- **`qbittorrent`:** The rock-solid, high-performance BitTorrent download client that performs the heavy lifting inside `/data/downloads`.
+- **`qbittorrent`:** The BitTorrent download client that performs the heavy lifting inside `/data/downloads`.
 
 ### 🧠 Artificial Intelligence & Audio Vector Indexing (`media_net` + `infra_net`)
 - **`audiomuse-ai`:** Custom AI audio intelligence API server. Processes your music collection to generate acoustic embeddings, mood classifications, and semantic similarity search vectors.
@@ -72,7 +72,7 @@ To help you understand the purpose of all 25 containers defined inside [`docker-
 - **`actual-budget`:** A local-first, privacy-focused personal finance and budgeting system based on the envelope budgeting method.
 
 ### 🏠 Smart Home Automation & Network Core (`media_net`)
-- **`homeassistant`:** The ultimate open-source smart home automation hub. Connects lights, sensors, thermostats, and cameras across different brands into unified dashboards and local automations.
+- **`homeassistant`:** An open-source smart home automation hub. Connects lights, sensors, thermostats, and cameras across different brands into unified dashboards and local automations.
 - **`mosquitto`:** Eclipse Mosquitto MQTT message broker. Acts as the lightweight real-time communication spine for IoT devices and Zigbee/Z-Wave sensors talking to Home Assistant.
 - **`adguardhome`:** Network-wide DNS server and ad/tracker blocker. Acts as your home's primary DNS resolver to strip ads and malware domains from every phone, PC, and smart TV on your Wi-Fi without installing client software.
 

@@ -28,7 +28,7 @@ Before setting up this stack, make sure you have:
 
 ## 🔧 Understanding the Compose File
 
-Let's examine how our `docker-compose.yml` blueprint works under the hood:
+Here is how `docker-compose.yml` is structured:
 
 ```yaml
 services:
@@ -76,7 +76,7 @@ When you ran `docker compose up -d`:
 
 ## ✅ Verifying It Works
 
-Let's make sure your reading server booted up cleanly and is ready to accept users:
+Verify your reading server booted cleanly:
 
 1. **Check Container Status:**
    Run `docker ps` or execute our diagnostic helper:
@@ -99,7 +99,7 @@ Let's make sure your reading server booted up cleanly and is ready to accept use
 
 ## 🧩 What's Next?
 
-Now that your reading library is online, you can expand your homelab by adding our personal music streaming server so you can listen to your favorite albums anywhere!
+Next, add the music server stack.
 
 👉 **Proceed to the [`music-server/`](../music-server/README.md) Stack**
 

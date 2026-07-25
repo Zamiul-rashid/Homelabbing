@@ -33,7 +33,7 @@ A fast photo backup server running locally on my hardware with native iOS and An
 
 ## Why I Chose Immich
 
-Immich delivered an experience that matched or beat Google Photos while keeping my photos stored on my own hard drive.
+Immich matched Google Photos feature-for-feature and kept my photos on my own hardware.
 
 <ProConTable
   pros={[
@@ -53,7 +53,7 @@ Immich delivered an experience that matched or beat Google Photos while keeping 
 
 ## Multi-Container Architecture
 
-Immich relied on a microservice stack that my `stacks/photo-backup/docker-compose.yml` configured automatically:
+My `stacks/photo-backup/docker-compose.yml` configured a four-container Immich stack automatically:
 
 - **`immich-server` (`:2283`)** — Core API, web frontend, and upload controller.
 - **`immich-machine-learning`** — Python service running CLIP and face detection models locally.

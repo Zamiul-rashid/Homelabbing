@@ -7,7 +7,7 @@ When you complete this guide, you will have a blazing-fast, private cloud music 
 
 ## 💡 What Is Navidrome and Why Would You Want It?
 
-Commercial music streaming services like Spotify and Apple Music suffer from missing album versions, compressed audio bitrates, and sudden price increases. If you own a collection of CD rips or digital audio purchases, putting them on your phone usually means wrestling with cumbersome USB cables or running out of local mobile storage space.
+Spotify and Apple Music compress audio, drop album versions without warning, and raise prices unpredictably. If you own CD rips or digital audio purchases, getting them onto your phone usually means USB cables or running out of local storage.
 
 **[Navidrome](https://www.navidrome.org/)** is a modern, lightweight, open-source music server written in Go:
 - **Ultra-Low Resource Usage:** Runs comfortably on tiny home servers or Raspberry Pis, consuming less than `100 MB` of memory while indexing 50,000+ tracks.
@@ -27,7 +27,7 @@ Before setting up this stack, make sure you have:
 
 ## 🔧 Understanding the Compose File
 
-Let's examine how our `docker-compose.yml` blueprint works under the hood:
+Here is how `docker-compose.yml` is structured:
 
 ```yaml
 services:
@@ -111,7 +111,7 @@ When prompted for server details in your mobile app:
 
 ## 🧩 What's Next?
 
-With your movies and music sorted and streaming cleanly across your home, let's tackle one of the most critical personal data tasks: backing up and organizing your irreplaceable smartphone photos and videos away from Google Photos or iCloud!
+Next, set up the photo backup stack to get your smartphone photos off Google Photos or iCloud.
 
 👉 **Proceed to the [`photo-backup/`](../photo-backup/README.md) Stack**
 

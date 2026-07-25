@@ -7,7 +7,7 @@ When you complete this guide, you will have a fully functional media streaming s
 
 ## 💡 What Is Jellyfin and Why Would You Want It?
 
-Commercial streaming services are becoming increasingly fragmented, expensive, and restrictive. Content disappears every month due to shifting licensing deals, and streaming quality is often heavily compressed.
+Streaming services drop content monthly as licensing deals shift, compress quality, and cost more every year.
 
 **[Jellyfin](https://jellyfin.org/)** is a 100% free, open-source media server that puts you back in complete control:
 - **Zero Fees & Zero Paywalls:** Unlike Plex or Emby, Jellyfin has no premium tiers, no subscription fees, and no remote authentication servers tracking what you watch.
@@ -27,7 +27,7 @@ Before setting up this stack, make sure you have:
 
 ## 🔧 Understanding the Compose File
 
-Let's examine how our `docker-compose.yml` works under the hood:
+Here is how `docker-compose.yml` is structured:
 
 ```yaml
 services:
@@ -101,7 +101,7 @@ http://192.168.1.100:8096
 
 ## 🧩 What's Next?
 
-Now that your media server is streaming smoothly, nobody wants to manually download and rename video files every time a new episode airs. Let's set up the automated ***Arr Acquisition Pipeline** to handle searching, downloading, and organizing automatically!
+Next, set up the *Arr stack to automate media downloading and organization.
 
 👉 **Proceed to the [`arr-stack/`](../arr-stack/README.md) Stack**
 

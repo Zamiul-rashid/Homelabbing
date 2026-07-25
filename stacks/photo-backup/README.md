@@ -7,7 +7,7 @@ When you complete this guide, you will have a self-hosted photo and video backup
 
 ## 💡 What Is Immich and Why Would You Want It?
 
-Storing thousands of photos and 4K videos on mobile devices quickly fills up local storage, and cloud backup providers like Google Photos, iCloud, and Amazon Photos charge ongoing monthly subscriptions for extra storage while sometimes compressing your memories.
+Google Photos, iCloud, and Amazon Photos charge for storage and sometimes compress uploads; Immich runs on your own hardware with no fees and no compression.
 
 **[Immich](https://immich.app/)** is a modern self-hosted alternative that provides the exact same user experience as Google Photos:
 - **Automatic Mobile Background Backup:** Native iOS and Android apps automatically upload new pictures and videos in full, uncompressed original quality whenever your phone connects to Wi-Fi.
@@ -115,7 +115,7 @@ http://192.168.1.100:2283
 
 ## 🧩 What's Next?
 
-Now that your media, music, and personal photos are securely hosted and backed up, let's deploy our self-hosted cloud office and synchronization suite (`Nextcloud`) so you can replace Google Workspace across all your laptops and desktop computers!
+Next, deploy Nextcloud to replace Google Workspace across your laptops and desktops.
 
 👉 **Proceed to the [`cloud-storage/`](../cloud-storage/README.md) Stack**
 

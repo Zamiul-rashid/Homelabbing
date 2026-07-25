@@ -1,6 +1,6 @@
 # 🔧 Diagnostic & Utility Helpers (`helpers/`)
 
-While **Homelabbing** avoids blind automation scripts that set up complex services without your understanding, diagnostic and utility scripts (`helpers/`) are enormously valuable for quickly verifying your server's health and checking container status.
+While **Homelabbing** avoids blind automation scripts that set up complex services without your understanding, diagnostic and utility scripts in `helpers/` let you verify container health and status at a glance.
 
 ---
 
@@ -8,7 +8,7 @@ While **Homelabbing** avoids blind automation scripts that set up complex servic
 
 When running multiple Docker containers across different stacks (`media-server`, `arr-stack`, `music-server`, `photo-backup`, `cloud-storage`, `book-reader`), checking `docker ps` individually can produce cluttered output.
 
-Our diagnostic script scans your Docker daemon and formats a clean, color-coded table showing the status and direct URL access link for all 10 core service containers.
+The script scans Docker and prints a color-coded table with status and URL for each of the 10 core containers.
 
 ### How to Run:
 ```bash

@@ -1,6 +1,6 @@
 # 🧱 Modular Homelabbing Stacks (`stacks/`)
 
-Welcome to our modular Docker Compose ecosystem! Instead of placing every single application inside a giant, complicated 1,500-line `docker-compose.yml` file, **Homelabbing** divides your home server into clean, self-contained **stacks**.
+This directory organizes your home server into self-contained Docker Compose stacks. Instead of placing every application inside a giant 1,500-line `docker-compose.yml`, **Homelabbing** divides your infrastructure into clean, isolated modules.
 
 Every single line inside every `docker-compose.yml` file in this directory is **heavily commented** to teach you what every directive (`image`, `environment`, `volumes`, `ports`, `healthcheck`) does and why it matters.
 
@@ -64,4 +64,3 @@ Before launching any stack, make sure you have prepared your hardware and format
    ./helpers/check-health.sh
    ```
 
-Enjoy building and learning each component.

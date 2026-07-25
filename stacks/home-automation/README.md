@@ -10,7 +10,7 @@ When you complete this guide, you will have two cornerstone privacy and automati
 ## 💡 What Are Home Assistant and AdGuard Home?
 
 ### Home Assistant — Your Local Smart Home Brain
-If you own smart gadgets from multiple brands (e.g., Philips Hue, TP-Link, Tuya, Apple HomeKit, Google Nest), you know the pain of juggling five different manufacturer apps on your phone. Worse, most devices require constant cloud connections—meaning your wall switches stop working when the internet goes down.
+If you own smart gadgets from multiple brands (e.g., Philips Hue, TP-Link, Tuya, Apple HomeKit, Google Nest), you know the pain of juggling five different manufacturer apps on your phone. Worse, most devices phone home for every command—your wall switch stops working the moment your internet drops.
 **[Home Assistant](https://www.home-assistant.io/)** brings your devices home:
 - **100% Local Execution:** Automations run directly within your home network with zero cloud delay.
 - **Universal Bridge (3,000+ Integrations):** Connects incompatible smart ecosystems into a single unified dashboard and automation engine.
@@ -36,7 +36,7 @@ Before setting up this stack, make sure you have:
 
 ## 🔧 Understanding the Compose File
 
-Let's examine how our `docker-compose.yml` blueprint works under the hood:
+Here is how `docker-compose.yml` is structured:
 
 ```yaml
 services:
@@ -103,7 +103,7 @@ When you ran `docker compose up -d`:
 
 ## ✅ Verifying It Works
 
-Let's make sure both services booted up cleanly and are ready for configuration:
+Verify both services booted cleanly:
 
 ### 1. Home Assistant Onboarding
 Open a browser on your computer or tablet and navigate to:
@@ -135,6 +135,6 @@ To route all household DNS requests through AdGuard Home:
 ---
 
 ## 🧩 What's Next?
-Now that your smart home is running locally and your DNS is filtered, check out our diagnostic tools and reference documentation:
+
 - **[Helpers & Diagnostics (`helpers/`)](../../helpers/README.md):** Learn how to run automated health checks on your containers.
 - **[07. Security & Hardening Basics](../../docs/07-security-basics.md):** Review UFW firewall rules to keep your ports locked down tightly.

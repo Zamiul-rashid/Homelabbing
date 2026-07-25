@@ -1,7 +1,7 @@
 # Full Stack — All 6 Modular Stacks on a Single Unified Network
 
 ## 🎯 What You'll Have When You're Done
-When you complete this guide, you will have a complete, enterprise-grade personal cloud system running across **15 synchronized containers** on your home server. All services communicate cleanly over a single virtual network (`homelab_net`) by container name (`http://radarr:7878`, `http://immich-postgres:5432`), sharing unified `/data` storage pools with health monitoring across all ports!
+When you complete this guide, you will have a complete personal cloud system running across **15 synchronized containers** on your home server. All services communicate cleanly over a single virtual network (`homelab_net`) by container name (`http://radarr:7878`, `http://immich-postgres:5432`), sharing unified `/data` storage pools with health monitoring across all ports!
 
 ---
 
@@ -64,7 +64,7 @@ When you ran `docker compose up -d`:
 
 ## ✅ Verifying It Works & Accessing Your Dashboards
 
-Run our diagnostic health checker from the repo root to verify that all 10 service ports are up and responsive:
+Run the diagnostic health checker from the repo root:
 ```bash
 ../../helpers/check-health.sh
 ```
@@ -97,7 +97,7 @@ For detailed onboarding and first-time configuration of each service, refer to t
 
 ## 🧩 What's Next?
 
-With all your applications running smoothly on internal ports, let's configure edge reverse proxy routing and SSL certificates so you and your household can connect using clean, encrypted domain names (`https://movies.yourdomain.com`) across the web!
+Next, configure the reverse proxy and SSL certificates so you can use clean domain names like `https://movies.yourdomain.com`.
 
 👉 **Proceed to the [`networking/`](../networking/README.md) Stack**
 

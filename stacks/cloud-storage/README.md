@@ -27,7 +27,7 @@ Before deploying this stack, make sure you have:
 
 ## 🔧 Understanding the Compose File
 
-Let's examine how our two services (`nextcloud` and `nextcloud-db`) interact inside `docker-compose.yml`:
+Here is how `nextcloud` and `nextcloud-db` interact inside `docker-compose.yml`:
 
 ```yaml
 services:
@@ -121,9 +121,7 @@ Once logged into your dashboard:
 
 ## 🧩 What's Next?
 
-You now have a complete suite of self-hosted services (`media-server`, `arr-stack`, `music-server`, `photo-backup`, `book-reader`, `cloud-storage`) running on internal ports. But how do you access them safely from outside your house without memorizing port numbers (`4443`, `8096`, `4533`)?
-
-Let's set up our edge reverse proxy and SSL certificate automation!
+All services are running on internal ports; the next step configures your edge reverse proxy and SSL.
 
 👉 **Proceed to the [`networking/`](../networking/README.md) Stack**
 

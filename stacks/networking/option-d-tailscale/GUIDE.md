@@ -6,7 +6,7 @@
 
 ## 🔒 Why Tailscale is the Gold Standard for Privacy
 
-Think of Tailscale as a **private, invisible Ethernet cable** connecting all your devices over the internet using military-grade WireGuard encryption. Unlike traditional port forwarding or cloud proxies:
+Tailscale creates a private WireGuard-encrypted mesh network between your devices—no ports required. Unlike traditional port forwarding or cloud proxies:
 - **Zero Open Ports:** You do not touch your home router or open doors 80/443/8096 to the outside world.
 - **Zero Public Exposure:** Automated bots, hackers, and scanners across the web cannot even detect that your home server exists.
 - **Simple Names:** Access your server simply by typing `http://homelab:PORT` on any enrolled phone, laptop, or tablet.
@@ -56,7 +56,7 @@ docker compose up -d
 
 ## 🌟 Advanced: Tailscale Funnel (Selective Public Exposure)
 
-What if you keep your server 100% private on Tailscale 99% of the time, but occasionally want to share a specific link (like a photo album or Nextcloud file) with a friend who doesn't use Tailscale?
+Tailscale Funnel lets you expose a single port publicly while everything else stays private.
 
 You can use **Tailscale Funnel** to selectively expose a single local port to the public web with automated SSL over Tailscale's edge nodes!
 1. Enable HTTPS Certificates and MagicDNS in your Tailscale DNS Settings.

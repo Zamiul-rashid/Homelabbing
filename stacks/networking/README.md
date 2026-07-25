@@ -1,8 +1,6 @@
 # 🌐 Remote Access & Networking Guide (`stacks/networking/`)
 
-Accessing your homelab from your couch via `http://192.168.x.x:8096` is great when you're at home. But what if you want to stream your music from Navidrome while commuting, or share Jellyfin with friends and family?
-
-This directory gives you **4 distinct networking paths** depending on your needs, privacy preferences, and whether you own a domain name.
+Local LAN access (`http://192.168.x.x:PORT`) covers in-home use. This directory gives you **4 distinct networking paths** for reaching your server remotely, depending on your privacy preferences and whether you own a domain name.
 
 ---
 

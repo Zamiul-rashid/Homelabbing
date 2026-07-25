@@ -33,13 +33,13 @@ A local, privacy-first smart home hub running directly on my home server's netwo
 
 ## Why I Chose Home Assistant
 
-Commercial smart home gadgets routinely relied on cloud servers: when I pressed a switch on my wall, the signal traveled to a data center across the country to turn on the bulb above my head. I moved to Home Assistant so it executed my automations 100% locally with zero latency and complete privacy.
+Commercial smart home gadgets routinely routed commands through remote data centers—pressing a wall switch sent a packet across the country before the bulb above my head lit up. I moved to Home Assistant so it executed my automations 100% locally with zero latency and complete privacy.
 
 <ProConTable
   pros={[
     "Unconditional local control: automations ran instantly and kept working during internet outages.",
     "Universal compatibility with over 3,000+ integrations bridging incompatible smart home brands I owned.",
-    "Ran on host networking (`network_mode: host`) so it auto-discovered my local Wi-Fi devices effortlessly.",
+    "Ran on host networking (`network_mode: host`) so it auto-discovered my local Wi-Fi devices without any manual configuration.",
     "Massive community ecosystem via HACS with custom UI themes and advanced logic blueprints."
   ]}
   cons={[

@@ -33,7 +33,7 @@ I built a local DNS server that intercepted domain requests before they ever rea
 
 ## Why I Chose AdGuard Home
 
-While browser extensions like uBlock Origin worked wonders on my desktop computers, they couldn't protect my smart TVs, IoT gadgets, streaming devices, or mobile applications. AdGuard Home operated at the network level (`port 53`), blocking tracking telemetry before pages even loaded and noticeably boosting my browsing speeds.
+While browser extensions like uBlock Origin worked wonders on my desktop computers, they couldn't protect my smart TVs, IoT gadgets, streaming devices, or mobile applications. AdGuard Home operated at the network level (`port 53`), blocking tracking telemetry before pages even loaded and cutting my page-load times measurably.
 
 <ProConTable
   pros={[
@@ -64,7 +64,7 @@ docker compose up -d
 I opened `http://YOUR_SERVER_IP:3000` in my web browser to enter AdGuard Home's initial setup wizard:
 1. Under **Admin Web Interface**, I set the listen port to `80` (which mapped externally to `8083` in my `docker-compose.yml`).
 2. Under **DNS Server**, I ensured it listened on All Interfaces (`0.0.0.0`) on Port `53`.
-3. I created my administrative username and a secure password, then finished the wizard. My permanent admin dashboard was then live at `http://YOUR_SERVER_IP:8083`.
+3. I created my administrative username and a secure password, then finished the wizard. AdGuard Home brought my permanent admin dashboard up at `http://YOUR_SERVER_IP:8083`.
 
 ### 3. Pointing My Router to AdGuard Home
 To protect my entire household:

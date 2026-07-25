@@ -4,13 +4,13 @@
 > **This directory is provided for advanced reference and inspiration only.**
 > You are **NOT** expected or advised to deploy these configurations directly on your first home server!
 
-When building your first home server, we strongly recommend starting with the modular, self-contained stacks inside our [`stacks/`](../stacks/README.md) directory. Each stack there is isolated, heavily commented, and designed to teach you how the underlying services work.
+Start with the modular, self-contained stacks inside [`stacks/`](../stacks/README.md) for your first home server. Each stack there is isolated, heavily commented, and designed to teach you how the underlying services work.
 
 ---
 
 ## 🧐 What is Inside This Folder?
 
-This directory contains the exact, unmodified Docker Compose blueprints and recovery scripts that the repository author personally uses to run their 25+ service production ecosystem at home:
+The repository author uses these exact, unmodified Docker Compose blueprints and recovery scripts to run a 25+ service production ecosystem at home:
 
 - **[`media-stack/`](media-stack/README.md)** — A **Tri-Network (`media_net`, `download_net`, `infra_net`)** 25-container production compose stack combining `Jellyfin`, `Navidrome`, `Kavita`, `Feishin`, the complete `*arr` download automation pipeline (`Radarr`, `Sonarr`, `Prowlarr`, `qBittorrent`, `Jellyseerr`), artificial intelligence audio vector indexing (`AudioMuse AI` + `PostgreSQL pgvector`), `Paperless-ngx`, `Stirling PDF`, `Actual Budget`, `Home Assistant`, `Mosquitto MQTT`, `AdGuard Home`, `Redis`, `Portainer`, `Watchtower`, `Uptime Kuma`, `Homarr`, and `Homepage`. Features zero-trust database isolation (`internal: true`).
 - **[`nextcloud-stack/`](nextcloud-stack/)** — A standalone production Nextcloud + MariaDB stack wired to dedicated cloud storage pools.

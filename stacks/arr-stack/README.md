@@ -1,7 +1,7 @@
 # *Arr Stack — Automated Media Downloading & Organization
 
 ## 🎯 What You'll Have When You're Done
-When you complete this guide, you will have a complete, automated media acquisition pipeline. When your family browses trending movies or TV shows on the **Jellyseerr** web dashboard and clicks "Request", your server will automatically search indexers in **Prowlarr**, instruct **qBittorrent** to download the best quality release, monitor progress inside **Radarr** and **Sonarr**, and cleanly hardlink the finished video files right into `/data/media` where Jellyfin streams them instantly!
+When you complete this guide, you will have a complete, automated media acquisition pipeline. When your family browses trending movies or TV shows on the **Jellyseerr** web dashboard and clicks "Request", your server searches Prowlarr for the best release, sends it to qBittorrent, tracks progress in Radarr and Sonarr, and hardlinks the finished file into `/data/media` for Jellyfin.
 
 ---
 
@@ -27,7 +27,7 @@ Before deploying this stack, make sure you have:
 
 ## 🔧 Understanding the Compose File
 
-Let's examine how the 5 services (`qbittorrent`, `prowlarr`, `radarr`, `sonarr`, `jellyseerr`) work together inside `docker-compose.yml`:
+The 5 services (`qbittorrent`, `prowlarr`, `radarr`, `sonarr`, `jellyseerr`) inside `docker-compose.yml` interact as follows:
 
 ```yaml
   radarr:
@@ -70,7 +70,7 @@ When you ran `docker compose up -d`:
 
 ## ✅ Verifying It Works & Wiring Your Pipeline
 
-Let's verify your services are running and connect them using API keys as detailed in **[arr-stack-flow.md](../../docs/arr-stack-flow.md)**:
+Verify your services are running and connect them using API keys as detailed in **[arr-stack-flow.md](../../docs/arr-stack-flow.md)**:
 
 ### Step 1: Check Container Health
 ```bash
@@ -95,7 +95,7 @@ Open **Jellyseerr** (`http://YOUR_SERVER_IP:5055`), log in using your **Jellyfin
 
 ## 🧩 What's Next?
 
-With your automated video acquisition and streaming pipeline completely functional, configure high-speed personal music streaming so you can replace Spotify or Apple Music on your smartphone!
+Next, set up the music server stack to replace Spotify or Apple Music.
 
 👉 **Proceed to the [`music-server/`](../music-server/README.md) Stack**
 
