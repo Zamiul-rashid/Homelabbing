@@ -2,13 +2,13 @@
 import { services } from '../data/services';
 ---
 
-<div class="glass overflow-hidden my-8 border border-border shadow-lg">
-  <div class="p-4 bg-bg-elevated border-b border-border flex flex-wrap items-center justify-between gap-2">
+<div class="spec-sheet my-8">
+  <div class="p-4 bg-bg-surface border-b border-border flex flex-wrap items-center justify-between gap-2">
     <h3 class="font-bold text-text flex items-center gap-2">
       <span>🩺</span>
       <span>Quick Health Check Port Reference</span>
     </h3>
-    <code class="text-xs text-accent font-mono px-2 py-1 rounded bg-bg">helpers/check-health.sh</code>
+    <code class="text-xs text-accent font-mono px-2 py-1 bg-bg border border-border/50">helpers/check-health.sh</code>
   </div>
 
   <div class="overflow-x-auto">
@@ -23,7 +23,7 @@ import { services } from '../data/services';
       </thead>
       <tbody class="divide-y divide-border/50 text-text">
         {services.map((s) => (
-          <tr class="hover:bg-bg-surface/60 transition-colors">
+          <tr class="hover:bg-bg/50 transition-colors">
             <td class="py-3.5 px-4 font-semibold flex items-center gap-2.5">
               <span class="text-xl">{s.icon}</span>
               <span>{s.name}</span>

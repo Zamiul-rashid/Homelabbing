@@ -3,23 +3,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg:       { DEFAULT: '#08090A', surface: '#1C1E22', elevated: '#2A2D32' },
-        primary:  { DEFAULT: '#121417' },
-        accent:   { DEFAULT: '#FF5C00', hover: '#FF7A2F', muted: '#662500' },
+        bg:       { DEFAULT: '#04050A', surface: '#0B0E14', elevated: '#131821' },
+        primary:  { DEFAULT: '#E5E7EB' },
+        accent:   { DEFAULT: '#FF3E00', hover: '#FF5A26', muted: '#801F00' },
         success:  { DEFAULT: '#00E559', muted: '#005C23' },
         warning:  { DEFAULT: '#FFB800' },
-        text:     { DEFAULT: '#F0F2F5', muted: '#8A919E', faint: '#565E6D' },
-        border:   { DEFAULT: '#2D313A', accent: '#FF5C00' },
-        terminal: { bg: '#08090A', green: '#00E559', text: '#F0F2F5' },
+        text:     { DEFAULT: '#E5E7EB', muted: '#8B949E', faint: '#4B5563' },
+        border:   { DEFAULT: '#1E232E', accent: '#FF3E00' },
+        terminal: { bg: '#04050A', green: '#00E559', text: '#E5E7EB' },
       },
       fontFamily: {
         display: ['"Clash Display"', 'system-ui', 'sans-serif'],
-        sans: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        sans: ['"JetBrains Mono"', 'monospace'],
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       boxShadow: {
-        'module': 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.5)',
-        'module-active': 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px #FF5C00, 0 8px 24px -4px rgba(255, 92, 0, 0.2)',
+        'module': '0 0 0 1px #1E232E, 0 4px 6px -1px rgba(0, 0, 0, 0.5)',
+        'module-active': '0 0 0 1px #FF3E00, 0 8px 24px -4px rgba(255, 62, 0, 0.3)',
       },
       animation: {
         'fade-up':      'fadeUp 0.6s ease-out forwards',

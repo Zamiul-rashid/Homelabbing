@@ -37,7 +37,7 @@ export default function TerminalAnimation() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setReplaying(!replaying)}
-            className="text-[11px] text-text-muted hover:text-accent font-mono px-2.5 py-1 rounded bg-bg border border-border/60 hover:border-accent flex items-center gap-1 transition-colors"
+            className="text-[11px] text-text-muted hover:text-accent font-mono px-2.5 py-1 bg-bg border border-border/60 hover:border-accent flex items-center gap-1 transition-colors"
             title="Replay animation"
           >
             <span>🔄 Replay</span>
@@ -72,7 +72,7 @@ export default function TerminalAnimation() {
               <p>--&gt; Pulling image lscr.io/linuxserver/jellyfin:latest... <span className="text-success">[OK]</span></p>
               <p>--&gt; Creating container jellyfin and binding network bridge... <span className="text-success">[OK]</span></p>
             </div>
-            <div className="p-3 rounded-lg bg-success/10 border border-success/30 text-success text-xs mt-3">
+            <div className="p-3 bg-success/10 border border-success/30 text-success text-xs mt-3">
               <p className="font-bold">✨ Stack Live! Open your web browser right now:</p>
               <p className="font-mono mt-1 text-text">http://YOUR_SERVER_IP:8096 (Jellyfin Welcome Wizard)</p>
             </div>

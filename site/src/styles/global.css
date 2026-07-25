@@ -8,20 +8,21 @@
   :root {
     color-scheme: dark;
     scroll-behavior: smooth;
-    --bg: #08090A;
-    --surface: #1C1E22;
-    --primary: #121417;
-    --accent: #FF5C00;
+    --bg: #04050A;
+    --surface: #0B0E14;
+    --primary: #E5E7EB;
+    --accent: #FF3E00;
     --accent-success: #00E559;
-    --text: #F0F2F5;
-    --muted: #8A919E;
+    --text: #E5E7EB;
+    --muted: #8B949E;
+    --border: #1E232E;
   }
   * { @apply border-border; }
   body {
     @apply bg-bg text-text font-sans antialiased selection:bg-accent/30 selection:text-white;
-    background-image: radial-gradient(circle at 50% -20%, rgba(255, 92, 0, 0.1), transparent 50%),
-                      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                      linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-image: radial-gradient(circle at 50% -20%, rgba(255, 62, 0, 0.08), transparent 50%),
+                      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 100% 100%, 40px 40px, 40px 40px;
     background-attachment: fixed;
   }
@@ -36,9 +37,8 @@
 }
 
 @layer components {
-  /* Hardware Module effect */
-  .glass {
-    @apply bg-primary/95 backdrop-blur-sm rounded-lg shadow-module border-t border-t-white/10 border-x border-x-white/5 border-b border-b-black/80;
+  .glass, .spec-sheet {
+    @apply bg-bg-surface rounded-none border border-border shadow-module;
   }
   
   /* Accent text (replacing generic gradient) */
@@ -48,35 +48,35 @@
   
   /* Primary button */
   .btn-primary {
-    @apply px-6 py-3.5 bg-accent hover:bg-accent-hover text-[#000000] font-bold font-mono uppercase tracking-wide 
-           rounded-md transition-all duration-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]
+    @apply px-6 py-3.5 bg-accent hover:bg-accent-hover text-[#000000] font-bold font-mono tracking-wide 
+           rounded-none transition-all duration-200 
            focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-bg
            active:scale-95 inline-flex items-center justify-center gap-2 text-center select-none;
   }
 
   /* Secondary button */
   .btn-secondary {
-    @apply px-6 py-3.5 bg-bg-surface border border-border hover:border-accent hover:text-accent text-text font-bold font-mono uppercase tracking-wide 
-           rounded-md transition-all duration-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]
+    @apply px-6 py-3.5 bg-bg-surface border border-border hover:border-accent hover:text-accent text-text font-bold font-mono tracking-wide 
+           rounded-none transition-all duration-200 
            focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg
            inline-flex items-center justify-center gap-2 text-center select-none;
   }
 
   /* Service card */
   .service-card {
-    @apply glass p-6 flex flex-col gap-4 cursor-pointer
+    @apply spec-sheet p-6 flex flex-col gap-4 cursor-pointer
            transition-all duration-300 hover:shadow-module-active
            focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none;
   }
 
   /* Code block */
   .code-block {
-    @apply bg-terminal-bg rounded-md p-4 font-mono text-sm relative overflow-x-auto border border-border/90 shadow-inner;
+    @apply bg-terminal-bg rounded-none p-4 font-mono text-sm relative overflow-x-auto border border-border/90 shadow-inner;
   }
 
   /* Terminal window */
   .terminal-window {
-    @apply bg-terminal-bg rounded-2xl overflow-hidden
+    @apply bg-terminal-bg rounded-none overflow-hidden
            border border-border/90
            shadow-[0_20px_60px_rgba(0,0,0,0.6)];
   }

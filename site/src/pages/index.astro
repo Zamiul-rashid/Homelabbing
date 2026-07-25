@@ -9,263 +9,310 @@ import HealthTable from '../components/HealthTable.astro';
   description="Take back control of your digital life with self-hosted media, photo backups, and private cloud storage."
 >
   <!-- Hero Section -->
-  <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden border-b border-border">
-    <div class="absolute inset-0 bg-gradient-radial from-accent/10 via-transparent to-transparent opacity-60 pointer-events-none"></div>
-    
-    <div class="max-w-6xl mx-auto px-4 relative z-10 text-center">
-      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-text max-w-4xl mx-auto leading-tight animate-fade-up">
+  <section class="relative pt-12 pb-20 md:pt-24 md:pb-32 overflow-hidden border-b border-border">
+    <div class="max-w-7xl mx-auto px-4 relative z-10 flex flex-col items-center text-center">
+      <div class="mb-6 px-3 py-1 border border-border text-xs font-mono text-text-muted tracking-widest uppercase bg-bg-surface/50 backdrop-blur-sm animate-fade-up">
+        SYS.INIT // HOMELABBING_V1
+      </div>
+      
+      <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tighter text-text max-w-5xl mx-auto leading-[0.9] animate-fade-up font-display uppercase">
         Own Your Cloud. <br />
-        <span class="gradient-text">Ditch the Subscriptions.</span>
+        <span class="text-accent">Ditch Subscriptions.</span>
       </h1>
 
-      <p class="mt-6 text-lg sm:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed animate-fade-up" style="animation-delay: 0.1s;">
-        Why pay $50+ a month for Netflix, Spotify, Kindle Cloud, Google Photos, and Dropbox when you can host them locally on your own hardware with superior privacy and zero ongoing fees?
+      <p class="mt-8 text-base sm:text-lg text-text-muted font-mono max-w-2xl mx-auto leading-relaxed animate-fade-up" style="animation-delay: 0.1s;">
+        Why pay $50+ a month for Netflix, Spotify, Google Photos, and Dropbox when you can host them locally on your own hardware with superior privacy and zero ongoing fees?
       </p>
 
-      <div class="mt-10 flex flex-wrap items-center justify-center gap-4 animate-fade-up" style="animation-delay: 0.2s;">
-        <a href="/Homelabbing/getting-started" class="btn-primary text-base">
-          INITIALIZE SETUP 🚀
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-4 animate-fade-up" style="animation-delay: 0.2s;">
+        <a href="/Homelabbing/getting-started" class="btn-primary text-sm">
+          Initialize setup
         </a>
-        <a href="/Homelabbing/concepts" class="btn-secondary text-base">
-          VIEW ARCHITECTURE →
+        <a href="/Homelabbing/concepts" class="btn-secondary text-sm">
+          View architecture
         </a>
       </div>
 
       <!-- Terminal Animation Island -->
-      <div class="mt-14 animate-fade-up" style="animation-delay: 0.3s;">
+      <div class="mt-20 w-full max-w-4xl animate-fade-up" style="animation-delay: 0.3s;">
         <TerminalAnimation client:load />
       </div>
     </div>
   </section>
 
-  <!-- Blog Style Hardware Guide -->
-  <section class="py-16 bg-[#FFF9F2] text-[#1a1a24] font-sans">
-    <div class="max-w-3xl mx-auto px-4 text-lg leading-relaxed">
-      <h1 class="text-4xl md:text-5xl font-extrabold mb-6 font-display uppercase tracking-tight text-black">STARTING A HOMELAB</h1>
-      
-      <p class="mb-4">Homelabbing can be an overwhelming hobby to get started in. Browse places like <a href="https://www.reddit.com/r/homelab/" class="underline font-semibold hover:text-accent">r/homelab</a> and you will quickly find an abundance of large racks storing rows of computers and networking hardware, along with the odd smaller lab peppered in between. But the great thing about homelabbing is it can be as big, or more importantly, as small as you want.</p>
+  <!-- Hardware Guide (Brutalist Spec Sheet) -->
+  <section class="py-24 border-b border-border bg-bg">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8 md:gap-16">
+        
+        <!-- Left Sidebar Data -->
+        <div class="font-mono text-xs text-text-muted space-y-8 flex flex-col pt-3 md:border-r md:border-border/50 md:pr-8">
+          <div>
+            <div class="text-accent mb-2 border-b border-border/50 pb-2">01 // TOPIC</div>
+            <div class="uppercase tracking-widest">STARTING A HOMELAB</div>
+          </div>
+          <div>
+            <div class="text-accent mb-2 border-b border-border/50 pb-2">02 // OBJECTIVE</div>
+            <div>Self-host applications & maintain data control.</div>
+          </div>
+          <div>
+            <div class="text-accent mb-2 border-b border-border/50 pb-2">03 // STATUS</div>
+            <div class="flex items-center gap-2"><span class="w-2 h-2 bg-success rounded-none animate-pulse"></span> SYSTEM NOMINAL</div>
+          </div>
+        </div>
 
-      <p class="mb-4">In this post we’ll explore a range of options to get started, along with a variety of use cases, so lets dig in!</p>
+        <!-- Right Content -->
+        <div class="space-y-16">
+          
+          <!-- Intro -->
+          <div class="animate-fade-up" style="animation-delay: 0.1s;">
+            <h2 class="text-4xl md:text-5xl font-black font-display tracking-tight text-text uppercase mb-6">STARTING A HOMELAB</h2>
+            <div class="space-y-4 text-text-muted text-sm md:text-base leading-relaxed font-mono">
+              <p>Homelabbing can be an overwhelming hobby to get started in. Browse places like <a href="https://www.reddit.com/r/homelab/" class="text-text hover:text-accent border-b border-border hover:border-accent transition-colors">r/homelab</a> and you will quickly find an abundance of large racks storing rows of computers and networking hardware, along with the odd smaller lab peppered in between. But the great thing about homelabbing is it can be as big, or more importantly, as small as you want.</p>
+              <p>In this post we’ll explore a range of options to get started, along with a variety of use cases, so lets dig in!</p>
+            </div>
+          </div>
 
-      <h2 class="text-3xl font-extrabold mt-12 mb-4 font-display">Why start a homelab?</h2>
-      <p class="mb-4">People get into homelabbing for a wide variety of reasons, but generally speaking, there are two common reasons:</p>
-      
-      <ul class="list-disc pl-8 space-y-3 mb-6">
-        <li>Somewhere to learn a technology for work or education. For example, this could be buying a Cisco switch from eBay to study for a networking certification, or spinning up an Apache server to understand how a website’s hosted.</li>
-        <li>To self host applications, reducing reliance on the cloud or big tech. For example, you could replace Dropbox with <a href="#" class="underline font-semibold hover:text-accent">Nextcloud</a> to store and sync your documents, or fire up <a href="#" class="underline font-semibold hover:text-accent">PiHole</a> to block ads from devices on your network.</li>
-      </ul>
+          <!-- Why -->
+          <div class="spec-sheet p-8 border-l-4 border-l-accent bg-bg-surface animate-fade-up" style="animation-delay: 0.2s;">
+            <h3 class="text-xl font-bold font-display uppercase tracking-tight text-text mb-6">Why start a homelab?</h3>
+            <ul class="space-y-4 font-mono text-sm text-text-muted">
+              <li class="flex gap-4"><span class="text-accent opacity-50 shrink-0">[1]</span> <span>Somewhere to learn a technology for work or education. For example, buying a Cisco switch from eBay to study for a networking certification.</span></li>
+              <li class="flex gap-4"><span class="text-accent opacity-50 shrink-0">[2]</span> <span>To self host applications, reducing reliance on the cloud or big tech. Replacing Dropbox with Nextcloud, or firing up PiHole to block ads.</span></li>
+            </ul>
+            <div class="mt-8 pt-6 border-t border-border/50 text-text-muted text-sm font-mono italic pl-4 border-l-2 border-border">
+              "I generally fall into the latter, opting to self host a suite of applications, maintaining control over my data. It’s convenient having an environment to quickly spin up a docker image."
+            </div>
+          </div>
 
-      <div class="border-l-4 border-gray-400 pl-6 py-1 my-8 text-gray-700 italic">
-        <p>I generally fall into the latter, opting to self host a suite of applications, maintaining <strong class="text-[#1a1a24] not-italic">control over my data</strong>. However, I also use my homelab as a place to learn. It’s convenient having an environment to quickly spin up a docker image and test some code I’m working on. Heck, I’ve even hosted a small <a href="#" class="underline font-semibold hover:text-accent not-italic">Minecraft server</a> to play with friends.</p>
+          <!-- Hardware List -->
+          <div class="animate-fade-up" style="animation-delay: 0.3s;">
+            <h2 class="text-3xl font-black font-display tracking-tight text-text uppercase mb-8 border-b border-border pb-4">HARDWARE OPTIONS</h2>
+            
+            <div class="grid grid-cols-1 gap-4">
+              <!-- Item 1 -->
+              <div class="spec-sheet p-6 flex flex-col md:flex-row gap-6 hover:border-accent/50 transition-colors">
+                <div class="md:w-48 shrink-0 font-mono text-sm border-r border-border/50 pr-4">
+                  <div class="text-accent mb-2 text-xs">OPT-01</div>
+                  <div class="text-text font-bold mb-2 uppercase">Old Computer</div>
+                  <div class="text-text-muted text-xs">COST // $0</div>
+                  <div class="text-text-muted text-xs mt-1">ENERGY // HIGH</div>
+                </div>
+                <div class="font-mono text-sm text-text-muted space-y-2">
+                  <p>You may have an old laptop or PC kicking about just waiting to be repurposed. This is the perfect candidate for starting as it’s free.</p>
+                  <p>Bonus: built in battery acting as a UPS.</p>
+                  <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border/30">
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">Docker</span>
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">Hypervisor (Proxmox)</span>
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">NAS (Unraid)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="spec-sheet p-6 flex flex-col md:flex-row gap-6 hover:border-accent/50 transition-colors">
+                <div class="md:w-48 shrink-0 font-mono text-sm border-r border-border/50 pr-4">
+                  <div class="text-accent mb-2 text-xs">OPT-02</div>
+                  <div class="text-text font-bold mb-2 uppercase">Raspberry Pi</div>
+                  <div class="text-text-muted text-xs">COST // $15 - $35+</div>
+                  <div class="text-text-muted text-xs mt-1">ENERGY // V.LOW</div>
+                </div>
+                <div class="font-mono text-sm text-text-muted space-y-2">
+                  <p>A great low cost option for starting a homelab. It’s a small, but capable, machine with a large community.</p>
+                  <p class="text-warning mt-2 inline-block border border-warning/30 px-2 py-1 bg-warning/5">Notice: Don't rely on the Pi to store your only copy of data.</p>
+                  <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border/30">
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">PiHole</span>
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">Home Assistant</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="spec-sheet p-6 flex flex-col md:flex-row gap-6 hover:border-accent/50 transition-colors">
+                <div class="md:w-48 shrink-0 font-mono text-sm border-r border-border/50 pr-4">
+                  <div class="text-accent mb-2 text-xs">OPT-03</div>
+                  <div class="text-text font-bold mb-2 uppercase">NAS Appliance</div>
+                  <div class="text-text-muted text-xs">COST // $250 - $500+</div>
+                  <div class="text-text-muted text-xs mt-1">ENERGY // MED</div>
+                </div>
+                <div class="font-mono text-sm text-text-muted space-y-2">
+                  <p>Brands like Synology and Ugreen offer built NAS appliances ready to go out of the box.</p>
+                  <p class="text-accent font-bold mt-2">HOWEVER:</p>
+                  <p>The true point of homelabbing is that you can build a NAS yourself using an old second-hand PC and some hard drives, giving you complete control and no "brand tax".</p>
+                  <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border/30">
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">Network Storage</span>
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">Media Server</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 4 -->
+              <div class="spec-sheet p-6 flex flex-col md:flex-row gap-6 hover:border-accent/50 transition-colors">
+                <div class="md:w-48 shrink-0 font-mono text-sm border-r border-border/50 pr-4">
+                  <div class="text-accent mb-2 text-xs">OPT-04</div>
+                  <div class="text-text font-bold mb-2 uppercase">Second Hand PC</div>
+                  <div class="text-text-muted text-xs">COST // $50 - $300+</div>
+                  <div class="text-text-muted text-xs mt-1">ENERGY // MED-HIGH</div>
+                </div>
+                <div class="font-mono text-sm text-text-muted space-y-2">
+                  <p>Similar to the “Old Computer”, but with much more choice. Ex-corporate machines like Dell Optiplex or Lenovo ThinkCentre are perfect.</p>
+                  <p>Provides the most flexibility and scale.</p>
+                  <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-border/30">
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">Proxmox</span>
+                    <span class="px-2 py-1 bg-bg border border-border text-xs">Arch Linux</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security & Conclusion -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-up" style="animation-delay: 0.4s;">
+            <div class="spec-sheet p-6 border-t-2 border-t-warning border-l-0 border-r-0 border-b-0 border border-border bg-bg-surface">
+              <h3 class="text-lg font-bold font-mono tracking-tight text-text mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 bg-warning inline-block"></span> SECURITY WARNING
+              </h3>
+              <p class="font-mono text-sm text-text-muted leading-relaxed">
+                It’s tempting to expose your new homelab to the internet. But unless you understand the risks and how to mitigate them (firewalls, VPNs, tunnels), you shouldn't. You are opening yourself up to malicious threats.
+              </p>
+            </div>
+            
+            <div class="spec-sheet p-6 border-t-2 border-t-accent bg-accent/5 border-l-0 border-r-0 border-b-0 border border-border">
+              <h3 class="text-lg font-bold font-mono tracking-tight text-accent mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 bg-accent inline-block animate-pulse"></span> CONCLUSION
+              </h3>
+              <p class="font-mono text-sm text-text-muted leading-relaxed">
+                Homelabbing doesn’t have to be about big expensive gear. Start small and explore. <br/><br/>
+                <strong class="text-text">Happy homelabbing.</strong>
+              </p>
+            </div>
+          </div>
+
+        </div>
       </div>
-
-      <h2 class="text-3xl font-extrabold mt-12 mb-4 font-display">Hardware</h2>
-      <p class="mb-4">Like any new hobby, it’s probably best not to break the bank on equipment to get started. Until you have a better idea of your use cases and requirements, start small and grow.</p>
-      <p class="mb-4">My homelab began years ago, before I even heard the term “homelab” with a Synology DS216J, a 2-bay NAS (Network Attached Storage). This served as a place for me to store my files and backup my laptop. It evolved over time through different forms into what I have today.</p>
-
-      <p class="mb-4">Let’s run through a number of options, along with their approximate price range, and use cases:</p>
-      <ul class="list-disc pl-8 space-y-1 mb-6 text-accent font-semibold underline">
-        <li><a href="#old-computer">Old (or spare) computer</a></li>
-        <li><a href="#raspberry-pi">Raspberry Pi</a></li>
-        <li><a href="#nas">NAS</a></li>
-        <li><a href="#second-hand-pc">Second hand PC</a></li>
-      </ul>
-
-      <h3 id="old-computer" class="text-2xl font-extrabold mt-10 mb-4 font-display">Old (or spare) Computer</h3>
-      <p class="mb-4">You may have an old laptop or PC kicking about just waiting to be repurposed. This is the perfect candidate for starting a homelab as it’s free, so if you decide homelabbing is not for you, no problem!</p>
-      <p class="mb-4">If you use an old laptop, you have the bonus of the built in battery acting as a UPS (uninterruptible power supply), although depending on age, you may want to consider replacing it before it becomes a “spicy pillow”.</p>
-      <p class="mb-4">Depending on the hardware, this option provides you with a space to run a multitude of options such as:</p>
-      <ul class="list-disc pl-8 space-y-2 mb-6">
-        <li>Docker server for self hosting and running applications.</li>
-        <li>Hypervisor for running Virtual Machines. Some options include Proxmox, XCP-ng or even normal OS like Windows or Ubuntu.</li>
-        <li>Building a NAS using tools like Open Media Vault, TrueNAS, or our favourite here Unraid.</li>
-        <li>Building your own router with software like pfSense or OPNsense.</li>
-      </ul>
-      <p class="mb-4">Using an old computer can have some downsides however. If it’s an older computer, it’s likely to be less efficient. spiking your energy bill if left running 24/7. It may also have limited resources like RAM, or storage capacity, but these are likely upgradable.</p>
-
-      <h3 id="raspberry-pi" class="text-2xl font-extrabold mt-10 mb-4 font-display">Raspberry Pi</h3>
-      <p class="mb-4">The Raspberry Pi is a great low cost option for starting a homelab. It’s a small, but capable, machine with a large community, and plethora of accessories. Starting around $15 for the Pi Zero and $35 for the Pi 4, the latter being our recommendation due to its higher specs and port selection, making it a much more capable device. With that said, the Pi Zero is perfect for tinkering with electronics or running small services like PiHole</p>
-      <p class="mb-4">Although the Pi is small, its popularity has contributed to a wide spectrum of use cases, providing you limit your expectations:</p>
-      <ul class="list-disc pl-8 space-y-2 mb-6">
-        <li>Run smaller services like Apache web server, PiHole, and Docker.</li>
-        <li>Build a portable NAS using external drives and Open Media Vault. You can even buy a fancy NAS enclosure for the Pi!</li>
-        <li>Build a smart home with Home Assistant. With various accessories you can use it to make dumb things smart, or control already smart devices in your home, such as bulbs, cameras and TVs.</li>
-        <li>Learn to code with a dedicated device and stacks of resources created specifically for the Pi.</li>
-      </ul>
-      <p class="mb-4">While you can run services like Nextcloud or Jellyfin media server, the hardware will limit its performance. In addition this limits the potential to scale and host more services on a single device.</p>
-      <p class="mb-4 text-red-700 font-semibold">You also shouldn’t rely on the Pi to store your only copy of data, backups are important!</p>
-
-      <h3 id="nas" class="text-2xl font-extrabold mt-10 mb-4 font-display">NAS (Network Attached Storage)</h3>
-      <p class="mb-4">A NAS is a great starting point if you are looking to store or backup data on your network. They are generally user friendly, with intuitive web based management portals and many brands include a suite of tools for backing up your computer, running Google Docs clones and even running some Docker containers.</p>
-      <p class="mb-4">However, they usually come with a price premium. A low end enclosure may start at $250 but by the time you add some drives, you’re quickly around or above $500. You’ll also run into quirks and issues when trying to run more complicated Docker containers, or installing third party software.</p>
-      <p class="mb-4">When it comes to brands, we havve only used Synology at The Homelabber, however Jeff Geerling, a well respected homelabber and author, is quite the fan of Asustor. QNAP is another large brand you’re likely to come across, however we urge caution given their repeated history of vulnerabilities and slow response to fixing them.</p>
-      <p class="mb-4">As mentioned, you are generally going to be more limited when running services on a NAS, the following are common use cases:</p>
-      <ul class="list-disc pl-8 space-y-2 mb-6">
-        <li>Network storage, accessible to computers and devices on your network.</li>
-        <li>Media server for streaming digital copies of your TV shows and films.</li>
-        <li>Running some simple docker containers like PiHole (although these may require more configuration than on a standard linux host).</li>
-        <li>Backing up your PCs and Mac (depending on the tools offered by the brand of NAS.)</li>
-      </ul>
-
-      <h3 id="second-hand-pc" class="text-2xl font-extrabold mt-10 mb-4 font-display">Second Hand PC</h3>
-      <p class="mb-4">This is similar to the “Old Computer”, but with much more choice. Generally speaking, you want to look for a fairly modern CPU to support more RAM, lower power usage and features like Intel QuickSync for transcoding media on a media server.</p>
-      <p class="mb-4">Marketplaces like ebay have sellers reselling ex-corporate machines with varying configurations. You will want to focus on finding something with a good CPU and upgrade it with your own RAM and storage as resellers often fill them with cheap components and overcharge for upgrades.</p>
-      <p class="mb-4">If you are after a small computer to play with Linux, host some docker containers, and even a VM or two. Small form factor (SFF) PCs like the Dell Optiplex, or the Lenovo ThinkCentre M ranges are perfect. They are low power, small, regularly available, and come in a variety of configurations.</p>
-      <p class="mb-4">As for larger computers with more expandability, workstations can be a good option. They offer more space for PCI Express expandability for peripherals like network cards or graphics cards, and more storage bays. Some even still feature an optical disc drive too if you want to backup your DVD collection.</p>
-      <p class="mb-4">Generally speaking, this option provides the most flexibility. With prices starting as low as $50 and going as high as you’re willing to spend, you can really find something that will fit your needs.</p>
-      <p class="mb-4">In addition you have the flexibility of most operating systems, from Unraid, to Proxmox, or even Arch Linux (*tips hat*).</p>
-
-      <h2 class="text-3xl font-extrabold mt-12 mb-4 font-display">A quick word on Security</h2>
-      <p class="mb-4">It’s tempting to expose your new homelab to the internet, perhaps you’re self hosting a blog, or want to invite your friends to play on your game server. But unless you understand the risks and how to mitigate them, you really shouldn’t. Even if the application or service has password protection in front of it, there may be exploits that can be taken advantage of. When you expose a device or network to the web, you are opening yourself up to all sorts of potential malicious threats.</p>
-      <p class="mb-4">You’ll want to think about firewalls, monitoring, logging and much more. You could even use technologies like VPNs and tunnelling to help reduce the risk.</p>
-      <p class="mb-4">So make sure you take the time to fully understand the risk and the necessary steps to reduce this before exposing yourself to the world wide web.</p>
-
-      <h2 class="text-3xl font-extrabold mt-12 mb-4 font-display">Conclusion</h2>
-      <p class="mb-4">Homelabbing doesn’t have to be about big expensive gear or creating your own data centre. It really can be as big or small as you need. We have covered a number of options in this post, along with possible projects to try, but there is much more out there! I encourage you to use this as a stepping stone into your homelab journey and start exploring!</p>
-      <p class="font-extrabold mt-6">Happy homelabbing.</p>
     </div>
   </section>
 
-  <!-- Core Concepts Banner (Merged Project Summary) -->
-  <section class="py-16 bg-bg-surface/60 border-b border-border">
-    <div class="max-w-6xl mx-auto px-4">
+  <!-- Core Concepts Banner -->
+  <section class="py-16 bg-bg-surface border-b border-border">
+    <div class="max-w-7xl mx-auto px-4">
       <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-        <div class="max-w-2xl">
-          <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Architecture First Foundation</span>
-          <h2 class="text-3xl font-bold text-text mt-2">A Modular Ecosystem & Educational Guide</h2>
-          <p class="text-text-muted text-sm md:text-base mt-2 leading-relaxed">
-            Welcome to a modular Docker Compose ecosystem and educational guide for beginners building self-hosted home servers. We believe in understanding architecture over magic scripts. First understand the architecture, then implement. Explore our conceptual guides breaking down ports, container volumes (`/config` vs `/data`), networking, smart home automation, and ad blocking.
+        <div class="max-w-3xl">
+          <span class="text-xs font-mono uppercase tracking-widest text-accent mb-2 block">Architecture First Foundation</span>
+          <h2 class="text-3xl font-black font-display uppercase tracking-tight text-text">A Modular Ecosystem & Educational Guide</h2>
+          <p class="text-text-muted text-sm font-mono mt-4 leading-relaxed">
+            Welcome to a modular Docker Compose ecosystem and educational guide for beginners building self-hosted home servers. We believe in understanding architecture over magic scripts. First understand the architecture, then implement. Explore our conceptual guides breaking down ports, container volumes, networking, smart home automation, and ad blocking.
           </p>
         </div>
-        <a href="/Homelabbing/concepts" class="btn-primary shrink-0">
-          BROWSE GUIDES →
+        <a href="/Homelabbing/concepts" class="btn-primary shrink-0 text-sm">
+          Browse guides
         </a>
       </div>
     </div>
   </section>
 
   <!-- Project Audit -->
-  <section class="py-16 border-b border-border">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="max-w-3xl mb-8">
-        <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Project Audit</span>
-        <h2 class="text-3xl font-bold text-text mt-2">State of the Repository</h2>
-        <p class="text-text-muted text-sm mt-2">An overview of our structure, maintainability, and security practices.</p>
+  <section class="py-24 border-b border-border">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-mono uppercase tracking-widest text-accent mb-2 block">Project Audit</span>
+        <h2 class="text-4xl font-black font-display uppercase tracking-tight text-text">State of the Repository</h2>
+        <p class="text-text-muted font-mono text-sm mt-4">An overview of our structure, maintainability, and security practices.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.1s;">
-          <h3 class="text-xl font-black text-text mb-2">Structure & Organization</h3>
-          <p class="text-sm text-text-muted">The project is 100% modular, with heavily commented <code class="font-mono text-accent bg-bg/50 px-1 rounded">stacks/</code> directories. Documentation quality focuses on architecture-first conceptual guides.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="spec-sheet p-8 group transition-colors animate-fade-up" style="animation-delay: 0.1s;">
+          <h3 class="text-lg font-bold font-mono text-text mb-3 uppercase">Structure & Organization</h3>
+          <p class="text-sm font-mono text-text-muted leading-relaxed">The project is 100% modular, with heavily commented <code class="text-accent bg-bg px-1 py-0.5 border border-border">stacks/</code> directories. Documentation quality focuses on architecture-first conceptual guides.</p>
         </div>
-        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.2s;">
-          <h3 class="text-xl font-black text-text mb-2">Architecture & Maintainability</h3>
-          <p class="text-sm text-text-muted">We use the <code class="font-mono text-accent bg-bg/50 px-1 rounded">.env.example</code> pattern across all stacks and employ read-only mounts to ensure data safety.</p>
+        <div class="spec-sheet p-8 group transition-colors animate-fade-up" style="animation-delay: 0.2s;">
+          <h3 class="text-lg font-bold font-mono text-text mb-3 uppercase">Architecture & Maintainability</h3>
+          <p class="text-sm font-mono text-text-muted leading-relaxed">We use the <code class="text-accent bg-bg px-1 py-0.5 border border-border">.env.example</code> pattern across all stacks and employ read-only mounts to ensure data safety.</p>
         </div>
-        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.3s;">
-          <h3 class="text-xl font-black text-text mb-2">Security Best Practices</h3>
-          <p class="text-sm text-text-muted">Tailscale and Cloudflare options are provided for secure external access without needing port forwarding.</p>
+        <div class="spec-sheet p-8 group transition-colors animate-fade-up" style="animation-delay: 0.3s;">
+          <h3 class="text-lg font-bold font-mono text-text mb-3 uppercase">Security Best Practices</h3>
+          <p class="text-sm font-mono text-text-muted leading-relaxed">Tailscale and Cloudflare options are provided for secure external access without needing port forwarding.</p>
         </div>
-        <div class="glass p-6 border-accent/50 bg-accent/5 group transition-colors animate-fade-up" style="animation-delay: 0.4s;">
-          <h3 class="text-xl font-black text-accent mb-2">Improvement Area</h3>
-          <p class="text-sm text-text-muted">Currently, there is an overuse of <code class="font-mono text-accent bg-bg/50 px-1 rounded">:latest</code> image tags in <code class="font-mono text-accent bg-bg/50 px-1 rounded">docker-compose.yml</code> files, which can lead to breaking changes upon auto-updates.</p>
+        <div class="spec-sheet p-8 border-l-4 border-l-accent bg-accent/5 group transition-colors animate-fade-up" style="animation-delay: 0.4s;">
+          <h3 class="text-lg font-bold font-mono text-accent mb-3 uppercase">Improvement Area</h3>
+          <p class="text-sm font-mono text-text-muted leading-relaxed">Currently, there is an overuse of <code class="text-accent bg-bg/50 px-1 py-0.5 border border-accent/20">:latest</code> image tags in <code class="text-accent bg-bg/50 px-1 py-0.5 border border-accent/20">docker-compose.yml</code> files, which can lead to breaking changes upon auto-updates.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Modular Services Section (Stack Summaries) -->
-  <section class="py-20 max-w-6xl mx-auto px-4">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-      <div>
-        <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Modular Stacks</span>
-        <h2 class="text-3xl md:text-4xl font-bold text-text mt-2">Pick Where You Want to Start</h2>
-        <p class="text-text-muted text-sm md:text-base mt-2 max-w-2xl">
-          Explore our modular stacks. Each application lives in its own dedicated folder.
-        </p>
+  <!-- Modular Services Section -->
+  <section class="py-24 border-b border-border bg-bg">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-accent mb-2 block">Modular Stacks</span>
+          <h2 class="text-4xl font-black font-display uppercase tracking-tight text-text">Pick Where You Want to Start</h2>
+          <p class="text-text-muted font-mono text-sm mt-4 max-w-2xl">
+            Explore our modular stacks. Each application lives in its own dedicated folder.
+          </p>
+        </div>
+        <a href="/Homelabbing/services" class="text-accent hover:text-text font-mono text-sm flex items-center gap-2 shrink-0 transition-colors border-b border-accent hover:border-text pb-0.5">
+          View all stacks
+        </a>
       </div>
-      <a href="/Homelabbing/services" class="text-accent hover:underline font-semibold text-sm flex items-center gap-1 shrink-0">
-        View All Stacks & Filter →
-      </a>
-    </div>
 
-    <div class="my-8">
-      <img src="../../../docs/architecture.png" alt="Detailed architecture diagram showing reverse proxy, modular stacks, and docker services routing" class="w-full h-auto rounded-xl shadow-lg border border-border" />
-      <p class="text-sm text-text-muted mt-2 text-center italic">Homelabbing Architecture Diagram (from Reference docs)</p>
-    </div>
+      <div class="my-12 p-2 spec-sheet bg-bg-surface">
+        <img src="../../../docs/architecture.png" alt="Detailed architecture diagram showing reverse proxy, modular stacks, and docker services routing" class="w-full h-auto mix-blend-screen opacity-80" />
+        <div class="border-t border-border mt-2 pt-2 px-2 pb-1 flex justify-between font-mono text-xs text-text-muted">
+          <span>FIG 01 // ARCHITECTURE DIAGRAM</span>
+          <span>SOURCE: REFERENCE DOCS</span>
+        </div>
+      </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.1s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Main README & Stacks Hub <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">Core philosophy and an overview of all modular components in the repository.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.15s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Media Server <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">Stream your media everywhere using Jellyfin.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.2s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          *Arr Stack <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">Automated downloads. Uses shared parent directory mounts for zero-copy hardlinking.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.25s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Music Server <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">Personal music streaming with Navidrome.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.3s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Photo Backup <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">4-container Google Photos alternative (Immich) with local AI facial recognition.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.35s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Book Reader <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">Host and read your manga/ebooks using Kavita.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.4s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Cloud Storage <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">Self-hosted private cloud storage with Nextcloud.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.45s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Home Automation <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">Smart home control running on Home Assistant.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.5s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Networking <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <!-- DIAGRAM_PLACEHOLDER: networking-options — NO MATCHING SOURCE DIAGRAM FOUND, needs a new diagram created or manual placement -->
-        <p class="text-sm text-text-muted mt-2">Includes Tailscale and Cloudflare options for secure external access without port forwarding.</p>
-      </div>
-      <div class="glass p-6 group transition-colors animate-fade-up lg:col-span-3" style="animation-delay: 0.55s;">
-        <h3 class="text-xl font-black text-text flex justify-between items-center">
-          Full Stack <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
-        </h3>
-        <p class="text-sm text-text-muted mt-2">A complete setup combining all individual stacks together.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+        {[
+          { title: "Main README & Stacks Hub", desc: "Core philosophy and an overview of all modular components in the repository." },
+          { title: "Media Server", desc: "Stream your media everywhere using Jellyfin." },
+          { title: "*Arr Stack", desc: "Automated downloads. Uses shared parent directory mounts for zero-copy hardlinking." },
+          { title: "Music Server", desc: "Personal music streaming with Navidrome." },
+          { title: "Photo Backup", desc: "4-container Google Photos alternative (Immich) with local AI facial recognition." },
+          { title: "Book Reader", desc: "Host and read your manga/ebooks using Kavita." },
+          { title: "Cloud Storage", desc: "Self-hosted private cloud storage with Nextcloud." },
+          { title: "Home Automation", desc: "Smart home control running on Home Assistant." },
+          { title: "Networking", desc: "Includes Tailscale and Cloudflare options for secure external access without port forwarding." }
+        ].map((stack, i) => (
+          <div class="spec-sheet p-6 group hover:border-accent transition-colors flex flex-col justify-between animate-fade-up" style={`animation-delay: ${0.1 + i * 0.05}s;`}>
+            <div>
+              <h3 class="text-sm font-bold font-mono text-text uppercase mb-2 flex justify-between items-start gap-4">
+                {stack.title}
+                <span class="w-1.5 h-1.5 rounded-none bg-success animate-pulse shrink-0 mt-1"></span>
+              </h3>
+              <p class="text-xs font-mono text-text-muted leading-relaxed">{stack.desc}</p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-border/50 text-xs font-mono text-text-muted/50 group-hover:text-accent transition-colors">
+              // MODULE {String(i + 1).padStart(2, '0')}
+            </div>
+          </div>
+        ))}
+        
+        <div class="spec-sheet p-6 group hover:border-accent transition-colors lg:col-span-3 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-bg-surface animate-fade-up" style="animation-delay: 0.55s;">
+          <div>
+            <h3 class="text-sm font-bold font-mono text-text uppercase mb-2 flex items-center gap-3">
+              Full Stack <span class="w-1.5 h-1.5 rounded-none bg-success animate-pulse"></span>
+            </h3>
+            <p class="text-xs font-mono text-text-muted leading-relaxed">A complete setup combining all individual stacks together into one massive deployment.</p>
+          </div>
+          <div class="text-xs font-mono text-text-muted/50 group-hover:text-accent transition-colors shrink-0">
+            // OMEGA MODULE
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Health & Port Reference -->
-  <section class="py-16 bg-bg-surface/50 border-t border-b border-border">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="max-w-3xl mb-8">
-        <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Live Monitoring</span>
-        <h2 class="text-3xl font-bold text-text mt-2">Check All Your Ports in One Command</h2>
-        <p class="text-text-muted text-sm mt-2">
-          Our diagnostic checker queries container states across all homelab service endpoints (`http://YOUR_SERVER_IP:PORT`) and reports container health directly in your terminal.
+  <section class="py-24 bg-surface border-b border-border">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-mono uppercase tracking-widest text-accent mb-2 block">Live Monitoring</span>
+        <h2 class="text-4xl font-black font-display uppercase tracking-tight text-text">Check All Your Ports in One Command</h2>
+        <p class="text-text-muted font-mono text-sm mt-4 leading-relaxed">
+          Our diagnostic checker queries container states across all homelab service endpoints (<code class="text-accent">http://YOUR_SERVER_IP:PORT</code>) and reports container health directly in your terminal.
         </p>
       </div>
 
@@ -274,35 +321,32 @@ import HealthTable from '../components/HealthTable.astro';
   </section>
 
   <!-- Why Self-Host Banner -->
-  <section class="py-20 max-w-6xl mx-auto px-4 text-center">
-    <div class="glass p-10 md:p-16 border border-border relative overflow-hidden">
-      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-accent/10 blur-3xl pointer-events-none"></div>
+  <section class="py-32 border-b border-border relative overflow-hidden bg-bg">
+    <div class="absolute top-0 right-0 w-[800px] h-[800px] bg-[radial-gradient(circle_at_center,rgba(255,62,0,0.05)_0,transparent_50%)] pointer-events-none"></div>
+    <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
       
-      <h2 class="text-3xl md:text-4xl font-bold text-text max-w-2xl mx-auto">
+      <div class="mb-8 font-mono text-xs text-accent tracking-widest uppercase">
+        // END OF FILE
+      </div>
+
+      <h2 class="text-5xl md:text-7xl font-black font-display uppercase tracking-tight text-text">
         Ready to Build Your Private Home Cloud?
       </h2>
-      <p class="text-text-muted max-w-xl mx-auto mt-4 text-base leading-relaxed">
-        Join thousands of privacy enthusiasts taking back their data. All Docker Compose blueprints, environment templates, and concept guides are 100% free and open source. Looking for more self-hosted community services and products? Check out the <a href="https://www.awesome-homelab.com/" target="_blank" class="text-accent hover:underline">Awesome-Homelab</a> directory!
+      <p class="text-text-muted font-mono max-w-2xl mx-auto mt-8 text-sm leading-relaxed">
+        Join thousands of privacy enthusiasts taking back their data. All Docker Compose blueprints, environment templates, and concept guides are 100% free and open source. Looking for more self-hosted community services and products? Check out the <a href="https://www.awesome-homelab.com/" target="_blank" class="text-accent hover:text-text border-b border-accent hover:border-text transition-colors pb-0.5">Awesome-Homelab</a> directory!
       </p>
-      <div class="mt-8 flex flex-wrap justify-center gap-4">
-        <a href="/Homelabbing/getting-started" class="btn-primary">
-          INITIALIZE NOW →
+      
+      <div class="mt-12 flex flex-wrap justify-center gap-4">
+        <a href="/Homelabbing/getting-started" class="btn-primary text-sm">
+          Initialize now
         </a>
         <a
           href="https://github.com/Zamiul-rashid/Homelabbing"
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-secondary"
+          class="btn-secondary text-sm"
         >
-          STAR ON GITHUB ⭐
-        </a>
-        <a
-          href="https://www.awesome-homelab.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-secondary"
-        >
-          EXPLORE AWESOME-HOMELAB 🌐
+          Star on GitHub
         </a>
       </div>
     </div>
