@@ -21,7 +21,7 @@ const ogImageUrl = new URL('/Homelabbing/og-image.png', Astro.site || 'https://z
     <title>{title} | Homelabbing — Self-Host Your Digital Life</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" type="image/svg+xml" href="/Homelabbing/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={`${title} | Homelabbing`} />
