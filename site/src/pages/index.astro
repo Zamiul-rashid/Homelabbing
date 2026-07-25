@@ -13,11 +13,6 @@ import HealthTable from '../components/HealthTable.astro';
     <div class="absolute inset-0 bg-gradient-radial from-accent/10 via-transparent to-transparent opacity-60 pointer-events-none"></div>
     
     <div class="max-w-6xl mx-auto px-4 relative z-10 text-center">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-accent text-xs font-mono mb-6 animate-fade-in">
-        <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-        <span>Architecture First, Then Implement &bull; 100% Modular &bull; Open Source</span>
-      </div>
-
       <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-text max-w-4xl mx-auto leading-tight animate-fade-up">
         Own Your Cloud. <br />
         <span class="gradient-text">Ditch the Subscriptions.</span>
@@ -40,6 +35,94 @@ import HealthTable from '../components/HealthTable.astro';
       <div class="mt-14 animate-fade-up" style="animation-delay: 0.3s;">
         <TerminalAnimation client:load />
       </div>
+    </div>
+  </section>
+
+  <!-- Blog Style Hardware Guide -->
+  <section class="py-16 bg-[#FFF9F2] text-[#1a1a24] font-sans">
+    <div class="max-w-3xl mx-auto px-4 text-lg leading-relaxed">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-6 font-display uppercase tracking-tight text-black">STARTING A HOMELAB</h1>
+      
+      <p class="mb-4">Homelabbing can be an overwhelming hobby to get started in. Browse places like <a href="https://www.reddit.com/r/homelab/" class="underline font-semibold hover:text-accent">r/homelab</a> and you will quickly find an abundance of large racks storing rows of computers and networking hardware, along with the odd smaller lab peppered in between. But the great thing about homelabbing is it can be as big, or more importantly, as small as you want.</p>
+
+      <p class="mb-4">In this post we’ll explore a range of options to get started, along with a variety of use cases, so lets dig in!</p>
+
+      <h2 class="text-3xl font-extrabold mt-12 mb-4 font-display">Why start a homelab?</h2>
+      <p class="mb-4">People get into homelabbing for a wide variety of reasons, but generally speaking, there are two common reasons:</p>
+      
+      <ul class="list-disc pl-8 space-y-3 mb-6">
+        <li>Somewhere to learn a technology for work or education. For example, this could be buying a Cisco switch from eBay to study for a networking certification, or spinning up an Apache server to understand how a website’s hosted.</li>
+        <li>To self host applications, reducing reliance on the cloud or big tech. For example, you could replace Dropbox with <a href="#" class="underline font-semibold hover:text-accent">Nextcloud</a> to store and sync your documents, or fire up <a href="#" class="underline font-semibold hover:text-accent">PiHole</a> to block ads from devices on your network.</li>
+      </ul>
+
+      <div class="border-l-4 border-gray-400 pl-6 py-1 my-8 text-gray-700 italic">
+        <p>I generally fall into the latter, opting to self host a suite of applications, maintaining <strong class="text-[#1a1a24] not-italic">control over my data</strong>. However, I also use my homelab as a place to learn. It’s convenient having an environment to quickly spin up a docker image and test some code I’m working on. Heck, I’ve even hosted a small <a href="#" class="underline font-semibold hover:text-accent not-italic">Minecraft server</a> to play with friends.</p>
+      </div>
+
+      <h2 class="text-3xl font-extrabold mt-12 mb-4 font-display">Hardware</h2>
+      <p class="mb-4">Like any new hobby, it’s probably best not to break the bank on equipment to get started. Until you have a better idea of your use cases and requirements, start small and grow.</p>
+      <p class="mb-4">My homelab began years ago, before I even heard the term “homelab” with a Synology DS216J, a 2-bay NAS (Network Attached Storage). This served as a place for me to store my files and backup my laptop. It evolved over time through different forms into what I have today.</p>
+
+      <p class="mb-4">Let’s run through a number of options, along with their approximate price range, and use cases:</p>
+      <ul class="list-disc pl-8 space-y-1 mb-6 text-accent font-semibold underline">
+        <li><a href="#old-computer">Old (or spare) computer</a></li>
+        <li><a href="#raspberry-pi">Raspberry Pi</a></li>
+        <li><a href="#nas">NAS</a></li>
+        <li><a href="#second-hand-pc">Second hand PC</a></li>
+      </ul>
+
+      <h3 id="old-computer" class="text-2xl font-extrabold mt-10 mb-4 font-display">Old (or spare) Computer</h3>
+      <p class="mb-4">You may have an old laptop or PC kicking about just waiting to be repurposed. This is the perfect candidate for starting a homelab as it’s free, so if you decide homelabbing is not for you, no problem!</p>
+      <p class="mb-4">If you use an old laptop, you have the bonus of the built in battery acting as a UPS (uninterruptible power supply), although depending on age, you may want to consider replacing it before it becomes a “spicy pillow”.</p>
+      <p class="mb-4">Depending on the hardware, this option provides you with a space to run a multitude of options such as:</p>
+      <ul class="list-disc pl-8 space-y-2 mb-6">
+        <li>Docker server for self hosting and running applications.</li>
+        <li>Hypervisor for running Virtual Machines. Some options include Proxmox, XCP-ng or even normal OS like Windows or Ubuntu.</li>
+        <li>Building a NAS using tools like Open Media Vault, TrueNAS, or our favourite here Unraid.</li>
+        <li>Building your own router with software like pfSense or OPNsense.</li>
+      </ul>
+      <p class="mb-4">Using an old computer can have some downsides however. If it’s an older computer, it’s likely to be less efficient. spiking your energy bill if left running 24/7. It may also have limited resources like RAM, or storage capacity, but these are likely upgradable.</p>
+
+      <h3 id="raspberry-pi" class="text-2xl font-extrabold mt-10 mb-4 font-display">Raspberry Pi</h3>
+      <p class="mb-4">The Raspberry Pi is a great low cost option for starting a homelab. It’s a small, but capable, machine with a large community, and plethora of accessories. Starting around $15 for the Pi Zero and $35 for the Pi 4, the latter being our recommendation due to its higher specs and port selection, making it a much more capable device. With that said, the Pi Zero is perfect for tinkering with electronics or running small services like PiHole</p>
+      <p class="mb-4">Although the Pi is small, its popularity has contributed to a wide spectrum of use cases, providing you limit your expectations:</p>
+      <ul class="list-disc pl-8 space-y-2 mb-6">
+        <li>Run smaller services like Apache web server, PiHole, and Docker.</li>
+        <li>Build a portable NAS using external drives and Open Media Vault. You can even buy a fancy NAS enclosure for the Pi!</li>
+        <li>Build a smart home with Home Assistant. With various accessories you can use it to make dumb things smart, or control already smart devices in your home, such as bulbs, cameras and TVs.</li>
+        <li>Learn to code with a dedicated device and stacks of resources created specifically for the Pi.</li>
+      </ul>
+      <p class="mb-4">While you can run services like Nextcloud or Jellyfin media server, the hardware will limit its performance. In addition this limits the potential to scale and host more services on a single device.</p>
+      <p class="mb-4 text-red-700 font-semibold">You also shouldn’t rely on the Pi to store your only copy of data, backups are important!</p>
+
+      <h3 id="nas" class="text-2xl font-extrabold mt-10 mb-4 font-display">NAS (Network Attached Storage)</h3>
+      <p class="mb-4">A NAS is a great starting point if you are looking to store or backup data on your network. They are generally user friendly, with intuitive web based management portals and many brands include a suite of tools for backing up your computer, running Google Docs clones and even running some Docker containers.</p>
+      <p class="mb-4">However, they usually come with a price premium. A low end enclosure may start at $250 but by the time you add some drives, you’re quickly around or above $500. You’ll also run into quirks and issues when trying to run more complicated Docker containers, or installing third party software.</p>
+      <p class="mb-4">When it comes to brands, we havve only used Synology at The Homelabber, however Jeff Geerling, a well respected homelabber and author, is quite the fan of Asustor. QNAP is another large brand you’re likely to come across, however we urge caution given their repeated history of vulnerabilities and slow response to fixing them.</p>
+      <p class="mb-4">As mentioned, you are generally going to be more limited when running services on a NAS, the following are common use cases:</p>
+      <ul class="list-disc pl-8 space-y-2 mb-6">
+        <li>Network storage, accessible to computers and devices on your network.</li>
+        <li>Media server for streaming digital copies of your TV shows and films.</li>
+        <li>Running some simple docker containers like PiHole (although these may require more configuration than on a standard linux host).</li>
+        <li>Backing up your PCs and Mac (depending on the tools offered by the brand of NAS.)</li>
+      </ul>
+
+      <h3 id="second-hand-pc" class="text-2xl font-extrabold mt-10 mb-4 font-display">Second Hand PC</h3>
+      <p class="mb-4">This is similar to the “Old Computer”, but with much more choice. Generally speaking, you want to look for a fairly modern CPU to support more RAM, lower power usage and features like Intel QuickSync for transcoding media on a media server.</p>
+      <p class="mb-4">Marketplaces like ebay have sellers reselling ex-corporate machines with varying configurations. You will want to focus on finding something with a good CPU and upgrade it with your own RAM and storage as resellers often fill them with cheap components and overcharge for upgrades.</p>
+      <p class="mb-4">If you are after a small computer to play with Linux, host some docker containers, and even a VM or two. Small form factor (SFF) PCs like the Dell Optiplex, or the Lenovo ThinkCentre M ranges are perfect. They are low power, small, regularly available, and come in a variety of configurations.</p>
+      <p class="mb-4">As for larger computers with more expandability, workstations can be a good option. They offer more space for PCI Express expandability for peripherals like network cards or graphics cards, and more storage bays. Some even still feature an optical disc drive too if you want to backup your DVD collection.</p>
+      <p class="mb-4">Generally speaking, this option provides the most flexibility. With prices starting as low as $50 and going as high as you’re willing to spend, you can really find something that will fit your needs.</p>
+      <p class="mb-4">In addition you have the flexibility of most operating systems, from Unraid, to Proxmox, or even Arch Linux (*tips hat*).</p>
+
+      <h2 class="text-3xl font-extrabold mt-12 mb-4 font-display">A quick word on Security</h2>
+      <p class="mb-4">It’s tempting to expose your new homelab to the internet, perhaps you’re self hosting a blog, or want to invite your friends to play on your game server. But unless you understand the risks and how to mitigate them, you really shouldn’t. Even if the application or service has password protection in front of it, there may be exploits that can be taken advantage of. When you expose a device or network to the web, you are opening yourself up to all sorts of potential malicious threats.</p>
+      <p class="mb-4">You’ll want to think about firewalls, monitoring, logging and much more. You could even use technologies like VPNs and tunnelling to help reduce the risk.</p>
+      <p class="mb-4">So make sure you take the time to fully understand the risk and the necessary steps to reduce this before exposing yourself to the world wide web.</p>
+
+      <h2 class="text-3xl font-extrabold mt-12 mb-4 font-display">Conclusion</h2>
+      <p class="mb-4">Homelabbing doesn’t have to be about big expensive gear or creating your own data centre. It really can be as big or small as you need. We have covered a number of options in this post, along with possible projects to try, but there is much more out there! I encourage you to use this as a stepping stone into your homelab journey and start exploring!</p>
+      <p class="font-extrabold mt-6">Happy homelabbing.</p>
     </div>
   </section>
 
@@ -85,66 +168,6 @@ import HealthTable from '../components/HealthTable.astro';
         <div class="glass p-6 border-accent/50 bg-accent/5 group transition-colors animate-fade-up" style="animation-delay: 0.4s;">
           <h3 class="text-xl font-black text-accent mb-2">Improvement Area</h3>
           <p class="text-sm text-text-muted">Currently, there is an overuse of <code class="font-mono text-accent bg-bg/50 px-1 rounded">:latest</code> image tags in <code class="font-mono text-accent bg-bg/50 px-1 rounded">docker-compose.yml</code> files, which can lead to breaking changes upon auto-updates.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Hardware Guide -->
-  <section class="py-16 bg-bg-surface/50 border-b border-border">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="max-w-3xl mb-8">
-        <span class="text-xs font-mono uppercase tracking-widest text-accent font-semibold">Getting Started</span>
-        <h2 class="text-3xl font-bold text-text mt-2">Choosing Your Hardware</h2>
-        <p class="text-text-muted text-sm mt-2 mb-4">
-          People get into homelabbing to learn technologies or de-cloud to maintain control over their data. Start small, understand your requirements, and grow!
-        </p>
-        <div class="p-4 rounded-lg bg-red-900/20 border border-red-500/30 text-red-200 text-sm">
-          <strong>Security Caution:</strong> It’s tempting to expose your new homelab to the internet, but unless you understand the risks and how to mitigate them (firewalls, VPNs), you really shouldn’t. Take the time to understand the risks first.
-        </div>
-      </div>
-      
-      <!-- DIAGRAM_PLACEHOLDER: hardware-options — NO MATCHING SOURCE DIAGRAM FOUND, needs a new diagram created or manual placement -->
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.1s;">
-          <h3 class="text-xl font-black text-text">Old or Spare Computer</h3>
-          <p class="text-xs text-accent font-mono font-bold mt-1 uppercase tracking-wider">Price: Free</p>
-          <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
-            <li>Docker server for self-hosting</li>
-            <li>Hypervisor (Proxmox, XCP-ng)</li>
-          </ul>
-          <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Older computers may spike your energy bill and have limited resources.</p>
-        </div>
-
-        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.2s;">
-          <h3 class="text-xl font-black text-text">Raspberry Pi</h3>
-          <p class="text-xs text-accent font-mono font-bold mt-1 uppercase tracking-wider">Price: $15 - $35+</p>
-          <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
-            <li>Small services (PiHole, Docker)</li>
-            <li>Smart home (Home Assistant)</li>
-          </ul>
-          <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Don't rely on it as your only data copy; performance is limited.</p>
-        </div>
-
-        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.3s;">
-          <h3 class="text-xl font-black text-text">NAS</h3>
-          <p class="text-xs text-accent font-mono font-bold mt-1 uppercase tracking-wider">Price: $250 - $500+</p>
-          <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
-            <li>Network storage & backups</li>
-            <li>Media server</li>
-          </ul>
-          <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Price premium. Warning: QNAP has a history of vulnerabilities and slow patches.</p>
-        </div>
-
-        <div class="glass p-6 group transition-colors animate-fade-up" style="animation-delay: 0.4s;">
-          <h3 class="text-xl font-black text-text">Second Hand PC</h3>
-          <p class="text-xs text-accent font-mono font-bold mt-1 uppercase tracking-wider">Price: $50+</p>
-          <ul class="text-sm text-text-muted mt-3 list-disc list-inside space-y-1">
-            <li>Small form factor (SFF) flexibility</li>
-            <li>Media transcoding (Intel QuickSync)</li>
-          </ul>
-          <p class="mt-4 text-sm text-text-muted italic border-t border-border/60 pt-3">Caveat: Watch for resellers overcharging on RAM/storage upgrades.</p>
         </div>
       </div>
     </div>
