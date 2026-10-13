@@ -1,0 +1,58 @@
+---
+title: "Uptime Kuma: Know When Something Is Down"
+tagline: "A friendly self-hosted monitor that checks your apps and alerts you when one stops responding."
+replaces: "UptimeRobot, Pingdom"
+difficulty: 1
+installDocs: "https://github.com/louislam/uptime-kuma"
+setupSteps:
+  - "Run the official container image with a volume for its data, as the README shows."
+  - "Open the web interface and create the admin account."
+  - "Add a monitor for each app: an HTTP check against its web interface is the simplest."
+  - "Set up at least one notification channel and send a test alert."
+whatNow:
+  - label: "Uptime Kuma on GitHub"
+    href: "https://github.com/louislam/uptime-kuma"
+    description: "Install options, monitor types and the list of notification services."
+  - label: "Go deeper with metrics"
+    href: "/Homelabbing/services/grafana-prometheus"
+    description: "Uptime Kuma says whether something is up; Prometheus shows how it is doing."
+  - label: "Watch your disks too"
+    href: "/Homelabbing/services/scrutiny"
+    description: "Drive health warnings before a failure, not after."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A dashboard with a green or red bar for every app I run, plus a message on my phone when one stops responding and another when it comes back. It answers "is it down, or is it just me?" in one glance.
+
+## Why I Chose Uptime Kuma
+
+I used to find out an app was broken when someone in the house told me. Uptime Kuma is one container, has a clear interface, and needed no config files at all; everything is set up in the browser.
+
+<ProConTable
+  pros={[
+    "Many monitor types: HTTP(S) with keyword checks, TCP, ping, DNS and Docker containers.",
+    "Notifications to a long list of services, including email, Telegram, Discord and ntfy.",
+    "Status pages you can share with the rest of the household.",
+    "Set up entirely in the web interface."
+  ]}
+  cons={[
+    "If it runs on the same server as your apps, it cannot tell you when that server dies.",
+    "It checks availability, not performance or resource use.",
+    "Too many monitors with short intervals create noisy alerts; start small."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Starting It
+I ran the official image with a data volume and opened the web interface to create my account.
+
+### 2. Monitors
+For each app I added an HTTP monitor pointing at its web interface. For apps without one, a TCP or Docker container check did the job.
+
+### 3. Alerts
+I connected a notification service, sent a test, and attached it to every monitor. Then I stopped one container on purpose to confirm the alert arrived.

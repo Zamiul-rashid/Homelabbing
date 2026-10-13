@@ -2,14 +2,13 @@
 title: "AdGuard Home: Network-Wide DNS Ad Blocker"
 tagline: "Network-level DNS ad and tracking protection that shields every phone, PC, and smart TV in your entire household."
 replaces: "uBlock Origin (for mobile/IoT), Pi-hole, NextDNS, Commercial VPN Ad Blockers"
-port: 8083
 difficulty: 1
 folder: "home-automation"
 setupSteps:
   - "Verify your stacks/.env has correct user permissions (`PUID`/`PGID` and `TZ`)."
   - "Run `cd stacks/home-automation && docker compose up -d`."
-  - "Open `http://YOUR_SERVER_IP:3000` to complete the initial setup wizard (set admin port to `80`)."
-  - "Point your router's Primary DNS setting (`DHCP Server`) to `YOUR_SERVER_IP` (`port 53`)."
+  - "Open the setup wizard in your browser (the address is in the stack's README) and create the admin account."
+  - "Set your router's DHCP DNS server to `YOUR_SERVER_IP` so every device uses AdGuard Home."
 whatNow:
   - label: "Add Custom Blocklists"
     href: "https://adguard-dns.io/kb/general/dns-filtering-syntax/"
@@ -19,7 +18,7 @@ whatNow:
     description: "Set up specific schedules, parental controls, or safe search policies per individual family device."
   - label: "Enable Upstream DNS over HTTPS (DoH)"
     href: "https://github.com/AdguardTeam/AdGuardHome/wiki/Configuration#upstream-dns"
-    description: "Encrypt your outgoing DNS queries using Cloudflare (`https://1.1.1.1/dns-query`) or Quad9 so your ISP cannot track you."
+    description: "Encrypt your outgoing DNS queries to a provider such as Cloudflare or Quad9 so your ISP cannot read them."
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
@@ -29,7 +28,7 @@ I built a local DNS server that intercepted domain requests before they ever rea
 
 ## Why I Chose AdGuard Home
 
-While browser extensions like uBlock Origin worked wonders on my desktop computers, they couldn't protect my smart TVs, IoT gadgets, streaming devices, or mobile applications. AdGuard Home operated at the network level (`port 53`), blocking tracking telemetry before pages even loaded and cutting my page-load times measurably.
+While browser extensions like uBlock Origin worked wonders on my desktop computers, they couldn't protect my smart TVs, IoT gadgets, streaming devices, or mobile applications. AdGuard Home operated at the network level as the DNS server, blocking tracking telemetry before pages even loaded and cutting my page-load times measurably.
 
 <ProConTable
   pros={[
@@ -56,15 +55,15 @@ cd stacks/home-automation
 docker compose up -d
 ```
 
-### 2. First-Run Setup Wizard (`Port 3000`)
-I opened `http://YOUR_SERVER_IP:3000` in my web browser to enter AdGuard Home's initial setup wizard:
-1. Under **Admin Web Interface**, I set the listen port to `80` (which mapped externally to `8083` in my `docker-compose.yml`).
-2. Under **DNS Server**, I ensured it listened on All Interfaces (`0.0.0.0`) on Port `53`.
-3. I created my administrative username and a secure password, then finished the wizard. AdGuard Home brought my permanent admin dashboard up at `http://YOUR_SERVER_IP:8083`.
+### 2. First-Run Setup Wizard
+I opened AdGuard Home's setup wizard in my browser (the address is in the stack's README):
+1. Under **Admin Web Interface** and **DNS Server**, I kept the listen settings that match the Compose file. The stack's README explains them.
+2. I set the DNS server to listen on all interfaces so every device on the network could reach it.
+3. I created my administrative username and a secure password, then finished the wizard and opened the dashboard.
 
 ### 3. Pointing My Router to AdGuard Home
 To protect my entire household:
-1. I logged into my home router's admin panel (typically `192.168.1.1` or `192.168.0.1`).
+1. I logged into my home router's admin panel (the address is usually printed on a sticker on the router).
 2. I navigated to **LAN / DHCP Server Configuration**.
 3. I replaced my ISP's default Primary DNS Server with my home server's IP (`YOUR_SERVER_IP`).
 4. I saved the settings and reconnected my phone to Wi-Fi. Checking my AdGuard Home dashboard, I could see live DNS queries being filtered immediately.

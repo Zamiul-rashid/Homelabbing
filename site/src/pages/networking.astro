@@ -13,8 +13,8 @@ import CodeBlock from '../components/CodeBlock.astro';
   <h2 id="option-a-duckdns">Option A: DuckDNS and Nginx Proxy Manager</h2>
   <p>
     <strong>Best for:</strong> people without a domain who want a free public address such as
-    <code>yourname.duckdns.org</code> with automatic Let's Encrypt certificates. Your router must forward ports
-    80 and 443 to the server.
+    <code>yourname.duckdns.org</code> with automatic Let's Encrypt certificates. Your router must forward web traffic
+    (HTTP and HTTPS) to the server.
   </p>
 
   <h3>1. Register and copy your token</h3>
@@ -31,7 +31,7 @@ import CodeBlock from '../components/CodeBlock.astro';
 
   <h3>4. Add a proxy host</h3>
   <p>
-    Open <code>http://YOUR_SERVER_IP:81</code> and sign in with the default account (<code>admin@example.com</code>,
+    Open the Nginx Proxy Manager admin page (its address is in the stack's <code>GUIDE.md</code>) and sign in with the default account (<code>admin@example.com</code>,
     password <code>changeme</code>).
   </p>
   <div class="callout-warn not-prose">
@@ -42,13 +42,13 @@ import CodeBlock from '../components/CodeBlock.astro';
   <ul>
     <li><strong>Domain Names:</strong> <code>myhomelab-demo.duckdns.org</code></li>
     <li><strong>Forward Hostname / IP:</strong> your server's local address</li>
-    <li><strong>Forward Port:</strong> <code>8096</code> (Jellyfin)</li>
+    <li><strong>Forward Port:</strong> the port of the app you are publishing (each stack's README lists it)</li>
     <li>On the <strong>SSL</strong> tab, choose <em>Request a new SSL Certificate</em>, tick <em>Force SSL</em>, and save.</li>
   </ul>
 
   <h2 id="option-b-cloudflare">Option B: Cloudflare DNS challenge</h2>
   <p>
-    <strong>Best for:</strong> people with their own domain who want a wildcard certificate without opening port 80.
+    <strong>Best for:</strong> people with their own domain who want a wildcard certificate without opening any ports for it.
     Cloudflare can also proxy traffic and absorb attacks.
   </p>
 
@@ -67,7 +67,7 @@ import CodeBlock from '../components/CodeBlock.astro';
 
   <h3>4. Request a wildcard certificate</h3>
   <p>
-    In Nginx Proxy Manager (<code>http://YOUR_SERVER_IP:81</code>) open <strong>SSL Certificates</strong>, then
+    In the Nginx Proxy Manager admin page open <strong>SSL Certificates</strong>, then
     <strong>Add SSL Certificate</strong>, then <strong>Let's Encrypt</strong>:
   </p>
   <ul>
@@ -111,6 +111,6 @@ import CodeBlock from '../components/CodeBlock.astro';
   <h3>4. Check the connection</h3>
   <p>
     Your Tailscale dashboard now lists a machine called <code>homelab</code> with a private Tailscale address. On a
-    phone or laptop signed in to the same Tailscale account, open <code>http://homelab:8096</code>.
+    phone or laptop signed in to the same Tailscale account, open <code>http://homelab</code> followed by the app's port, exactly as you would on your home network.
   </p>
 </PageLayout>

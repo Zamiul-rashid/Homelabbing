@@ -50,7 +50,7 @@ The repository is structured so you can start from zero and grow into a confiden
 - **[`docs/`](docs/)**: concept guides that explain the *why* and *how* behind running a home server (`01` to `08`), plus [how the *arr pipeline fits together](docs/arr-stack-flow.md).
 - **[`stacks/`](stacks/)**: modular, self-contained Docker Compose stacks (`media-server`, `arr-stack`, `music-server`, `photo-backup`, `book-reader`, `cloud-storage`, `home-automation`, `networking`, `full-stack`). Every line in every Compose file has a comment explaining what it does.
 - **[`helpers/`](helpers/)**: diagnostic scripts such as `check-health.sh` to verify your setup.
-- **[`reference/`](reference/)**: *for reading, not deploying.* A July 2026 snapshot of the author's own Compose files and recovery scripts, with READMEs that describe how the lab runs today: 55 containers in 16 stacks on one app server, plus a Proxmox host with 4 containers.
+- **[`reference/`](reference/)**: *for reading, not deploying.* A July 2026 snapshot of the author's own Compose files and recovery scripts, with READMEs that explain the patterns behind it. The website's My lab page describes the current lab in general terms.
 
 ---
 

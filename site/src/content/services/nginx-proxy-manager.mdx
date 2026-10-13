@@ -1,0 +1,64 @@
+---
+title: "Nginx Proxy Manager: Names and HTTPS for Every App"
+tagline: "A web dashboard for a reverse proxy: give each app its own name and a free HTTPS certificate."
+replaces: "Hand-written Nginx config files"
+difficulty: 2
+folder: "networking/option-b-cloudflare"
+installDocs: "https://nginxproxymanager.com/guide/"
+setupSteps:
+  - "Read the stack's guide in `stacks/networking/option-b-cloudflare` and fill in its environment values."
+  - "Start the stack, then open the admin interface (the address is in the guide)."
+  - "Sign in and replace the default admin login, as the official setup page describes."
+  - "Add a proxy host for one app, then request a Let's Encrypt certificate for it."
+whatNow:
+  - label: "Read the networking guide"
+    href: "/Homelabbing/networking"
+    description: "Compare the remote access options before you open anything to the internet."
+  - label: "Nginx Proxy Manager docs"
+    href: "https://nginxproxymanager.com/guide/"
+    description: "Proxy hosts, certificates, access lists and advanced config."
+  - label: "Prefer private access?"
+    href: "/Homelabbing/services/tailscale"
+    description: "Tailscale reaches your apps without exposing anything publicly."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+One front door for my apps. Instead of remembering a different address for each service, every app has a readable name, and the proxy forwards each request to the right container with a valid HTTPS certificate.
+
+## Why I Chose Nginx Proxy Manager
+
+Nginx is powerful but its config files are easy to get wrong when you are starting out. Nginx Proxy Manager puts the common jobs in a web form: add a host, point it at an app, tick a box for HTTPS. Certificates renew on their own.
+
+<ProConTable
+  pros={[
+    "Proxy hosts, redirects and custom error hosts from a web interface.",
+    "Free Let's Encrypt certificates, including the DNS challenge for wildcard certificates.",
+    "Access lists and basic authentication in front of any host.",
+    "An advanced box for raw Nginx config when you need it."
+  ]}
+  cons={[
+    "A reverse proxy is not a security layer on its own; each app still needs a strong login.",
+    "The admin interface itself should never be reachable from the internet.",
+    "Less suited to config-as-code than Caddy or Traefik if you want everything in files."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Starting the Stack
+The repo's Cloudflare option runs Nginx Proxy Manager on its own. I followed its guide, filled in the environment file, and started it:
+
+```bash
+cd stacks/networking/option-b-cloudflare
+docker compose up -d
+```
+
+### 2. First Login
+I opened the admin interface, signed in, and replaced the default admin account with my own email and a strong password.
+
+### 3. First Proxy Host
+I added a proxy host with a name for one app, set the destination to the app's container name or `YOUR_SERVER_IP`, and requested a certificate on the SSL tab. Once that worked I repeated it for the other apps.

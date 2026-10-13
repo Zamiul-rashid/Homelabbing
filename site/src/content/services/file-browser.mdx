@@ -1,0 +1,58 @@
+---
+title: "File Browser: Your Server's Folders in a Web Page"
+tagline: "A simple web file manager for one folder on your server: browse, upload, edit and share."
+replaces: "SFTP clients, Dropbox web"
+difficulty: 1
+installDocs: "https://github.com/filebrowser/filebrowser"
+setupSteps:
+  - "Read the maintenance notice on the project page: File Browser was archived and gets no more fixes."
+  - "Run the official container image, mounting only the folder you want to expose in the web interface."
+  - "Open the web interface and sign in with the first-run credentials the docs describe."
+  - "Change the admin password at once and create separate users with limited folders."
+whatNow:
+  - label: "File Browser on GitHub"
+    href: "https://github.com/filebrowser/filebrowser"
+    description: "Install docs, configuration options and the archive notice."
+  - label: "Need sync, not just browsing?"
+    href: "/Homelabbing/services/nextcloud"
+    description: "Nextcloud keeps folders in sync across devices; File Browser does not."
+  - label: "Keep it private with Tailscale"
+    href: "/Homelabbing/services/tailscale"
+    description: "Reach it from your own devices without putting it on the open internet."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A clean web page that shows the contents of a folder on my server. I can upload a file from my phone, rename or move things, edit a text file, and make a share link, all without opening a terminal or an SFTP app.
+
+## Why I Chose File Browser
+
+Nextcloud is great for syncing, but it is a lot of software when I only want to drop a file into a folder. File Browser is a single small container with almost no setup, and it works on any device with a browser.
+
+<ProConTable
+  pros={[
+    "One small container and almost no configuration.",
+    "Upload, download, rename, move, delete and edit text files in the browser.",
+    "Users with their own scope, so each person sees only their folder.",
+    "Share links for single files or folders."
+  ]}
+  cons={[
+    "The project was archived in September 2026: no new releases, bug fixes or security fixes.",
+    "Because of that, keep it off the public internet and plan a move to a maintained alternative.",
+    "It only manages files; there is no sync client like Nextcloud's."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Choosing the Folder
+I mounted a single data folder into the container rather than the whole drive. File Browser can only see what you mount, which is the simplest way to limit what it can touch.
+
+### 2. First Login
+I opened the web interface and signed in with the first-run credentials from the docs, then changed the admin password straight away.
+
+### 3. Users and Shares
+I created a separate account for each person with its own folder scope and turned off permissions they did not need, such as running commands.

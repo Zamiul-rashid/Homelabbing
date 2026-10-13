@@ -1,0 +1,58 @@
+---
+title: "Stirling PDF: A PDF Toolbox on Your Own Server"
+tagline: "Merge, split, compress, convert, OCR and sign PDFs in the browser, without uploading them to a third party."
+replaces: "iLovePDF, Smallpdf, Adobe Acrobat online"
+difficulty: 1
+installDocs: "https://docs.stirlingpdf.com/"
+setupSteps:
+  - "Read the install page: there are a few image variants with more or fewer bundled tools."
+  - "Run the image you chose with Docker Compose, following the official example."
+  - "Open the web interface and pick a tool from the list."
+  - "Turn on the login feature if other people on your network can reach it."
+whatNow:
+  - label: "Stirling PDF docs"
+    href: "https://docs.stirlingpdf.com/"
+    description: "Image variants, configuration and the full tool list."
+  - label: "File the results in Paperless-ngx"
+    href: "/Homelabbing/services/paperless-ngx"
+    description: "A searchable home for the PDFs you clean up here."
+  - label: "Stirling PDF on GitHub"
+    href: "https://github.com/Stirling-Tools/Stirling-PDF"
+    description: "Releases and issue tracker."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A web page with every PDF tool I need: merge, split, rotate, reorder pages, compress, convert to and from other formats, add a watermark, sign, and run OCR. The files are processed on my server and never go to an outside website.
+
+## Why I Chose Stirling PDF
+
+Free online PDF sites want you to upload your documents to them, and many of those documents are personal: contracts, IDs, bank statements. Stirling PDF gives me the same tools in one container that only I control.
+
+<ProConTable
+  pros={[
+    "A long list of tools in one place, usable from any browser.",
+    "Files stay on your own server.",
+    "Optional login and user accounts.",
+    "Simple to run: one container for the common setup."
+  ]}
+  cons={[
+    "The bigger image variants are large downloads because they bundle extra tools.",
+    "Some advanced features depend on which variant you run; check the docs.",
+    "Heavy jobs such as OCR on long scans use a lot of CPU while they run."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Picking a Variant
+I read the install page, chose the variant that includes the tools I wanted, and copied the Compose example from the docs.
+
+### 2. First Use
+I opened the web interface, dragged in two PDFs, and merged them. Every tool works the same way: pick it, add files, set options, download the result.
+
+### 3. Locking It Down
+Since anyone on the home network could open it, I turned on the built-in login.

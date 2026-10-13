@@ -116,7 +116,7 @@ export default function NetworkingWizard() {
           <Result title="Option A: DuckDNS" actions={link('/Homelabbing/networking#option-a-duckdns', 'DuckDNS steps')}>
             <p>
               A free subdomain such as <code className="font-mono text-text">yourname.duckdns.org</code> with automatic
-              Let's Encrypt certificates. It needs ports 80 and 443 forwarded on your router.
+              Let's Encrypt certificates. Your router has to forward web traffic to the server.
             </p>
           </Result>
           <Result
@@ -124,7 +124,7 @@ export default function NetworkingWizard() {
             actions={link('/Homelabbing/networking#option-b-cloudflare', 'Cloudflare steps', true)}
           >
             <p>
-              Certificates come from a DNS challenge, so port 80 stays closed. You need your own domain (about $10 a
+              Certificates come from a DNS challenge, so no port has to be opened for them. You need your own domain (about $10 a
               year), which also gives you nicer addresses.
             </p>
           </Result>
@@ -145,7 +145,7 @@ export default function NetworkingWizard() {
         >
           <p>
             Point your domain at Cloudflare DNS and use a wildcard certificate, so every app gets a clean address such as{' '}
-            <code className="font-mono text-text">jellyfin.yourdomain.com</code> without opening port 80.
+            <code className="font-mono text-text">jellyfin.yourdomain.com</code> without opening anything for certificates.
           </p>
         </Result>
       );

@@ -1,0 +1,58 @@
+---
+title: "Feishin: A Proper Desktop Music Player"
+tagline: "A desktop and web music player for Navidrome, Jellyfin and other OpenSubsonic servers."
+replaces: "The Spotify desktop app"
+difficulty: 1
+installDocs: "https://github.com/jeffvli/feishin"
+setupSteps:
+  - "Decide between the desktop app (Windows, macOS, Linux) and the self-hosted web version."
+  - "For the desktop app, download a build from the project's GitHub releases page."
+  - "For the web version, run the official container image as described in the README."
+  - "Add your Navidrome or Jellyfin server address and sign in with your usual account."
+whatNow:
+  - label: "Set up Navidrome first"
+    href: "/Homelabbing/services/navidrome"
+    description: "Feishin is only a player. It needs a music server to connect to."
+  - label: "Read the Feishin README"
+    href: "https://github.com/jeffvli/feishin"
+    description: "Install notes for each platform, plus the Docker setup for the web version."
+  - label: "Try AudioMuse AI"
+    href: "/Homelabbing/services/audiomuse-ai"
+    description: "Generate playlists from how your music sounds, then play them in Feishin."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A music player on my computer that feels like a streaming app but plays my own library from Navidrome. It shows album art, queues, playlists and lyrics, and it sends plays back to the server so my listening history stays in one place.
+
+## Why I Chose Feishin
+
+Navidrome's built-in web player works, but it is basic. Feishin is a rewrite of the older Sonixd player and is built for long listening sessions on a desktop. It talks to Navidrome, Jellyfin and other servers that speak the OpenSubsonic API, so I did not have to change anything on the server side.
+
+<ProConTable
+  pros={[
+    "Desktop app with an MPV playback backend, plus a web player backend.",
+    "Synced and unsynced lyrics, and scrobbling of plays to your server.",
+    "Smart playlist editor when connected to Navidrome.",
+    "Can also run as a self-hosted web app in a container."
+  ]}
+  cons={[
+    "It is a client only: you still need Navidrome, Jellyfin or another compatible server.",
+    "The web version supports only the web player backend, not MPV.",
+    "Plex is not supported by the main project."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Picking a Version
+I installed the desktop build on my computer. If you would rather use a browser, the README explains how to run the web version as a container next to your other apps.
+
+### 2. Connecting to the Server
+On first launch Feishin asks for a server. I chose **Navidrome**, entered the same address I use for Navidrome in the browser, and signed in with my normal Navidrome account. My library loaded straight away.
+
+### 3. Small Tweaks
+I turned on lyrics and checked that scrobbling was enabled, so plays from Feishin count the same as plays from my phone.

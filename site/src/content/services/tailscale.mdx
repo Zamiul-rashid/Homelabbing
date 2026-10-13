@@ -1,0 +1,64 @@
+---
+title: "Tailscale: A Private Network for Your Devices"
+tagline: "A WireGuard-based private network that links your phone, laptop and server, wherever they are."
+replaces: "OpenVPN servers, exposing apps publicly"
+difficulty: 1
+folder: "networking/option-d-tailscale"
+installDocs: "https://tailscale.com/download"
+setupSteps:
+  - "Create a Tailscale account and install the app on your phone and laptop."
+  - "In the Tailscale admin console, generate an auth key for the server."
+  - "Put the key in the environment file as the stack's guide shows, then start the stack."
+  - "Check that the server appears in your device list, then open an app using its Tailscale name or address."
+whatNow:
+  - label: "Tailscale downloads"
+    href: "https://tailscale.com/download"
+    description: "Clients for Windows, macOS, Linux, iOS and Android."
+  - label: "Compare remote access options"
+    href: "/Homelabbing/networking"
+    description: "When a private network is enough, and when you need a public address."
+  - label: "Learn about subnet routers"
+    href: "https://tailscale.com/kb/1019/subnets"
+    description: "Reach devices on your home network that cannot run Tailscale themselves."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+My phone and laptop can reach my home server from anywhere as if they were on the home Wi-Fi. Nothing on my router is opened to the internet for it: devices find each other through Tailscale and talk over encrypted WireGuard connections.
+
+## Why I Chose Tailscale
+
+Opening apps to the whole internet means every bot can try to log in. Running my own VPN server meant certificates, config files and router changes. Tailscale needed an account, an app on each device, and a few minutes.
+
+<ProConTable
+  pros={[
+    "Nothing to open on your router; works behind most home and mobile networks.",
+    "Encrypted WireGuard connections directly between your devices when possible.",
+    "MagicDNS gives each device a simple name instead of an address to remember.",
+    "Free personal plan that covers a typical homelab."
+  ]}
+  cons={[
+    "The coordination service is run by Tailscale the company; Headscale is a self-hosted alternative.",
+    "Every device that connects needs the Tailscale app, so it does not suit sharing with the public.",
+    "Running it in a container is a little different from installing it on the host; the docs cover both."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Devices First
+I made an account and installed Tailscale on my phone and laptop, signing in on each.
+
+### 2. The Server
+In the admin console I generated an auth key, put it in the environment file, and started the stack:
+
+```bash
+cd stacks/networking/option-d-tailscale
+docker compose up -d
+```
+
+### 3. Checking It
+The server showed up in the device list within a few seconds. With Wi-Fi turned off on my phone, I opened an app through Tailscale to confirm it worked over mobile data.

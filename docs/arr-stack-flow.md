@@ -2,7 +2,7 @@
 
 This page explains how a request turns into a file in your media library: which app does what, how the apps talk to each other with API keys, how hardlinks keep imports instant, and how TRaSH Guides quality rules pick good releases without you filtering by hand.
 
-The paths and extra tools below are the ones the author runs (October 2026). The beginner stack in [`stacks/arr-stack/`](../stacks/arr-stack/) is simpler and uses `/data/downloads` instead of `/data/torrents`; the ideas are the same.
+The paths and extra tools below follow the TRaSH Guides layout the author uses. The beginner stack in [`stacks/arr-stack/`](../stacks/arr-stack/) is simpler and uses `/data/downloads` instead of `/data/torrents`; the ideas are the same.
 
 ---
 
@@ -41,8 +41,8 @@ The paths and extra tools below are the ones the author runs (October 2026). The
 
 Around it, three helpers keep things clean:
 
-- **qbit-manage** keeps the torrents inside qBittorrent tagged and tidy. Its image is pinned, like qBittorrent's.
-- **The download guard** is a small script on the host that runs every 2 minutes. If an executable file shows up in a finished download, it moves it to quarantine and blocklists that release through the Sonarr or Radarr API, so the same release is not grabbed again. A film or an episode never needs to be an `.exe`.
+- **qbit-manage** keeps the torrents inside qBittorrent tagged and tidy.
+- **The download guard** is a small script on the host that runs on a timer. If an executable file shows up in a finished download, it moves it to quarantine and blocklists that release through the Sonarr or Radarr API, so the same release is not grabbed again. A film or an episode never needs to be an `.exe`.
 - **Maintainerr** cleans up the library by rules you set once, instead of you deleting old media by hand.
 
 ---
@@ -68,9 +68,9 @@ Mount the whole `/data` into qBittorrent, Radarr and Sonarr as one volume. If yo
 
 ### Hardlinks over NFS
 
-In the author's lab, `/data` is not a local disk. It is an NFS 4.2 share exported by a second machine (a Proxmox host) and mounted on the app server. Hardlinks still work, because the torrents and the library are still on the same filesystem on the far end.
+`/data` does not have to be a local disk. It can be an NFS share exported by a second machine and mounted on the app server. Hardlinks still work, because the torrents and the library are still on the same filesystem on the far end.
 
-When the media moved to that share in October 2026, 432 GB were copied with every hardlink intact (all 228 hardlinked paths were checked afterwards). Two things to get right if you do the same:
+If you move a library onto a share like that, check the hardlinks afterwards before deleting the old copy. Two things to get right:
 
 - **Guard against an empty mount point.** If the share fails to mount, `/data` is just an empty folder on the root disk, and the apps will happily fill the root disk instead. Make the mount point immutable and start the media containers only after the share is mounted.
 - **Use `rsync -H`** (or another tool that preserves hardlinks) when you move a library. A plain copy turns every hardlink into a second full file.

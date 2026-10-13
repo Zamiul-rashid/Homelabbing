@@ -1,0 +1,60 @@
+---
+title: "Watchtower: Automatic Container Updates"
+tagline: "Checks for new images of your running containers, pulls them, and restarts the containers with the same settings."
+replaces: "Pulling and recreating containers by hand"
+difficulty: 1
+installDocs: "https://containrrr.dev/watchtower/"
+setupSteps:
+  - "Read the maintenance note below and decide between the original project and a maintained fork."
+  - "Run the container with the Docker socket mounted, as the docs show."
+  - "Opt in only the containers you want updated, using a label, or start in monitor-only mode."
+  - "Set up a notification so you know what was updated."
+whatNow:
+  - label: "Watchtower docs"
+    href: "https://containrrr.dev/watchtower/"
+    description: "Arguments, labels, notifications and monitor-only mode."
+  - label: "A maintained fork"
+    href: "https://github.com/nicholas-fedor/watchtower"
+    description: "A community fork that continued development after the original was archived."
+  - label: "Watch the results"
+    href: "/Homelabbing/services/uptime-kuma"
+    description: "Uptime alerts tell you quickly if an update broke something."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+My simpler apps stay up to date on their own. Watchtower checks for new images, pulls them, and recreates each container with the same options it had before. A notification tells me what changed.
+
+## Why I Chose Watchtower
+
+Keeping many containers current by hand means pulling and recreating each one. For small, stable apps that is wasted time, and Watchtower does it with one container.
+
+**A maintenance note:** the original `containrrr/watchtower` repository was archived in December 2025 and is no longer maintained. It still works, but community forks such as `nicholas-fedor/watchtower` carry on development. Check the state of whichever you choose before you rely on it.
+
+<ProConTable
+  pros={[
+    "One container keeps many others updated.",
+    "Label-based opt-in, so only the containers you choose are touched.",
+    "Monitor-only mode that just tells you an update is available.",
+    "Can clean up old images and send notifications."
+  ]}
+  cons={[
+    "Automatic updates can break things. Apps with database migrations or breaking releases need a human.",
+    "It needs the Docker socket, which means full control of Docker.",
+    "The original project is archived; you depend on a fork for future fixes."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Opt In, Not Out
+I set Watchtower to update only containers with its enable label, and added that label to small apps that rarely break.
+
+### 2. Leaving Some Alone
+Databases and apps that often ship breaking changes, Immich being a common example, are better left unlabelled and updated by hand after reading the release notes.
+
+### 3. Notifications
+I configured a notification so every update shows up as a message, which makes it easy to connect a broken app to a recent update.

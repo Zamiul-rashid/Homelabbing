@@ -1,0 +1,58 @@
+---
+title: "Grafana and Prometheus: Graphs for Everything"
+tagline: "Prometheus collects metrics from your servers and apps; Grafana turns them into dashboards and alerts."
+replaces: "Datadog, New Relic"
+difficulty: 3
+installDocs: "https://prometheus.io/docs/prometheus/latest/installation/"
+setupSteps:
+  - "Run Prometheus with a config file that lists the targets it should scrape."
+  - "Add exporters for what you want to measure, such as node_exporter for host CPU, memory and disk."
+  - "Run Grafana, add Prometheus as a data source, and import a ready-made dashboard."
+  - "Add one or two alert rules for things that really matter, such as a disk filling up."
+whatNow:
+  - label: "Prometheus install docs"
+    href: "https://prometheus.io/docs/prometheus/latest/installation/"
+    description: "Running Prometheus in Docker and writing the scrape config."
+  - label: "Grafana in Docker"
+    href: "https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/"
+    description: "Official guide to running Grafana as a container."
+  - label: "Start simpler"
+    href: "/Homelabbing/services/uptime-kuma"
+    description: "If you only need up or down alerts, Uptime Kuma is enough."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+Dashboards that show CPU, memory, disk and network use for my server over time, plus metrics from the apps that publish them. When something feels slow, I can look back and see what changed and when.
+
+## Why I Chose Grafana and Prometheus
+
+Uptime checks tell me whether an app answers. They do not tell me that a disk is slowly filling or that one container is eating memory. Prometheus and Grafana are the standard open-source pair for this, and almost every app or device has an exporter for them.
+
+<ProConTable
+  pros={[
+    "Prometheus pulls metrics on a regular interval and stores them as time series.",
+    "Exporters exist for hosts, containers, databases and many self-hosted apps.",
+    "Grafana has a large library of community dashboards you can import.",
+    "Alert rules can notify you before a problem becomes an outage."
+  ]}
+  cons={[
+    "The hardest setup on this list: several containers and YAML config to learn.",
+    "PromQL, the query language, takes time to get comfortable with.",
+    "Easy to build dashboards nobody looks at; decide what you want to know first."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Prometheus
+I wrote a small config file with a scrape job for Prometheus itself and one for node_exporter on the host, then started both containers. The targets page in Prometheus showed both as up.
+
+### 2. Grafana
+I started Grafana, added Prometheus as a data source using its container name, and imported a community dashboard for node_exporter. Graphs appeared straight away.
+
+### 3. More Targets and Alerts
+Over time I added exporters for the apps that support them and a few alert rules. I kept the rules few, so an alert always means something.

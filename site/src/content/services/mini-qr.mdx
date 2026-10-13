@@ -1,0 +1,55 @@
+---
+title: "Mini QR: QR Codes Without the Ads"
+tagline: "Create and scan styled QR codes, with logos, frames and presets, and no ads or tracking."
+replaces: "Ad-filled online QR generators"
+difficulty: 1
+installDocs: "https://github.com/lyqht/mini-qr"
+setupSteps:
+  - "Follow the self-hosting guide linked from the project's README (SELF_HOSTING.md)."
+  - "Start the container with Docker Compose."
+  - "Open the web interface, type a link or text, and style the code."
+  - "Export it as PNG, JPG or SVG, or copy it to the clipboard."
+whatNow:
+  - label: "Mini QR on GitHub"
+    href: "https://github.com/lyqht/mini-qr"
+    description: "Feature list and the self-hosting guide."
+  - label: "Make a Wi-Fi QR code"
+    href: "https://github.com/lyqht/mini-qr"
+    description: "Use the Wi-Fi data template so guests can join by scanning."
+  - label: "More small tools"
+    href: "/Homelabbing/services/stirling-pdf"
+    description: "Stirling PDF is another single-container utility worth having."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A small QR code tool on my own server. I type a link, Wi-Fi details or contact info, pick colours and a style, maybe add a logo, and download the result. It can also scan a QR code from the camera or from an image.
+
+## Why I Chose Mini QR
+
+Most free QR sites are covered in ads, and some create "dynamic" codes that send people through their own redirect service. Mini QR makes plain codes that point straight at your data, and it is a static web app, so it is tiny to host.
+
+<ProConTable
+  pros={[
+    "Custom colours, dot styles, frames, presets and an optional logo.",
+    "Export to PNG, JPG or SVG, or copy to the clipboard.",
+    "Data templates for Wi-Fi, email, phone, SMS and more.",
+    "A scanner and a batch mode that makes codes from a CSV file."
+  ]}
+  cons={[
+    "It is a single-purpose tool; you may only open it a few times a year.",
+    "A heavily styled code or a large logo can be harder for some phones to scan; test before printing.",
+    "No history or accounts; save the config if you want to reuse a style."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Running It
+I followed the self-hosting guide from the repository and started it with Docker Compose. There is no database and nothing to configure for basic use.
+
+### 2. First Code
+I made a Wi-Fi code for guests using the Wi-Fi template, picked a preset style, and exported it as SVG so it prints sharply at any size.

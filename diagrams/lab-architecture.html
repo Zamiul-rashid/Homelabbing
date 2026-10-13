@@ -196,13 +196,13 @@
           <button class="toolbar-toggle" onclick="this.parentElement.classList.toggle('expanded')" title="Export options" aria-label="Export options">⋯</button>
         </div>
       </div>
-      <p class="subtitle">Roles and data flows as of October 2026. Machine names, addresses and versions are left out on purpose.</p>
+      <p class="subtitle">Roles and data flows. Names, addresses, versions and schedules are left out on purpose.</p>
     </div>
 
     <!-- Main Diagram -->
     <div class="diagram-container">
       <svg viewBox="0 0 1100 790" role="img" aria-labelledby="d2title">
-        <title id="d2title">The author's homelab: an OpenWrt router with firewall zones, an app server running 16 Docker Compose stacks, and a Proxmox host with four containers, the media disk and the backup disk</title>
+        <title id="d2title">The author's homelab: an OpenWrt router with firewall zones, an app server running Docker Compose stacks, and a Proxmox host with containers, the media disk and the backup disk</title>
         <defs>
           <marker id="ah-slate" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/></marker>
           <marker id="ah-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/></marker>
@@ -248,7 +248,7 @@
         <!-- nightly backups -->
         <path d="M 370 666 L 370 712 L 945 712 L 945 642" fill="none" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-amber)"/>
         <line x1="527" y1="666" x2="527" y2="712" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5,4"/>
-        <text x="736" y="706" fill="#fbbf24" font-size="8" text-anchor="middle">nightly rsync, 03:00 to 03:45</text>
+        <text x="736" y="706" fill="#fbbf24" font-size="8" text-anchor="middle">nightly backups</text>
 
         <!-- ============ TOP ROW ============ -->
         <rect x="30" y="20" width="150" height="56" rx="6" fill="#0f172a"/>
@@ -264,12 +264,12 @@
         <rect x="560" y="20" width="210" height="56" rx="6" fill="#0f172a"/>
         <rect x="560" y="20" width="210" height="56" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
         <text x="665" y="43" fill="white" font-size="12" font-weight="600" text-anchor="middle">Private config repo</text>
-        <text x="665" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">every 15 min, secret-scanned</text>
+        <text x="665" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">secret-scanned on every change</text>
 
         <rect x="830" y="20" width="230" height="56" rx="6" fill="#0f172a"/>
         <rect x="830" y="20" width="230" height="56" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
         <text x="945" y="43" fill="white" font-size="12" font-weight="600" text-anchor="middle">My phone</text>
-        <text x="945" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">alerts, morning brief, digest</text>
+        <text x="945" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">alerts + a daily summary</text>
 
         <!-- ============ ROUTER + ZONES ============ -->
         <rect x="30" y="110" width="220" height="90" rx="6" fill="#0f172a"/>
@@ -301,8 +301,8 @@
 
         <!-- ============ APP SERVER ============ -->
         <rect x="280" y="110" width="500" height="575" rx="12" fill="rgba(251, 191, 36, 0.03)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
-        <text x="292" y="128" fill="#fbbf24" font-size="10" font-weight="600">App server: Ryzen 5 3400G, 16 GB, Ubuntu + Docker</text>
-        <text x="292" y="142" fill="#94a3b8" font-size="8">16 Compose stacks, 55 containers</text>
+        <text x="292" y="128" fill="#fbbf24" font-size="10" font-weight="600">App server: Ubuntu + Docker</text>
+        <text x="292" y="142" fill="#94a3b8" font-size="8">apps grouped into Compose stacks</text>
 
         <rect x="300" y="152" width="225" height="60" rx="6" fill="#0f172a"/>
         <rect x="300" y="152" width="225" height="60" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
@@ -320,7 +320,7 @@
         <rect x="300" y="240" width="225" height="60" rx="6" fill="#0f172a"/>
         <rect x="300" y="240" width="225" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
         <text x="412" y="259" fill="white" font-size="11" font-weight="600" text-anchor="middle">Media</text>
-        <text x="412" y="275" fill="#94a3b8" font-size="8" text-anchor="middle">Jellyfin (iGPU transcode), Seerr</text>
+        <text x="412" y="275" fill="#94a3b8" font-size="8" text-anchor="middle">Jellyfin, Seerr</text>
         <text x="412" y="288" fill="#94a3b8" font-size="8" text-anchor="middle">Navidrome, Feishin, Kavita</text>
 
         <rect x="540" y="240" width="220" height="60" rx="6" fill="#0f172a"/>
@@ -339,19 +339,19 @@
         <rect x="540" y="312" width="220" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
         <text x="650" y="331" fill="white" font-size="11" font-weight="600" text-anchor="middle">Cloud</text>
         <text x="650" y="347" fill="#94a3b8" font-size="8" text-anchor="middle">Nextcloud + MariaDB</text>
-        <text x="650" y="360" fill="#94a3b8" font-size="8" text-anchor="middle">Mini QR (hardened, read-only)</text>
+        <text x="650" y="360" fill="#94a3b8" font-size="8" text-anchor="middle">Mini QR</text>
 
         <rect x="300" y="384" width="225" height="60" rx="6" fill="#0f172a"/>
         <rect x="300" y="384" width="225" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
         <text x="412" y="403" fill="white" font-size="11" font-weight="600" text-anchor="middle">Home</text>
         <text x="412" y="419" fill="#94a3b8" font-size="8" text-anchor="middle">Home Assistant, Mosquitto MQTT</text>
-        <text x="412" y="432" fill="#94a3b8" font-size="8" text-anchor="middle">SMART + power entities</text>
+        <text x="412" y="432" fill="#94a3b8" font-size="8" text-anchor="middle">smart home automations</text>
 
         <rect x="540" y="384" width="220" height="60" rx="6" fill="#0f172a"/>
         <rect x="540" y="384" width="220" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
         <text x="650" y="403" fill="white" font-size="11" font-weight="600" text-anchor="middle">Code + secrets</text>
-        <text x="650" y="419" fill="#94a3b8" font-size="8" text-anchor="middle">Gitea (rootless)</text>
-        <text x="650" y="432" fill="#94a3b8" font-size="8" text-anchor="middle">Vaultwarden (never public)</text>
+        <text x="650" y="419" fill="#94a3b8" font-size="8" text-anchor="middle">Gitea</text>
+        <text x="650" y="432" fill="#94a3b8" font-size="8" text-anchor="middle">Vaultwarden</text>
 
         <rect x="300" y="456" width="225" height="60" rx="6" fill="#0f172a"/>
         <rect x="300" y="456" width="225" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
@@ -368,70 +368,70 @@
         <!-- docker networks -->
         <rect x="300" y="530" width="460" height="54" rx="6" fill="#0f172a"/>
         <rect x="300" y="530" width="460" height="54" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
-        <text x="530" y="548" fill="white" font-size="10" font-weight="600" text-anchor="middle">5 Docker networks, owned by a stack of their own</text>
-        <text x="530" y="563" fill="#94a3b8" font-size="8" text-anchor="middle">media_net, download_net, nextcloud_net</text>
-        <text x="530" y="576" fill="#94a3b8" font-size="8" text-anchor="middle">infra_net + qr_net are internal: no route out</text>
+        <text x="530" y="548" fill="white" font-size="10" font-weight="600" text-anchor="middle">Docker networks split by job</text>
+        <text x="530" y="563" fill="#94a3b8" font-size="8" text-anchor="middle">apps, downloads and cloud kept apart</text>
+        <text x="530" y="576" fill="#94a3b8" font-size="8" text-anchor="middle">databases sit on networks with no route out</text>
 
         <!-- disks -->
         <rect x="300" y="600" width="140" height="66" rx="6" fill="#0f172a"/>
         <rect x="300" y="600" width="140" height="66" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="370" y="620" fill="white" font-size="11" font-weight="600" text-anchor="middle">256 GB NVMe</text>
+        <text x="370" y="620" fill="white" font-size="11" font-weight="600" text-anchor="middle">NVMe SSD</text>
         <text x="370" y="636" fill="#94a3b8" font-size="8" text-anchor="middle">OS, Docker,</text>
         <text x="370" y="649" fill="#94a3b8" font-size="8" text-anchor="middle">every app config</text>
 
         <rect x="452" y="600" width="150" height="66" rx="6" fill="#0f172a"/>
         <rect x="452" y="600" width="150" height="66" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="527" y="620" fill="white" font-size="11" font-weight="600" text-anchor="middle">4 x 1 TB HDD</text>
-        <text x="527" y="636" fill="#94a3b8" font-size="8" text-anchor="middle">music, books, Nextcloud,</text>
-        <text x="527" y="649" fill="#94a3b8" font-size="8" text-anchor="middle">archive, family backups</text>
+        <text x="527" y="620" fill="white" font-size="11" font-weight="600" text-anchor="middle">Hard disks</text>
+        <text x="527" y="636" fill="#94a3b8" font-size="8" text-anchor="middle">music, books,</text>
+        <text x="527" y="649" fill="#94a3b8" font-size="8" text-anchor="middle">documents, cloud</text>
 
         <rect x="614" y="600" width="146" height="66" rx="6" fill="#0f172a"/>
         <rect x="614" y="600" width="146" height="66" rx="6" fill="rgba(76, 29, 149, 0.25)" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3"/>
         <text x="687" y="620" fill="white" font-size="11" font-weight="600" text-anchor="middle">/data (NFS)</text>
-        <text x="687" y="636" fill="#94a3b8" font-size="8" text-anchor="middle">movies, TV, torrents</text>
+        <text x="687" y="636" fill="#94a3b8" font-size="8" text-anchor="middle">movies, TV, downloads</text>
         <text x="687" y="649" fill="#94a3b8" font-size="8" text-anchor="middle">hardlinks kept</text>
 
         <!-- ============ PROXMOX HOST ============ -->
         <rect x="810" y="110" width="270" height="575" rx="12" fill="rgba(52, 211, 153, 0.03)" stroke="#34d399" stroke-width="1" stroke-dasharray="8,4"/>
-        <text x="822" y="128" fill="#34d399" font-size="10" font-weight="600">Proxmox host: i5-11500, 16 GB</text>
-        <text x="822" y="142" fill="#94a3b8" font-size="8">4 unprivileged LXC containers</text>
+        <text x="822" y="128" fill="#34d399" font-size="10" font-weight="600">Proxmox host</text>
+        <text x="822" y="142" fill="#94a3b8" font-size="8">unprivileged LXC containers</text>
 
         <rect x="830" y="152" width="230" height="52" rx="6" fill="#0f172a"/>
         <rect x="830" y="152" width="230" height="52" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
         <text x="945" y="172" fill="white" font-size="11" font-weight="600" text-anchor="middle">AI assistant</text>
-        <text x="945" y="189" fill="#94a3b8" font-size="8" text-anchor="middle">alert relay, briefs, app lookups</text>
+        <text x="945" y="189" fill="#94a3b8" font-size="8" text-anchor="middle">relays alerts to my phone</text>
 
         <rect x="830" y="214" width="230" height="52" rx="6" fill="#0f172a"/>
         <rect x="830" y="214" width="230" height="52" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
         <text x="945" y="234" fill="white" font-size="11" font-weight="600" text-anchor="middle">Monitoring</text>
-        <text x="945" y="251" fill="#94a3b8" font-size="8" text-anchor="middle">Prometheus + Grafana, 30 days</text>
+        <text x="945" y="251" fill="#94a3b8" font-size="8" text-anchor="middle">Prometheus + Grafana</text>
 
         <rect x="830" y="276" width="230" height="52" rx="6" fill="#0f172a"/>
         <rect x="830" y="276" width="230" height="52" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
         <text x="945" y="296" fill="white" font-size="11" font-weight="600" text-anchor="middle">Portfolio site</text>
-        <text x="945" y="313" fill="#94a3b8" font-size="8" text-anchor="middle">nginx + a small API</text>
+        <text x="945" y="313" fill="#94a3b8" font-size="8" text-anchor="middle">my personal site</text>
 
         <rect x="830" y="338" width="230" height="52" rx="6" fill="#0f172a"/>
         <rect x="830" y="338" width="230" height="52" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
         <text x="945" y="358" fill="white" font-size="11" font-weight="600" text-anchor="middle">Game hub</text>
-        <text x="945" y="375" fill="#94a3b8" font-size="8" text-anchor="middle">RomM, RetroArch web, Sunshine</text>
+        <text x="945" y="375" fill="#94a3b8" font-size="8" text-anchor="middle">game library + streaming</text>
 
         <rect x="830" y="414" width="230" height="46" rx="6" fill="#0f172a"/>
         <rect x="830" y="414" width="230" height="46" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
         <text x="945" y="433" fill="white" font-size="11" font-weight="600" text-anchor="middle">NFS + Samba</text>
-        <text x="945" y="449" fill="#94a3b8" font-size="8" text-anchor="middle">exported only while the disk is mounted</text>
+        <text x="945" y="449" fill="#94a3b8" font-size="8" text-anchor="middle">shares the media disk</text>
 
         <rect x="830" y="482" width="230" height="70" rx="6" fill="#0f172a"/>
         <rect x="830" y="482" width="230" height="70" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="945" y="502" fill="white" font-size="11" font-weight="600" text-anchor="middle">1 TB 2.5" HDD</text>
-        <text x="945" y="518" fill="#94a3b8" font-size="8" text-anchor="middle">bought used, already worn</text>
-        <text x="945" y="531" fill="#94a3b8" font-size="8" text-anchor="middle">movies, TV, torrents: replaceable</text>
+        <text x="945" y="502" fill="white" font-size="11" font-weight="600" text-anchor="middle">Media disk</text>
+        <text x="945" y="518" fill="#94a3b8" font-size="8" text-anchor="middle">movies, TV, downloads</text>
+        <text x="945" y="531" fill="#94a3b8" font-size="8" text-anchor="middle">can be downloaded again</text>
 
         <rect x="830" y="572" width="230" height="70" rx="6" fill="#0f172a"/>
         <rect x="830" y="572" width="230" height="70" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="945" y="592" fill="white" font-size="11" font-weight="600" text-anchor="middle">1 TB backup HDD</text>
-        <text x="945" y="608" fill="#94a3b8" font-size="8" text-anchor="middle">nightly backups, container dumps</text>
-        <text x="945" y="621" fill="#94a3b8" font-size="8" text-anchor="middle">ROM library, scratch space</text>
+        <text x="945" y="592" fill="white" font-size="11" font-weight="600" text-anchor="middle">Backup disk</text>
+        <text x="945" y="608" fill="#94a3b8" font-size="8" text-anchor="middle">nightly copies</text>
+        <text x="945" y="621" fill="#94a3b8" font-size="8" text-anchor="middle">container snapshots</text>
 
         <!-- ============ LEGEND (below all boundaries) ============ -->
         <text x="30" y="744" fill="white" font-size="10" font-weight="600">Legend</text>
@@ -476,31 +476,31 @@
       <div class="card">
         <div class="card-header">
           <div class="card-dot emerald"></div>
-          <h3>Backups and the drive window</h3>
+          <h3>Backups and quiet disks</h3>
         </div>
         <ul>
-          <li>• Every disk job starts between 03:00 and 03:45</li>
-          <li>• Configs, Gitea, Paperless and music go nightly to the backup disk</li>
-          <li>• All configs are also in git, scanned for secrets first</li>
+          <li>• Heavy disk jobs run together at night</li>
+          <li>• Important data is copied to the second machine</li>
+          <li>• Configs live in git, scanned for secrets first</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot rose"></div>
-          <h3>Known gaps</h3>
+          <h3>One way in</h3>
         </div>
         <ul>
-          <li>• No offsite copy yet, apart from configs in git</li>
-          <li>• Nextcloud data has a single copy</li>
-          <li>• Restores never tested end to end; no UPS yet</li>
+          <li>• Only the reverse proxy faces the internet</li>
+          <li>• Admin tools answer on the LAN or the VPN only</li>
+          <li>• Each router port is its own firewall zone</li>
         </ul>
       </div>
     </div>
 
     <!-- Footer -->
     <p class="footer">
-      Homelabbing • the author&#39;s lab • drawn October 2026
+      Homelabbing • the author&#39;s lab
     </p>
   </div>
 

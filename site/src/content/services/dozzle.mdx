@@ -1,0 +1,58 @@
+---
+title: "Dozzle: Live Container Logs in the Browser"
+tagline: "A small, real-time log viewer for all your Docker containers, with search."
+replaces: "Running docker logs in a terminal"
+difficulty: 1
+installDocs: "https://dozzle.dev/guide/getting-started"
+setupSteps:
+  - "Run the official container image with the Docker socket mounted read-only, as the guide shows."
+  - "Open the web interface and pick a container from the list."
+  - "Use search or the split view to follow several containers at once."
+  - "Turn on authentication if anyone else on your network could open it."
+whatNow:
+  - label: "Dozzle getting started"
+    href: "https://dozzle.dev/guide/getting-started"
+    description: "Install, authentication and multi-host setups."
+  - label: "Need full container control?"
+    href: "/Homelabbing/services/portainer"
+    description: "Portainer can also start, stop and update containers."
+  - label: "Get alerts, not just logs"
+    href: "/Homelabbing/services/uptime-kuma"
+    description: "Find out when an app stops responding."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+One browser tab with a list of every container and its log streaming live. When an app misbehaves, I open Dozzle, click the container, and search for the error, without logging into the server.
+
+## Why I Chose Dozzle
+
+Most of my troubleshooting starts with "what do the logs say?". Dozzle does exactly that and nothing else. It is tiny, it does not store logs anywhere, and it reads them straight from Docker as they are written.
+
+<ProConTable
+  pros={[
+    "Live log streaming for every container, with search and filtering.",
+    "Split view to watch several containers side by side.",
+    "Very light, and it does not keep its own copy of the logs.",
+    "Can show containers from several hosts using its agent."
+  ]}
+  cons={[
+    "It needs the Docker socket; mount it read-only and do not expose Dozzle publicly.",
+    "No long-term log storage or history beyond what Docker keeps.",
+    "Authentication is off unless you set it up."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Starting It
+I ran the official image with the Docker socket mounted read-only, following the getting-started guide.
+
+### 2. Using It
+I opened the web interface, which lists every container. Clicking one starts a live log stream; the search box filters it as I type.
+
+### 3. Locking It Down
+Logs can contain sensitive details, so I turned on Dozzle's simple user authentication.

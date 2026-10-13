@@ -2,14 +2,13 @@
 title: "Jellyfin: Your Personal Netflix"
 tagline: "An open-source media system that organizes, manages, and streams your movies, shows, and music."
 replaces: "Netflix, Plex, Emby, Apple TV+"
-port: 8096
 difficulty: 1
 folder: "media-server"
 setupSteps:
   - "Verify /data/media exists and is owned by your user (`sudo mkdir -p /data/media && sudo chown -R $USER:$USER /data/media`)."
   - "Verify stacks/.env has your correct user permissions (PUID and PGID)."
   - "Run docker compose up -d inside stacks/media-server/."
-  - "Open browser to http://YOUR_SERVER_IP:8096 and complete the setup wizard."
+  - "Open the web interface in your browser (the address is in the stack's README) and complete the setup wizard."
 whatNow:
   - label: "Install Mobile & TV Apps"
     href: "https://jellyfin.org/clients/"
@@ -35,7 +34,7 @@ Commercial streaming services raised prices, yanked my favourite shows without w
   pros={[
     "Free and open source, with no subscription fees or premium paywalls.",
     "No telemetry, no tracking, and no external account sign-in required.",
-    "Hardware-accelerated transcoding for my Intel QuickSync CPU.",
+    "Hardware-accelerated transcoding on Intel, AMD and NVIDIA graphics.",
     "Native apps across Roku, Apple TV, Android TV, LG webOS, iOS, and Android."
   ]}
   cons={[
@@ -67,7 +66,7 @@ docker compose up -d
 ```
 
 ### 3. First-Time UI Setup Walkthrough
-Once running, I opened my web browser to `http://YOUR_SERVER_IP:8096` and followed these 6 steps:
+Once running, I opened Jellyfin's web interface in my browser (the address is in the stack's README) and followed these 6 steps:
 
 1. **Language Selection:** I chose **English** and clicked **Next**.
 2. **Admin Account Creation:** I entered my preferred admin username and a strong password.

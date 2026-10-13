@@ -1,0 +1,58 @@
+---
+title: "Gitea: Your Own Git Server"
+tagline: "A lightweight Git service with repositories, issues, pull requests, packages and built-in CI."
+replaces: "GitHub, GitLab"
+difficulty: 2
+installDocs: "https://docs.gitea.com/installation/install-with-docker"
+setupSteps:
+  - "Copy the Docker Compose example from the Gitea install docs (SQLite is fine for one person)."
+  - "Start it and open the web interface to run the first-time installer."
+  - "Create the admin account and turn off open registration if only you will use it."
+  - "Push an existing repository, or set up a mirror of one you keep on GitHub."
+whatNow:
+  - label: "Gitea Docker install guide"
+    href: "https://docs.gitea.com/installation/install-with-docker"
+    description: "Compose examples for SQLite, MySQL and PostgreSQL."
+  - label: "Set up Gitea Actions"
+    href: "https://docs.gitea.com/usage/actions/overview"
+    description: "Run CI jobs with workflow files similar to GitHub Actions."
+  - label: "Keep your config in Git"
+    href: "/Homelabbing/getting-started"
+    description: "A good first repository: your own Compose files and notes."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A private Git server that looks and works much like GitHub. I keep my homelab configuration, scripts and small projects there, with issues and pull requests when I want them, and mirrors of a few public repositories.
+
+## Why I Chose Gitea
+
+GitLab does far more than I need and wants a lot of memory. Gitea is a single Go program that runs comfortably on small hardware, and its interface is familiar to anyone who has used GitHub.
+
+<ProConTable
+  pros={[
+    "Light on resources; runs fine on a Raspberry Pi or mini PC.",
+    "Repositories, issues, pull requests, wiki and a package registry.",
+    "Gitea Actions for CI, with workflow files similar to GitHub Actions (runners are separate).",
+    "Repository mirroring to and from other Git hosts."
+  ]}
+  cons={[
+    "Cloning over SSH from a container needs some extra setup; HTTPS works out of the box.",
+    "CI needs a separate runner container, which you install and register yourself.",
+    "If it holds your only copy of some code, it needs real backups."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Compose File
+I used the SQLite example from the Docker install guide. For one person it is plenty, and it avoids running a separate database.
+
+### 2. Installer
+On first visit Gitea shows an install page. I kept the defaults, set the site name, and created the admin account there.
+
+### 3. First Repositories
+I turned off open registration, pushed my homelab config repository, and added a mirror of a GitHub project I follow.

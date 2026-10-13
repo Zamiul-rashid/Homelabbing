@@ -1,0 +1,58 @@
+---
+title: "AudioMuse AI: Playlists From How Music Sounds"
+tagline: "Analyses the audio of your own music library and builds playlists and similar-song lists from it."
+replaces: "Spotify radio and generated mixes"
+difficulty: 3
+installDocs: "https://github.com/NeptuneHub/AudioMuse-AI"
+setupSteps:
+  - "Check the hardware notes in the README first: the analysis needs a CPU with AVX2 (or an ARM CPU) and a fair amount of RAM."
+  - "Copy the official Docker Compose example, which runs the web app, a worker and a PostgreSQL database."
+  - "Fill in the connection details for your music server (Navidrome, Jellyfin and others are supported)."
+  - "Open the web interface, start an analysis run, and let it work through the library."
+whatNow:
+  - label: "Read the AudioMuse AI README"
+    href: "https://github.com/NeptuneHub/AudioMuse-AI"
+    description: "Hardware requirements, supported servers and the Compose files."
+  - label: "Set up Navidrome"
+    href: "/Homelabbing/services/navidrome"
+    description: "AudioMuse AI reads from a music server and writes playlists back to it."
+  - label: "Play the results in Feishin"
+    href: "/Homelabbing/services/feishin"
+    description: "A desktop player that shows the new playlists alongside your others."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A service that listens to my music library on my own server and groups songs by how they actually sound, not by genre tags. It creates playlists of similar tracks, finds songs that sound like one I pick, and pushes the results back to my music server so they show up in every player.
+
+## Why I Chose AudioMuse AI
+
+My library has plenty of songs with messy or missing tags, so tag-based smart playlists were hit and miss. AudioMuse AI works from the audio itself, which is the closest thing I have found to a streaming service's radio feature without sending my listening data anywhere.
+
+<ProConTable
+  pros={[
+    "Analysis runs on your own hardware; no metadata service or cloud account is needed for it.",
+    "Works with Navidrome, Jellyfin, Emby, Plex and Lyrion Music Server.",
+    "Clustering into playlists, similar-song lists, a path between two songs, and a map of the library.",
+    "Optional text requests for an instant playlist, using an AI model you configure."
+  ]}
+  cons={[
+    "The first analysis of a large library takes a long time and keeps the CPU busy.",
+    "Needs a CPU with AVX2 (or ARM). In a virtual machine the host CPU type must be passed through.",
+    "More moving parts than most apps: web app, worker and database containers."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Checking the Hardware
+Before anything else I read the requirements in the README. The analysis models need AVX2 on Intel or AMD CPUs, and the project lists a minimum amount of RAM and recommends fast storage.
+
+### 2. Deploying the Containers
+I used the project's Docker Compose example, filled in my music server's address and the credentials the README asks for, and started the stack. It runs a web front end, a worker that does the heavy lifting, and PostgreSQL.
+
+### 3. First Analysis
+In the web interface I started an analysis run and left it alone. Once it finished, I ran clustering to create the first set of playlists, then tried the similar-song search on a few favourites.

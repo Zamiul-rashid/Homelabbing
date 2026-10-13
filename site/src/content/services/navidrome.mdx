@@ -2,14 +2,13 @@
 title: "Navidrome: Personal Cloud Music"
 tagline: "A modern, lightweight, fast web-based music server and Subsonic-compatible audio streaming system."
 replaces: "Spotify, Apple Music, YouTube Music, Tidal"
-port: 4533
 difficulty: 1
 folder: "music-server"
 setupSteps:
   - "Place your FLAC, MP3, and ALAC music folders inside /data/media/music."
   - "Check that stacks/.env has your correct user permissions (PUID and PGID)."
   - "Run docker compose up -d inside stacks/music-server/."
-  - "Open http://YOUR_SERVER_IP:4533 to create your admin profile and scan albums."
+  - "Open the web interface (the address is in the stack's README) to create your admin profile and scan albums."
 whatNow:
   - label: "Connect Subsonic Mobile Apps"
     href: "https://www.navidrome.org/docs/overview/#apps"
@@ -36,7 +35,7 @@ Streaming services compressed my music, yanked classic albums over licensing dis
     "Very lightweight Go backend: it started in under 1 second and consumed minimal RAM.",
     "Full compatibility with the universal Subsonic API ecosystem (hundreds of mobile and desktop apps).",
     "Supported multi-disc albums, lyrics, instant search, and automated background scanning.",
-    "Handled my massive library (100,000+ tracks) without slowing down."
+    "Stays quick to browse and search even with a large library."
   ]}
   cons={[
     "Required me to provide and manage my own digital music collection.",
@@ -57,7 +56,7 @@ docker compose up -d
 ```
 
 ### 2. Initial Scan & Login
-I opened `http://YOUR_SERVER_IP:4533` and created my admin profile (`username` and `password`). Navidrome immediately began scanning `/data/media/music` and populated my album art in seconds.
+I opened Navidrome's web interface and created my admin profile (`username` and `password`). Navidrome immediately began scanning `/data/media/music` and populated my album art in seconds.
 
 ### 3. Connecting My Mobile Apps
 Because Navidrome speaks the industry-standard **Subsonic API**, I could pick any compatible app instead of being locked into one:
@@ -65,4 +64,4 @@ Because Navidrome speaks the industry-standard **Subsonic API**, I could pick an
 - **Android:** **Symfonium** is my pick (unmatched equalizer, offline caching, and widget support) or **Substreamer** (free and minimalist).
 - **iOS:** I recommend **Amperfy** (free, designed to feel exactly like Apple Music) or **Substreamer**.
 
-To connect: I opened the app, entered `http://YOUR_SERVER_IP:4533` (or my domain/Tailscale URL), and signed in with my Navidrome credentials.
+To connect: I opened the app, entered the same server address I use in the browser (or a Tailscale address when away from home), and signed in with my Navidrome credentials.

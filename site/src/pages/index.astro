@@ -149,15 +149,15 @@ const hardware = [
             Each stack lives in its own folder and runs on its own. Start with one, learn it, then add the next.
           </p>
         </div>
-        <a href={`${base}/services`} class="text-link text-sm">All services and ports</a>
+        <a href={`${base}/services`} class="text-link text-sm">All {services.length} services</a>
       </div>
 
       <div class="mt-10 grid gap-x-10 gap-y-12 md:grid-cols-3">
-        {categories.map((cat) => (
+        {categories.filter((cat) => services.some((s) => s.category === cat.id && s.folder)).map((cat) => (
           <div>
             <h3 class="border-b border-border pb-3 text-sm font-semibold text-text-muted">{cat.label}</h3>
             <ul class="divide-y divide-border">
-              {services.filter((s) => s.category === cat.id).map((s) => (
+              {services.filter((s) => s.category === cat.id && s.folder).map((s) => (
                 <li>
                   <a href={`${base}/services/${s.slug}`} class="group block py-4">
                     <span class="flex items-baseline justify-between gap-3">
@@ -179,9 +179,9 @@ const hardware = [
           Compose file. Try it after you have run a few stacks on their own.
         </p>
         <p>
-          New to Docker, ports or volumes? The <a href={`${base}/concepts`} class="text-link">concept guides</a> explain
+          New to Docker, networks or volumes? The <a href={`${base}/concepts`} class="text-link">concept guides</a> explain
           them in plain language. Once a stack is up, <code class="inline-code">./helpers/check-health.sh</code> checks
-          every port in one go.
+          every service in one go.
         </p>
       </div>
     </div>
@@ -194,24 +194,23 @@ const hardware = [
         <div>
           <h2 class="section-title">How I run it at home</h2>
           <p class="mt-4 text-[17px] leading-relaxed text-text-muted">
-            This guide is the beginner version of my own lab. It has grown to two small servers, a monitoring setup
-            that messages my phone, and a backup window that runs every night. I wrote all of it up, including the
-            parts that are still missing.
+            This guide is the beginner version of my own lab. It has grown to two small servers, monitoring that
+            messages my phone, and backups that run on their own. I wrote up how it fits together and what I learned.
           </p>
           <a href={`${base}/my-lab`} class="btn-secondary mt-8">See my lab</a>
         </div>
         <ul class="space-y-4 self-center text-[15px] leading-relaxed text-text-muted">
           <li class="border-l border-border-strong pl-4">
-            <span class="font-medium text-text">55 containers in 16 Compose stacks</span> on one app server, plus a
-            Proxmox host for monitoring, backups and media storage.
+            <span class="font-medium text-text">Two servers, split by job:</span> one runs the apps, a Proxmox host
+            runs monitoring and holds the media and backup disks.
           </li>
           <li class="border-l border-border-strong pl-4">
-            <span class="font-medium text-text">Every disk job between 03:00 and 03:45</span>, so the hard drives can
-            sleep the rest of the day.
+            <span class="font-medium text-text">Quiet disks:</span> heavy disk jobs run together at night, so the hard
+            drives can sleep the rest of the day.
           </li>
           <li class="border-l border-border-strong pl-4">
-            <span class="font-medium text-text">Honest gaps:</span> no UPS yet, one backup disk in the same building,
-            and restores not tested end to end.
+            <span class="font-medium text-text">One way in:</span> a single reverse proxy faces the internet, and admin
+            tools only answer on the LAN or over a VPN.
           </li>
         </ul>
       </div>

@@ -1,0 +1,58 @@
+---
+title: "Scrutiny: Hard Drive Health at a Glance"
+tagline: "Collects S.M.A.R.T. data from your drives, tracks it over time, and warns you before a disk fails."
+replaces: "Manual smartctl checks, CrystalDiskInfo"
+difficulty: 2
+installDocs: "https://github.com/AnalogJ/scrutiny"
+setupSteps:
+  - "On the host, run `smartctl --scan` to list the drives you want to monitor."
+  - "Use the all-in-one (omnibus) image from the README and pass each drive into the container."
+  - "Give the container the extra capabilities the README lists so it can read S.M.A.R.T. data."
+  - "Open the web interface, check every drive appears, and set up a notification."
+whatNow:
+  - label: "Scrutiny on GitHub"
+    href: "https://github.com/AnalogJ/scrutiny"
+    description: "Docker examples, hub and collector mode, and notification settings."
+  - label: "Plan for disk failure"
+    href: "/Homelabbing/getting-started"
+    description: "Health warnings help, but only backups protect your data."
+  - label: "Add uptime alerts"
+    href: "/Homelabbing/services/uptime-kuma"
+    description: "Know when an app goes down, not just a drive."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A web page that lists every drive in my server with a clear pass or fail, its temperature, and the history of the S.M.A.R.T. attributes that matter. If a drive starts reporting problems, I get a notification instead of finding out when files go missing.
+
+## Why I Chose Scrutiny
+
+Drives usually give warning signs before they fail, but nobody runs `smartctl` by hand every week. Scrutiny does it on a schedule, keeps the history, and combines the manufacturer's thresholds with real-world failure rates to judge which numbers matter.
+
+<ProConTable
+  pros={[
+    "Automatic drive detection and a clean dashboard of health and temperature.",
+    "Historical S.M.A.R.T. data, so you can see a drive getting worse over time.",
+    "Notifications to many services, including email, Discord, Telegram and ntfy.",
+    "A hub and collector mode for watching drives on several machines."
+  ]}
+  cons={[
+    "The container needs direct device access and extra capabilities, which is more trust than most apps get.",
+    "Disks inside a virtual machine usually do not report S.M.A.R.T.; run it where the physical drives are.",
+    "USB enclosures do not always pass S.M.A.R.T. data through."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Finding the Drives
+I ran `smartctl --scan` on the host to get the list of devices.
+
+### 2. The Container
+I used the omnibus image, which bundles the web interface and the collector. Following the README, I passed each drive in as a device, added the capabilities it needs (one more for NVMe drives), and mounted the udev folder read-only.
+
+### 3. Checking and Alerts
+I opened the web interface, confirmed every drive was listed with data, and set up a notification so a failing drive reaches me.

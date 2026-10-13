@@ -1,0 +1,58 @@
+---
+title: "Paperless-ngx: A Searchable Paper Archive"
+tagline: "Turns scanned letters, bills and receipts into a searchable, tagged archive with OCR."
+replaces: "Filing cabinets, Evernote scans"
+difficulty: 2
+installDocs: "https://docs.paperless-ngx.com/setup/"
+setupSteps:
+  - "Pick one of the official Docker Compose files (they differ by database and whether Office documents are supported)."
+  - "Set the environment file: OCR language, time zone, and a secret key."
+  - "Start the stack and create your admin user as the setup docs describe."
+  - "Drop a scanned PDF into the consume folder and watch it appear, OCR'd, in the web interface."
+whatNow:
+  - label: "Paperless-ngx setup docs"
+    href: "https://docs.paperless-ngx.com/setup/"
+    description: "Compose files, the install script and every configuration option."
+  - label: "Learn the matching rules"
+    href: "https://docs.paperless-ngx.com/advanced_usage/"
+    description: "Auto-assign tags, correspondents and document types to new documents."
+  - label: "Edit PDFs before filing them"
+    href: "/Homelabbing/services/stirling-pdf"
+    description: "Merge, split or rotate scans with Stirling PDF first."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A searchable archive of my paperwork. I scan a letter or save a PDF bill into a folder, and a few moments later it is in Paperless-ngx with its text recognised, a date, a sender and tags. Finding a receipt now takes a search box instead of a drawer.
+
+## Why I Chose Paperless-ngx
+
+I kept losing paper I later needed, and scans dumped into folders were not much better because I could not search them. Paperless-ngx runs OCR on everything, keeps the original file, and learns from how I tag documents so new ones are filed for me.
+
+<ProConTable
+  pros={[
+    "OCR on every document, so the full text is searchable.",
+    "Keeps the original file alongside an archived, searchable PDF version.",
+    "Tags, correspondents and document types, with automatic matching that improves as you use it.",
+    "Can pull documents from an email inbox as well as a watched folder."
+  ]}
+  cons={[
+    "Several containers: the app, Redis, a database, and optionally Tika and Gotenberg for Office files.",
+    "OCR on large batches is slow on small hardware.",
+    "These are important documents, so you must have a working backup before you rely on it."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Choosing a Compose File
+The project publishes several Compose files. I used one with PostgreSQL and the optional Tika and Gotenberg containers, so Word and email files are handled as well as PDFs.
+
+### 2. Configuration
+In the environment file I set my OCR language, time zone and a long random secret key. Then I started the stack and created the admin user.
+
+### 3. The Consume Folder
+Anything placed in the consume folder is imported and then removed from it. I pointed my scanner's "scan to folder" option there, so scanning a page is all it takes to file it.

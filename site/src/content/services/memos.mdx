@@ -1,0 +1,58 @@
+---
+title: "Memos: Quick Notes on a Timeline"
+tagline: "A lightweight, self-hosted note app: short Markdown notes on a timeline, with tags and search."
+replaces: "Google Keep, Apple Notes"
+difficulty: 1
+installDocs: "https://usememos.com/docs"
+setupSteps:
+  - "Run the official container image with a volume for its data folder."
+  - "Open the web interface; the first account you create becomes the admin."
+  - "Write a note in Markdown and add a #tag to it."
+  - "Add the site to your phone's home screen for quick capture."
+whatNow:
+  - label: "Memos docs"
+    href: "https://usememos.com/docs"
+    description: "Install options, database choices and settings."
+  - label: "Memos on GitHub"
+    href: "https://github.com/usememos/memos"
+    description: "Release notes; read these before every upgrade."
+  - label: "Reach it from your phone"
+    href: "/Homelabbing/services/tailscale"
+    description: "Use Tailscale to capture notes when you are away from home."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A private place for quick thoughts, links and to-dos. Each note is a short Markdown post on a timeline, like a microblog only I can read. Tags and search make old notes easy to find again.
+
+## Why I Chose Memos
+
+I wanted something faster than a full notes app for small things I would otherwise lose. Memos opens straight to a text box, and it runs as one small container with a SQLite database by default.
+
+<ProConTable
+  pros={[
+    "Very light: one container, SQLite by default, with MySQL and PostgreSQL as options.",
+    "Markdown notes with images, files and tags.",
+    "New notes are private; you can choose to share single notes.",
+    "Works well as a home-screen web app on a phone."
+  ]}
+  cons={[
+    "Built for short notes, not long documents or nested notebooks.",
+    "The project has made breaking changes between releases; read the release notes before upgrading.",
+    "Back up the data folder before each upgrade so you can roll back."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Starting the Container
+I ran the official image with a volume for its data folder, following the install docs.
+
+### 2. First Account
+I opened the web interface and created my account. The first user becomes the admin, so I did this right after starting it. I then turned off open sign-ups in the settings.
+
+### 3. Daily Use
+I added Memos to my phone's home screen. Writing a note is now one tap and a few words, and a #tag at the end keeps things grouped.

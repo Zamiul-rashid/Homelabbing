@@ -2,13 +2,12 @@
 title: "Home Assistant: The Local Smart Home Brain"
 tagline: "The world's leading open-source smart home hub that unifies all your IoT devices locally with zero cloud lag."
 replaces: "SmartThings, Apple HomeKit Hub, Google Nest, Philips Hue Bridge"
-port: 8123
 difficulty: 2
 folder: "home-automation"
 setupSteps:
   - "Verify your stacks/.env has correct user permissions (PUID/PGID and TZ)."
   - "Run cd stacks/home-automation && docker compose up -d."
-  - "Open http://YOUR_SERVER_IP:8123 in your web browser (allow 1-2 minutes for initial boot)."
+  - "Open the web interface in your browser (the address is in the stack's README); the first boot takes a minute or two."
   - "Create your local admin account and review auto-discovered smart devices ready for one-click pairing."
 whatNow:
   - label: "Install HACS (Community Store)"
@@ -25,7 +24,7 @@ whatNow:
 import ProConTable from '../../components/ProConTable.astro';
 
 ## What I Ended Up With
-A local, privacy-first smart home hub running directly on my home server's network adapter (`port 8123`). Home Assistant automatically scanned my Wi-Fi network to discover and pair with my Apple HomeKit, Sonos, Google Cast, Philips Hue, and Zigbee devices. This allowed me to control everything from one single app even when my internet connection dropped.
+A local, privacy-first smart home hub running on my home server with host networking. Home Assistant automatically scanned my Wi-Fi network to discover devices such as HomeKit, Sonos, Google Cast, Philips Hue and Zigbee gear. This allowed me to control everything from one single app even when my internet connection dropped.
 
 ## Why I Chose Home Assistant
 
@@ -57,9 +56,9 @@ docker compose up -d
 ```
 
 ### 2. First-Run Wizard
-I opened `http://YOUR_SERVER_IP:8123` in my web browser. Home Assistant took about 1 to 2 minutes on first boot to prepare its internal database and required dependencies. Once it was ready, I followed the wizard to set my name, username, and home location (used for sunrise/sunset triggers).
+I opened Home Assistant's web interface in my browser. It took about 1 to 2 minutes on first boot to prepare its internal database and required dependencies. Once it was ready, I followed the wizard to set my name, username, and home location (used for sunrise/sunset triggers).
 
 ### 3. Pairing My First Devices
 1. Once logged in, I went to **Settings** → **Devices & Services**.
 2. Home Assistant automatically displayed discovered devices on my network right under the **Discovered** banner.
-3. I clicked **Configure** on devices like my Apple TV, Sonos, or Philips Hue to pair them instantly without needing cloud accounts.
+3. I clicked **Configure** on devices such as an Apple TV, Sonos speaker or Philips Hue bridge to pair them instantly without needing cloud accounts.

@@ -1,0 +1,58 @@
+---
+title: "RomM: A Library for Your Game ROMs"
+tagline: "Scans your ROM files, adds cover art and metadata, and lets you play many of them in the browser."
+replaces: "Loose ROM folders, LaunchBox"
+difficulty: 2
+installDocs: "https://docs.romm.app/"
+setupSteps:
+  - "Arrange your ROMs with one folder per platform, using the folder layout from the RomM docs."
+  - "Create free API credentials for the metadata sources you want (IGDB, for example)."
+  - "Copy the official Docker Compose example, which includes RomM and its database, and add your keys."
+  - "Open the web interface, create the admin account, and run the first library scan."
+whatNow:
+  - label: "Read the RomM docs"
+    href: "https://docs.romm.app/"
+    description: "Folder layout, metadata providers and the Compose example."
+  - label: "RomM on GitHub"
+    href: "https://github.com/rommapp/romm"
+    description: "Feature list, releases and the companion apps for other devices."
+  - label: "Plan your storage"
+    href: "/Homelabbing/getting-started"
+    description: "Keep game files on the same data drive as the rest of your media."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A web library of the games I own, with box art, descriptions and release details for each one. Many older systems play straight in the browser, and save files can follow me between devices.
+
+## Why I Chose RomM
+
+My ROMs were a pile of folders with cryptic file names. RomM turns that into something I can browse like a shop front, and it does it from the files I already have instead of a separate launcher on each computer.
+
+<ProConTable
+  pros={[
+    "Metadata and artwork from sources such as IGDB, ScreenScraper, LaunchBox and MobyGames.",
+    "In-browser play through EmulatorJS (and Ruffle for Flash games).",
+    "Save and state sync across devices, plus per-user permissions.",
+    "Free and open source, with no paid tier."
+  ]}
+  cons={[
+    "The folder layout matters; a wrong structure means games are not detected.",
+    "Most metadata sources need you to register for API credentials first.",
+    "Only use games you legally own. RomM does not provide any."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Organising the Files
+I followed the folder layout in the docs: one folder per platform, named the way RomM expects. This step took longer than the install itself.
+
+### 2. Metadata Keys
+I registered for API access with the metadata providers I wanted and put the keys into the environment file from the official Compose example.
+
+### 3. Starting and Scanning
+I started the stack, opened the web interface, created my admin account, and ran a scan. RomM matched most games automatically; I fixed the few it missed by hand.

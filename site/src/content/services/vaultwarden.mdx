@@ -1,0 +1,58 @@
+---
+title: "Vaultwarden: Your Own Password Server"
+tagline: "A lightweight server compatible with the Bitwarden apps, so your password vault lives on your hardware."
+replaces: "Bitwarden cloud, 1Password, LastPass"
+difficulty: 2
+installDocs: "https://github.com/dani-garcia/vaultwarden/wiki"
+setupSteps:
+  - "Plan HTTPS first: the web vault and browser extensions need a secure connection to work."
+  - "Run the official container image with a volume for its data folder, following the wiki."
+  - "Create your account, then disable open sign-ups with the `SIGNUPS_ALLOWED=false` setting."
+  - "Point the official Bitwarden apps and browser extension at your server's address."
+whatNow:
+  - label: "Vaultwarden wiki"
+    href: "https://github.com/dani-garcia/vaultwarden/wiki"
+    description: "Configuration, the admin page, and HTTPS setups."
+  - label: "Get HTTPS working"
+    href: "/Homelabbing/services/nginx-proxy-manager"
+    description: "A reverse proxy with a certificate is the usual way to serve it."
+  - label: "Keep it private"
+    href: "/Homelabbing/services/tailscale"
+    description: "Reach your vault from your devices without putting it on the open internet."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A password manager that works exactly like Bitwarden on my phone, laptop and browser, but stores the encrypted vault on my own server. The official Bitwarden apps and extensions connect to it once I enter my server's address.
+
+## Why I Chose Vaultwarden
+
+The official Bitwarden server is a set of heavier containers built for organisations. Vaultwarden is an unofficial, community-written server in Rust that implements the same API in a single small container. It is not affiliated with Bitwarden, but it works with their clients.
+
+<ProConTable
+  pros={[
+    "Works with the official Bitwarden apps and browser extensions.",
+    "One small container with a SQLite database by default.",
+    "Supports organisations, attachments and Send, among other features.",
+    "Your encrypted vault is stored on hardware you control."
+  ]}
+  cons={[
+    "Needs HTTPS before the web vault and extensions will work.",
+    "Your passwords now depend on your backups. Test a restore before you trust it.",
+    "If the server is down, apps keep a cached copy, but you cannot sync changes until it is back."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. HTTPS First
+I set up a reverse proxy with a valid certificate before starting Vaultwarden, because browsers block the vault's encryption features on plain HTTP.
+
+### 2. Starting It
+I ran the official image with a data volume, created my account in the web vault, then set `SIGNUPS_ALLOWED=false` and restarted the container so nobody else could register.
+
+### 3. Connecting Clients
+In each Bitwarden app I chose the self-hosted option, entered my server's address, and signed in. My vault synced to every device.

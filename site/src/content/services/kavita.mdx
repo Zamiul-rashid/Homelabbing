@@ -2,14 +2,13 @@
 title: "Kavita: Your Personal Book & Comic Cloud"
 tagline: "A self-hosted digital library for reading EPUB eBooks, comic books (CBZ/CBR), and manga."
 replaces: "Amazon Kindle Cloud Reader, ComiXology, Apple Books"
-port: 5000
 difficulty: 1
 folder: "book-reader"
 setupSteps:
   - "Place your EPUB eBooks, comic archives (CBZ/CBR), and PDFs into /data/media/books and /data/media/comics."
   - "Verify stacks/.env has your correct user permissions."
   - "Run docker compose up -d inside stacks/book-reader/."
-  - "Open http://YOUR_SERVER_IP:5000 to create your admin profile and scan your libraries."
+  - "Open the web interface (the address is in the stack's README) to create your admin profile and scan your libraries."
 whatNow:
   - label: "Connect OPDS Readers"
     href: "https://wiki.kavitareader.com/en/guides/opds"
@@ -57,7 +56,7 @@ docker compose up -d
 ```
 
 ### 2. Creating My Admin Account
-I opened `http://YOUR_SERVER_IP:5000` in my web browser. I was greeted by the initial setup screen where I created my admin profile username and password.
+I opened Kavita's web interface in my browser. I was greeted by the initial setup screen where I created my admin profile username and password.
 
 ### 3. Adding My Libraries
 1. In the Kavita dashboard, I clicked **Server Settings (Gear icon)** → **Libraries** → **+ Add Library**.

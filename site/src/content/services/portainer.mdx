@@ -1,0 +1,58 @@
+---
+title: "Portainer: Docker in a Web Interface"
+tagline: "Start, stop, inspect and update your Docker containers and stacks from a browser."
+replaces: "Docker Desktop, the Docker CLI for daily tasks"
+difficulty: 1
+installDocs: "https://docs.portainer.io/start/install-ce/server/docker/linux"
+setupSteps:
+  - "Follow the official Community Edition install guide for Docker on Linux."
+  - "Open the web interface right away and create the admin user (setup times out if you wait too long)."
+  - "Choose the local Docker environment to manage the server it runs on."
+  - "Browse your containers, and try restarting one or reading its logs."
+whatNow:
+  - label: "Portainer CE install guide"
+    href: "https://docs.portainer.io/start/install-ce/server/docker/linux"
+    description: "The official steps for Docker on Linux."
+  - label: "Just want logs?"
+    href: "/Homelabbing/services/dozzle"
+    description: "Dozzle is a lighter tool that only shows container logs."
+  - label: "Learn the basics first"
+    href: "/Homelabbing/concepts"
+    description: "What containers, images and volumes are, in plain terms."
+---
+
+import ProConTable from '../../components/ProConTable.astro';
+
+## What I Ended Up With
+A dashboard for every container on my server. I can see what is running, restart something, read its logs, open a console, pull a newer image, or edit a Compose stack, all from a browser on any device.
+
+## Why I Chose Portainer
+
+When I was new to Docker I did not remember every command, and on a phone a terminal is painful anyway. Portainer Community Edition is free, runs as one container, and makes it easy to see what the server is doing.
+
+<ProConTable
+  pros={[
+    "Containers, images, volumes and networks in one interface.",
+    "Logs, stats and a console for each container.",
+    "Create and update Compose stacks in the browser.",
+    "Community Edition is free and open source."
+  ]}
+  cons={[
+    "It needs the Docker socket, which is equivalent to full control of the host. Protect the login well.",
+    "Stacks started from the command line show up with limited control in Portainer.",
+    "Easy to change things in the interface and forget to update your Compose files to match."
+  ]}
+/>
+
+---
+
+## How I Set It Up
+
+### 1. Installing
+I followed the Community Edition guide for Docker on Linux, which creates a volume for its data and starts the container.
+
+### 2. First Login
+I opened the web interface immediately and created the admin user. Portainer locks the setup page after a few minutes for safety; if that happens, restart the container and try again.
+
+### 3. Daily Use
+I picked the local environment and now use Portainer mostly to check logs and restart things from my phone. I still keep my Compose files as the source of truth.

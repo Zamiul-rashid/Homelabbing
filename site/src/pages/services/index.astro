@@ -1,36 +1,56 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import ServiceCard from '../../components/ServiceCard.astro';
-import HealthTable from '../../components/HealthTable.astro';
 import { services, categories } from '../../data/services';
+
+const groups = categories
+  .map((c) => ({ ...c, items: services.filter((s) => s.category === c.id) }))
+  .filter((g) => g.items.length > 0);
+const withStack = services.filter((s) => s.folder).length;
 ---
 
 <PageLayout
   title="Services"
-  description="Every app in the guide, each in its own Docker Compose stack. Pick one to see how to set it up."
+  description="Every app in the guide, grouped by what it does. Pick one to see what it is for and how to set it up."
   prose={false}
 >
   <section aria-labelledby="stacks-title">
-    <h2 id="stacks-title" class="sr-only">Stacks</h2>
+    <h2 id="stacks-title" class="sr-only">Services by category</h2>
 
-    <div class="mb-6 flex flex-wrap gap-2" role="group" aria-label="Filter by purpose" data-filter>
+    <div class="mb-4 flex flex-wrap gap-2" role="group" aria-label="Filter by purpose" data-filter>
       <button type="button" class="filter-btn" aria-pressed="true" data-filter-value="all">
         All <span class="text-text-faint">{services.length}</span>
       </button>
-      {categories.map((c) => (
-        <button type="button" class="filter-btn" aria-pressed="false" data-filter-value={c.id}>
-          {c.label} <span class="text-text-faint">{services.filter((s) => s.category === c.id).length}</span>
+      {groups.map((g) => (
+        <button type="button" class="filter-btn" aria-pressed="false" data-filter-value={g.id}>
+          {g.label} <span class="text-text-faint">{g.items.length}</span>
         </button>
       ))}
     </div>
+    <p class="mb-12 max-w-measure text-sm leading-relaxed text-text-muted">
+      {withStack} of these have a beginner stack in this repository. The rest link to the project's official install
+      guide.
+    </p>
 
-    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-filter-list>
-      {services.map((s) => (
-        <li data-category={s.category}>
-          <ServiceCard service={s} />
-        </li>
+    <div class="space-y-14" data-filter-list>
+      {groups.map((g) => (
+        <section aria-labelledby={`cat-${g.id}`} data-category={g.id}>
+          <div class="mb-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-border pb-3">
+            <h2 id={`cat-${g.id}`} class="text-xl font-semibold tracking-[-0.01em] text-text">
+              {g.label} <span class="text-base font-normal text-text-faint">{g.items.length}</span>
+            </h2>
+            <p class="text-sm text-text-muted">{g.blurb}</p>
+          </div>
+          <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {g.items.map((s) => (
+              <li>
+                <ServiceCard service={s} />
+              </li>
+            ))}
+          </ul>
+        </section>
       ))}
-    </ul>
+    </div>
   </section>
 
   <section class="mt-20 grid gap-10 border-t border-border pt-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
@@ -38,7 +58,8 @@ import { services, categories } from '../../data/services';
       <h2 class="section-title">Why one stack per app?</h2>
       <p class="mt-4 text-[17px] leading-relaxed text-text-muted">
         Many homelab repositories put 30 or more containers in one Compose file. When one database fails or two apps
-        want the same port, everything stops. Here each app has its own folder in <code class="inline-code">stacks/</code>.
+        clash, everything stops. Here each beginner stack has its own folder in <code class="inline-code">stacks/</code>,
+        and the same idea works for apps you install from their official guides.
       </p>
     </div>
     <dl class="space-y-6 text-[17px] leading-relaxed">
@@ -55,15 +76,6 @@ import { services, categories } from '../../data/services';
         <dd class="mt-1 text-text-muted">Get one service working before you add the next, then combine them in <code class="inline-code">full-stack</code> if you want.</dd>
       </div>
     </dl>
-  </section>
-
-  <section id="ports" class="mt-20 scroll-mt-24 border-t border-border pt-12">
-    <h2 class="section-title">Port reference</h2>
-    <p class="mt-3 max-w-measure text-[17px] leading-relaxed text-text-muted">
-      Default ports and folders. <code class="inline-code">./helpers/check-health.sh</code> checks all of them from
-      the repository root.
-    </p>
-    <HealthTable />
   </section>
 </PageLayout>
 
@@ -84,14 +96,14 @@ import { services, categories } from '../../data/services';
   const list = document.querySelector<HTMLElement>('[data-filter-list]');
   if (group && list) {
     const buttons = Array.from(group.querySelectorAll<HTMLButtonElement>('button[data-filter-value]'));
-    const items = Array.from(list.querySelectorAll<HTMLElement>(':scope > li'));
+    const sections = Array.from(list.querySelectorAll<HTMLElement>(':scope > section[data-category]'));
     group.addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-filter-value]');
       if (!btn) return;
       const value = btn.dataset.filterValue;
       buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-      items.forEach((li) => {
-        li.hidden = value !== 'all' && li.dataset.category !== value;
+      sections.forEach((section) => {
+        section.hidden = value !== 'all' && section.dataset.category !== value;
       });
     });
   }

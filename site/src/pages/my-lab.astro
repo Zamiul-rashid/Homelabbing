@@ -3,11 +3,9 @@ import PageLayout from '../layouts/PageLayout.astro';
 
 const glance = [
   { value: '2', label: 'servers' },
-  { value: '55', label: 'containers' },
-  { value: '16', label: 'Compose stacks' },
-  { value: '4', label: 'Proxmox containers' },
-  { value: '5', label: 'Docker networks' },
-  { value: '45 min', label: 'nightly drive window' },
+  { value: '50+', label: 'containers' },
+  { value: '15+', label: 'Compose stacks' },
+  { value: '2025', label: 'running since' },
 ];
 
 const sections = [
@@ -26,16 +24,16 @@ const stackGroups = [
     title: 'Media',
     stacks: [
       { name: 'media', items: 'Jellyfin (hardware transcoding on the iGPU), Seerr for requests, Navidrome, Feishin, Kavita' },
-      { name: 'download', items: 'qBittorrent (version pinned), Sonarr, Radarr, Prowlarr, qbit-manage (pinned), Recyclarr, Maintainerr' },
+      { name: 'download', items: 'qBittorrent, Sonarr, Radarr, Prowlarr, qbit-manage, Recyclarr, Maintainerr' },
     ],
   },
   {
     title: 'Documents and personal data',
     stacks: [
       { name: 'tools', items: 'Paperless-ngx with Redis, File Browser, Memos with a small helper API, Stirling PDF, AudioMuse AI with its worker and Postgres (pgvector)' },
-      { name: 'nextcloud', items: 'Nextcloud and MariaDB (image pinned)' },
-      { name: 'vault', items: 'Vaultwarden, reachable on the LAN and over Tailscale only, never public' },
-      { name: 'dev', items: 'Gitea, running rootless' },
+      { name: 'nextcloud', items: 'Nextcloud and MariaDB' },
+      { name: 'vault', items: 'Vaultwarden, never exposed to the internet' },
+      { name: 'dev', items: 'Gitea' },
     ],
   },
   {
@@ -47,7 +45,7 @@ const stackGroups = [
     stacks: [
       { name: 'proxy', items: 'Nginx Proxy Manager, the only way in from the internet, plus a dynamic DNS updater' },
       { name: 'networks', items: 'A tiny "network keeper" that owns the shared Docker networks, so taking one app stack down can never delete a network other stacks use' },
-      { name: 'qr', items: 'Mini QR, built locally: read-only filesystem, unprivileged, no host port, on an internal network shared only with the proxy, GET-only and rate-limited' },
+      { name: 'qr', items: 'Mini QR, a small QR-code tool I build myself and run locked down' },
     ],
   },
   {
@@ -62,10 +60,10 @@ const stackGroups = [
 ];
 
 const proxmoxGuests = [
-  { name: 'Monitoring', items: 'Prometheus, Grafana, pve-exporter, cAdvisor' },
-  { name: 'AI assistant', items: 'Sends me a morning brief and a nightly infrastructure digest, relays Grafana alerts, and can query a few apps (notes, media requests, documents) through MCP tools' },
-  { name: 'Portfolio site', items: 'nginx and a small API for the contact form and a visit counter (SQLite)' },
-  { name: 'Game hub', items: 'RomM for my ROM library, RetroArch in the browser, Sunshine game streaming on the Intel iGPU, and a dashboard for a university thesis compute fleet' },
+  { name: 'Monitoring', items: 'Prometheus and Grafana' },
+  { name: 'AI assistant', items: 'Relays alerts to my phone and sends a short daily summary' },
+  { name: 'Portfolio site', items: 'My personal site, with a small API behind it' },
+  { name: 'Game hub', items: 'A game library, emulation in the browser and game streaming' },
 ];
 
 const pipeline = [
@@ -78,7 +76,7 @@ const pipeline = [
 ];
 
 const guards = [
-  { name: 'Download guard', body: 'Every 2 minutes it looks at finished downloads. If an executable shows up, it quarantines it and blocklists that release through the Sonarr or Radarr API, so the same file is not grabbed again.' },
+  { name: 'Download guard', body: 'It watches finished downloads. If an executable shows up, it quarantines it and blocklists that release through the Sonarr or Radarr API, so the same file is not grabbed again.' },
   { name: 'qbit-manage', body: 'Keeps the torrents inside qBittorrent tagged and tidy.' },
   { name: 'Maintainerr', body: 'Cleans up the library by rules I set once, instead of me deleting things by hand.' },
 ];
@@ -90,82 +88,55 @@ const zones = [
 ];
 
 const dockerNetworks = [
-  { name: 'media_net', body: 'Front-end apps.' },
-  { name: 'download_net', body: 'The *arr apps, qBittorrent and their exporters.' },
-  { name: 'infra_net', body: 'Internal only: Redis and the AudioMuse database. Nextcloud, Paperless and AudioMuse sit on it and on a front-end network.' },
-  { name: 'nextcloud_net', body: 'Nextcloud and its database.' },
-  { name: 'qr_net', body: 'Internal only: Mini QR and the proxy, nothing else.' },
+  { name: 'Split by job', body: 'The apps people use, the download side and the cloud app each get their own network, so trouble on one side stays there.' },
+  { name: 'Databases sealed off', body: 'Databases and caches sit on internal networks with no route out. Only the app that needs one can reach it.' },
+  { name: 'One owner', body: 'A tiny stack of its own owns the shared networks, so taking an app stack down never deletes a network another stack uses.' },
 ];
 
-const backups = [
-  { when: 'Nightly 03:00', job: 'Music, copied with rsync to the backup disk on the Proxmox host' },
-  { when: 'Nightly 03:05', job: 'All app configs and databases, with 4 days of history; the Proxmox host config' },
-  { when: 'Nightly 03:10', job: 'Gitea data' },
-  { when: 'Nightly 03:20', job: 'Paperless export, 30 daily hardlinked snapshots' },
-  { when: 'Saturday 03:35', job: 'Proxmox container dumps, keeping the last 2' },
-  { when: 'Sunday 03:30', job: 'The "doomsday" archive: an encrypted tarball of the proxy, certificates, Nextcloud and Home Assistant state, last 4 kept locally' },
-];
-
-const limitations = [
-  'Backups land on one disk in the same building. The only offsite copy is the configs in Git.',
-  'Nextcloud user data (about 350 GB) has a single copy.',
-  'Databases are copied live with rsync, not dumped.',
-  'I have never tested a restore end to end.',
-  'Media is deliberately not backed up. It can be downloaded again.',
-  'There is no UPS yet.',
+const backupPractices = [
+  { name: 'Every night', body: 'Data that would be hard to replace is copied to a disk in the second machine.' },
+  { name: 'On a schedule', body: 'The Proxmox host snapshots its containers, so a broken one can be rolled back as a whole.' },
+  { name: 'Encrypted archive', body: 'The state that would take longest to rebuild by hand also goes into an encrypted archive.' },
+  { name: 'Watched', body: 'If a backup goes stale or does not run, monitoring raises an alert like any other failure.' },
 ];
 
 const timeline = [
+  { date: 'March 2025', items: ['The start: one machine and one disk of media.'] },
+  { date: 'April 2025', items: ['A clean Ubuntu Server install on the machine that is still the app server today.'] },
+  { date: 'January 2026', items: ['More disks: one for Nextcloud, and a proper music library.'] },
+  {
+    date: 'July 2026',
+    items: [
+      'Rebuilt everything as Docker Compose stacks in one folder, then split them up by job.',
+      'First backup and recovery scripts. This guide went public.',
+    ],
+  },
   {
     date: 'August 2026',
     items: [
-      'Hardening pass: 14 admin proxy hosts taken off the internet.',
-      'Prometheus and Grafana moved into a Proxmox container.',
-      'Headscale retired in favour of Tailscale.',
-      'AI assistant container created; weekly Proxmox dumps started.',
+      'A second server: the Proxmox host. Monitoring moved onto it.',
+      'Hardening pass: admin tools taken off the internet. Remote access moved to Tailscale.',
+      'Self-hosted Git, and the assistant that relays alerts.',
     ],
   },
   {
     date: 'September 2026',
-    items: [
-      'Power tuning, with per-process tracing of what wakes the disks.',
-      'Vaultwarden. Alerts to my phone. The download guard.',
-      'Fixed an NVMe read stall with a power-state latency cap.',
-      'Learned SATA the hard way: only 2 usable ports on the Proxmox host, no hot-plug, and pulling a mounted drive aborts its journal.',
-    ],
+    items: ['A password manager, alerts to my phone and the download guard.', 'Power tuning and disk spin-down.'],
   },
   {
-    date: '1 October 2026',
+    date: 'October 2026',
     items: [
-      'Media moved to the Proxmox host over NFS: 432 GB, hardlinks intact, about a minute of downtime.',
-      'NFS boot guard, config Git sync with secret scanning, and the 03:00 to 03:45 drive window with spin-down on both servers.',
-      'qBittorrent pinned after an auto-update broke it. The disk-by-id rule.',
+      'Media moved to the Proxmox host over NFS, with every hardlink intact.',
+      'All configs into Git, with secret scanning on every change.',
+      'A new router with one firewall zone per port, and an in-place OS upgrade on the app server.',
     ],
-  },
-  {
-    date: '7 October 2026',
-    items: [
-      'New OpenWrt router with one zone per port.',
-      'Router metrics in Prometheus, Grafana and Home Assistant. Wake-on-LAN on every machine. Backup DNS through the router.',
-    ],
-  },
-  {
-    date: '11 October 2026',
-    items: [
-      'App server upgraded in place to the new Ubuntu LTS. SSH dropped halfway through; I recovered it and wrote the steps up as a runbook.',
-      'RAM test passed. Mini QR launched as a hardened app.',
-    ],
-  },
-  {
-    date: '12 October 2026',
-    items: ['A power cut left a stale VPN DNS setting behind and broke DNS on the host. Fixed with a systemd drop-in.'],
   },
 ];
 ---
 
 <PageLayout
   title="My lab"
-  description="The two servers in my house, what runs on them, how they are watched and backed up, and what I learned building them. Accurate as of October 2026."
+  description="The two servers in my house, what runs on them, how they are watched and backed up, and what I learned building them."
   prose={false}
 >
   <nav aria-label="Sections on this page" class="-mt-2 mb-12">
@@ -179,7 +150,7 @@ const timeline = [
   <!-- At a glance -->
   <section aria-labelledby="glance-title">
     <h2 id="glance-title" class="sr-only">At a glance</h2>
-    <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-3 lg:grid-cols-6">
+    <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-4">
       {glance.map((g) => (
         <div class="flex flex-col bg-bg px-5 py-5">
           <dt class="text-sm text-text-muted">{g.label}</dt>
@@ -201,7 +172,7 @@ const timeline = [
           width="2528"
           height="2536"
           loading="lazy"
-          alt="Diagram of the lab. The internet reaches an OpenWrt router with separate zones for the servers, the admin laptop and Wi-Fi. The router forwards only to Nginx Proxy Manager on the app server, which also runs AdGuard Home and grouped stacks for media, downloads, tools, cloud, home, code and secrets, operations and metrics, on five Docker networks, an NVMe, four hard disks and an NFS mount. The Proxmox host runs the AI assistant, monitoring, the portfolio site and a game hub, and holds the media disk shared over NFS and the backup disk that receives nightly rsync. Tailscale links the laptop and both servers; configs are pushed to a private repo; alerts go to a phone."
+          alt="Diagram of the lab. The internet reaches a router with separate firewall zones for the servers, the admin laptop and Wi-Fi, and is forwarded only to the reverse proxy on the app server. The app server runs DNS, the proxy and grouped app stacks on separated Docker networks. The Proxmox host runs monitoring, an alert assistant, a personal site and a game hub, and holds the media disk shared over NFS and the backup disk. A VPN links the laptop and both servers; configs go to a private repository; alerts go to a phone."
           class="h-auto w-full"
         />
       </a>
@@ -236,28 +207,28 @@ const timeline = [
           </tr>
           <tr>
             <th scope="row" class="px-4 py-3 font-normal text-text-faint">Machine</th>
-            <td class="px-4 py-3 text-text-muted">Micro-ATX desktop</td>
-            <td class="px-4 py-3 text-text-muted">HP microtower</td>
+            <td class="px-4 py-3 text-text-muted">A small desktop</td>
+            <td class="px-4 py-3 text-text-muted">A small office tower</td>
           </tr>
           <tr>
             <th scope="row" class="px-4 py-3 font-normal text-text-faint">CPU</th>
-            <td class="px-4 py-3 text-text-muted">AMD Ryzen 5 3400G, 4 cores / 8 threads. Its Vega iGPU does Jellyfin transcoding.</td>
-            <td class="px-4 py-3 text-text-muted">Intel i5-11500, 6 cores / 12 threads</td>
+            <td class="px-4 py-3 text-text-muted">A 4-core AMD desktop chip. Its integrated GPU handles Jellyfin transcoding.</td>
+            <td class="px-4 py-3 text-text-muted">A 6-core Intel desktop chip</td>
           </tr>
           <tr>
             <th scope="row" class="px-4 py-3 font-normal text-text-faint">Memory</th>
-            <td class="px-4 py-3 text-text-muted">16 GB DDR4</td>
+            <td class="px-4 py-3 text-text-muted">16 GB</td>
             <td class="px-4 py-3 text-text-muted">16 GB</td>
           </tr>
           <tr>
             <th scope="row" class="px-4 py-3 font-normal text-text-faint">Fast disk</th>
-            <td class="px-4 py-3 text-text-muted">256 GB NVMe: OS, Docker and every app config</td>
-            <td class="px-4 py-3 text-text-muted">256 GB NVMe: all guest disks, on LVM-thin</td>
+            <td class="px-4 py-3 text-text-muted">An NVMe SSD for the OS, Docker and app configs</td>
+            <td class="px-4 py-3 text-text-muted">An NVMe SSD for the guest disks</td>
           </tr>
           <tr>
             <th scope="row" class="px-4 py-3 font-normal text-text-faint">Hard disks</th>
-            <td class="px-4 py-3 text-text-muted">4 × 1 TB: music, books and personal files; Nextcloud data; a Nextcloud media archive; family backups and games. A mergerfs pool over them is for shell use only: no container mounts it, because hardlinks cannot span its branches.</td>
-            <td class="px-4 py-3 text-text-muted">1 TB for backups, the ROM library and scratch. A used 1 TB 2.5" disk, already degraded, for movies, TV and torrents.</td>
+            <td class="px-4 py-3 text-text-muted">Several hard disks for music, books, documents and Nextcloud.</td>
+            <td class="px-4 py-3 text-text-muted">One disk for backups, one for movies, TV and downloads.</td>
           </tr>
           <tr>
             <th scope="row" class="px-4 py-3 font-normal text-text-faint">OS</th>
@@ -277,8 +248,8 @@ const timeline = [
         server. It is the only machine allowed to reach everything.
       </p>
       <p>
-        <span class="font-medium text-text">The worn disk is on purpose.</span> Everything on it can be downloaded
-        again, so it is the right disk to wear out. Health alerts watch how fast it degrades.
+        <span class="font-medium text-text">The media disk was bought used.</span> Everything on it can be
+        downloaded again, so it is the right disk to wear out first.
       </p>
     </div>
   </section>
@@ -287,8 +258,7 @@ const timeline = [
   <section id="what-runs-where" class="mt-24 scroll-mt-24" aria-labelledby="runs-title">
     <h2 id="runs-title" class="section-title">What runs where</h2>
     <p class="mt-3 max-w-measure text-[17px] leading-relaxed text-text-muted">
-      The app server runs 55 containers in 16 Compose stacks, grouped here by what they are for. Stack names are the
-      real folder names.
+      The app server runs a little over fifty containers in Compose stacks, grouped here by what they are for.
     </p>
 
     <div class="mt-10 grid gap-x-12 gap-y-10 lg:grid-cols-2">
@@ -306,10 +276,10 @@ const timeline = [
         </div>
       ))}
       <div>
-        <h3 class="text-base font-semibold text-text">Kept, not running</h3>
+        <h3 class="text-base font-semibold text-text">Retired</h3>
         <p class="mt-3 border-y border-border py-3 text-[15px] leading-relaxed text-text-muted">
-          An old Prometheus and Grafana stack stays defined but stopped. The live copies moved to the Proxmox host.
-          Since July I removed Homarr and Homepage (my own dashboard took over) and Actual Budget.
+          Since July I removed Homarr and Homepage (my own small dashboard took over) and Actual Budget. Monitoring
+          moved off this server to the Proxmox host.
         </p>
       </div>
     </div>
@@ -317,7 +287,7 @@ const timeline = [
     <div class="mt-14 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-12">
       <div class="panel p-6">
         <h3 class="text-base font-semibold text-text">On the Proxmox host</h3>
-        <p class="mt-1 text-sm text-text-muted">Four unprivileged LXC containers, plus a retired Headscale container.</p>
+        <p class="mt-1 text-sm text-text-muted">A few unprivileged LXC containers.</p>
         <dl class="mt-5 space-y-4">
           {proxmoxGuests.map((g) => (
             <div>
@@ -330,9 +300,9 @@ const timeline = [
       <div>
         <h3 class="text-base font-semibold text-text">Scripts on the app server itself</h3>
         <ul class="mt-4 space-y-4 text-[15px] leading-relaxed text-text-muted">
-          <li><span class="font-medium text-text">Download guard</span>, every 2 minutes. More on it below.</li>
+          <li><span class="font-medium text-text">Download guard.</span> More on it below.</li>
           <li><span class="font-medium text-text">NFS boot guard.</span> Holds the media containers back until the media share is mounted, then starts them. It passed a real power-cut test.</li>
-          <li><span class="font-medium text-text">Config Git sync</span>, every 15 minutes. See backups.</li>
+          <li><span class="font-medium text-text">Config Git sync</span>, whenever something changes. See backups.</li>
           <li><span class="font-medium text-text">Power and SMART reporters</span> that feed Home Assistant.</li>
         </ul>
       </div>
@@ -377,10 +347,10 @@ const timeline = [
           <div class="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-center text-sm">
             <div class="rounded-md border border-border bg-bg-surface p-3">
               <p class="font-medium text-text">Proxmox host</p>
-              <p class="mt-1 text-text-muted">1 TB 2.5" disk</p>
+              <p class="mt-1 text-text-muted">media disk</p>
             </div>
             <div class="px-1 text-text-muted">
-              <p class="font-mono text-xs">NFS 4.2</p>
+              <p class="font-mono text-xs">NFS</p>
               <svg class="mx-auto mt-1 h-4 w-8 text-accent" viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 8h26M22 3l6 5-6 5" /></svg>
             </div>
             <div class="rounded-md border border-border bg-bg-surface p-3">
@@ -389,7 +359,7 @@ const timeline = [
             </div>
           </div>
           <p class="mt-3 text-[15px] leading-relaxed text-text-muted">
-            Since 1 October, movies, TV and torrents live on the Proxmox host and reach the app server over NFS.
+            Movies, TV and downloads live on the Proxmox host and reach the app server over NFS.
             Music, books and photos stay on the app server's own disks.
           </p>
         </div>
@@ -409,13 +379,13 @@ const timeline = [
 
     <div class="mt-12 grid gap-6 border-t border-border pt-8 text-[15px] leading-relaxed text-text-muted md:grid-cols-2">
       <p>
-        <span class="font-medium text-text">The move.</span> I copied 432 GB to the new disk with every hardlink
-        intact (I checked all 228 hardlinked paths) and switched over with about one minute of downtime.
+        <span class="font-medium text-text">The move.</span> I moved the whole library between machines with every
+        hardlink intact and about a minute of downtime, then checked the links before deleting anything.
       </p>
       <p>
         <span class="font-medium text-text">Never write into an empty folder.</span> The NFS mount point is
         immutable, the export only exists while the disk is mounted, and Proxmox checks
-        <code class="inline-code">is_mountpoint</code> before using its storage.
+        that the disk is mounted before using its storage.
       </p>
     </div>
   </section>
@@ -442,34 +412,33 @@ const timeline = [
         <div>
           <dt class="font-semibold text-text">DNS</dt>
           <dd class="mt-1 text-text-muted">
-            AdGuard Home answers for the LAN and rewrites my internal names to the LAN address. DHCP hands out AdGuard
-            first and the router second, so names still resolve when the app server is down. Filtering is only partial
-            then; I accept that.
+            AdGuard Home answers DNS for the LAN and resolves my own service names to local addresses. The router is
+            the fallback, so names still resolve if the app server is down.
           </dd>
         </div>
         <div>
           <dt class="font-semibold text-text">The way in</dt>
           <dd class="mt-1 text-text-muted">
-            Nginx Proxy Manager is the only ingress, with a wildcard TLS certificate. The vault, my dashboard and every
-            admin UI only answer on the LAN and over Tailscale.
+            Nginx Proxy Manager is the only way in from the internet, with TLS on everything. Admin tools only answer
+            on the LAN or over the VPN.
           </dd>
         </div>
         <div>
           <dt class="font-semibold text-text">Remote access</dt>
-          <dd class="mt-1 text-text-muted">Tailscale. I tried running my own Headscale server and retired it in August.</dd>
+          <dd class="mt-1 text-text-muted">Tailscale. I tried running my own Headscale server first and retired it.</dd>
         </div>
         <div>
           <dt class="font-semibold text-text">Host firewall</dt>
-          <dd class="mt-1 text-text-muted">UFW, plus a custom DOCKER-USER chain so ports that Docker publishes are filtered too.</dd>
+          <dd class="mt-1 text-text-muted">Default-deny on each server, set up so it also covers the ports Docker opens.</dd>
         </div>
       </dl>
       <div>
-        <h3 class="text-base font-semibold text-text">Five Docker networks</h3>
-        <p class="mt-1 text-[15px] text-text-muted">All owned by the networks stack.</p>
+        <h3 class="text-base font-semibold text-text">Docker networks</h3>
+        <p class="mt-1 text-[15px] text-text-muted">How the containers are kept apart.</p>
         <dl class="mt-4 divide-y divide-border border-y border-border">
           {dockerNetworks.map((n) => (
-            <div class="grid gap-1 py-3 sm:grid-cols-[8.5rem_1fr] sm:gap-4">
-              <dt class="font-mono text-sm text-accent">{n.name}</dt>
+            <div class="grid gap-1 py-3 sm:grid-cols-[11rem_1fr] sm:gap-4">
+              <dt class="font-medium text-text">{n.name}</dt>
               <dd class="text-[15px] leading-relaxed text-text-muted">{n.body}</dd>
             </div>
           ))}
@@ -482,8 +451,8 @@ const timeline = [
   <section id="monitoring" class="mt-24 scroll-mt-24" aria-labelledby="mon-title">
     <h2 id="mon-title" class="section-title">Monitoring and alerting</h2>
     <p class="mt-3 max-w-measure text-[17px] leading-relaxed text-text-muted">
-      Prometheus on the Proxmox host scrapes every 15 seconds and keeps 30 days. When something breaks, my phone
-      buzzes. There is no language model anywhere in that path.
+      Prometheus on the Proxmox host collects metrics from everything, and Grafana turns them into dashboards and
+      alerts. When something breaks, my phone buzzes. There is no language model anywhere in that path.
     </p>
 
     <figure class="mt-8">
@@ -498,7 +467,7 @@ const timeline = [
           </li>
         ))}
       </ol>
-      <p class="mt-3 text-sm text-text-muted">The same assistant also sends a morning brief and a nightly digest.</p>
+      <p class="mt-3 text-sm text-text-muted">The same assistant also sends a short daily summary.</p>
     </figure>
 
     <div class="mt-12 grid gap-10 md:grid-cols-3">
@@ -509,29 +478,26 @@ const timeline = [
           <li>The router, through an OpenWrt exporter</li>
           <li>The app exporters</li>
           <li>Blackbox probes over HTTPS, HTTP, ICMP, TCP and DNS</li>
-          <li>Textfile metrics for backups, power, disk spin state, SMART, the download guard and WAN drift</li>
+          <li>Custom metrics from my own scripts</li>
         </ul>
       </div>
       <div>
         <h3 class="text-base font-semibold text-text">Grafana dashboards</h3>
         <p class="mt-3 text-[15px] leading-relaxed text-text-muted">
-          Overview, app server, Proxmox, containers, router, drive health, media automation, network edge and service
-          health.
+          Hosts, containers, the network, drive health and the media apps.
         </p>
         <h3 class="mt-6 text-base font-semibold text-text">Also running</h3>
         <p class="mt-3 text-[15px] leading-relaxed text-text-muted">
-          Uptime Kuma with 38 monitors. Scrutiny for SMART history on both servers, collected only in the nightly
-          window. My dashboard, with disk spin state, SMART verdicts and a backups panel. Home Assistant entities,
-          Dozzle and GoAccess.
+          Uptime Kuma, Scrutiny for disk health history, my own small dashboard, Home Assistant, Dozzle and
+          GoAccess.
         </p>
       </div>
       <div>
         <h3 class="text-base font-semibold text-text">Alert rules</h3>
         <ul class="mt-3 list-disc space-y-1.5 pl-5 text-[15px] leading-relaxed text-text-muted marker:text-text-faint">
-          <li>Backups stale or missing; old Proxmox dumps</li>
-          <li>SMART and drive-health degradation, with growth rules for the worn disk</li>
-          <li>Target down, disk full, restart loops, guest stopped</li>
-          <li>Prometheus storage near its size cap</li>
+          <li>Backups that go stale or stop running</li>
+          <li>Disk health getting worse</li>
+          <li>Anything down, full, or restarting in a loop</li>
         </ul>
       </div>
     </div>
@@ -539,40 +505,28 @@ const timeline = [
 
   <!-- Backups -->
   <section id="backups" class="mt-24 scroll-mt-24" aria-labelledby="backups-title">
-    <h2 id="backups-title" class="section-title">Backups and the nightly drive window</h2>
+    <h2 id="backups-title" class="section-title">Backups and quiet disks</h2>
     <p class="mt-3 max-w-measure text-[17px] leading-relaxed text-text-muted">
-      Every job that touches a hard disk starts between 03:00 and 03:45, on both servers. The rest of the day the
-      disks spin down after 30 idle minutes, and the SMART readers never wake them. By the spec sheets that saves
-      about 16 W; I have not measured it.
+      Every job that touches the hard disks runs in one short window at night. The rest of the day the disks spin
+      down, and the health checks read them without waking them up.
     </p>
 
     <div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-12">
-      <div class="overflow-x-auto rounded-md border border-border">
-        <table class="w-full min-w-[28rem] text-left text-[15px]">
-          <caption class="sr-only">Backup schedule</caption>
-          <thead class="border-b border-border bg-bg-elevated text-text-muted">
-            <tr>
-              <th scope="col" class="px-4 py-3 font-medium">When</th>
-              <th scope="col" class="px-4 py-3 font-medium">What</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-border bg-bg-surface align-top">
-            {backups.map((b) => (
-              <tr>
-                <td class="whitespace-nowrap px-4 py-3 font-mono text-sm text-text">{b.when}</td>
-                <td class="px-4 py-3 leading-relaxed text-text-muted">{b.job}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <dl class="divide-y divide-border border-y border-border">
+        {backupPractices.map((b) => (
+          <div class="grid gap-1 py-4 sm:grid-cols-[10rem_1fr] sm:gap-4">
+            <dt class="font-medium text-text">{b.name}</dt>
+            <dd class="text-[15px] leading-relaxed text-text-muted">{b.body}</dd>
+          </div>
+        ))}
+      </dl>
 
       <div>
         <h3 class="text-base font-semibold text-text">Config as code</h3>
         <div class="mt-3 space-y-3 text-[15px] leading-relaxed text-text-muted">
           <p>
-            The app server's whole <code class="inline-code">~/homelab</code> folder is a Git repository. Every 15
-            minutes a timer commits and pushes to a private GitHub repository, but only when something changed.
+            The folder that holds every Compose file is a Git repository. A timer commits and pushes it to a private
+            repository, but only when something changed.
           </p>
           <p>
             An allow-list <code class="inline-code">.gitignore</code> tracks Compose files, scripts, docs and
@@ -582,29 +536,17 @@ const timeline = [
           <p>
             Every change passes my own secret scanner (keywords, private keys, tokens, passwords in URLs,
             high-entropy strings, and every real value from the stacks' .env files) and then gitleaks. One hit and
-            nothing is committed. It never force-pushes.
+            nothing is committed.
           </p>
         </div>
       </div>
-    </div>
-
-    <div class="callout-warn mt-10">
-      <h3 class="font-semibold text-text">What is still wrong</h3>
-      <ul class="mt-3 grid gap-x-10 gap-y-2 text-text-muted md:grid-cols-2">
-        {limitations.map((l) => (
-          <li class="flex gap-3">
-            <span aria-hidden="true" class="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-warning"></span>
-            <span>{l}</span>
-          </li>
-        ))}
-      </ul>
     </div>
   </section>
 
   <!-- Timeline -->
   <section id="timeline" class="mt-24 scroll-mt-24" aria-labelledby="timeline-title">
     <h2 id="timeline-title" class="section-title">Timeline</h2>
-    <p class="mt-3 max-w-measure text-[17px] leading-relaxed text-text-muted">What changed since the July snapshot in this repository.</p>
+    <p class="mt-3 max-w-measure text-[17px] leading-relaxed text-text-muted">I started in 2025 and kept no notes for the first year, so the early entries come from install and file dates.</p>
     <ol class="mt-8 border-l border-border-strong">
       {timeline.map((t) => (
         <li class="relative pb-10 pl-6 last:pb-0 sm:grid sm:grid-cols-[11rem_1fr] sm:gap-6 sm:pl-8">
@@ -643,17 +585,16 @@ const timeline = [
       <article class="border-t border-border pt-5">
         <h3 class="text-lg font-semibold text-text">Pin whatever an auto-update has broken</h3>
         <p class="mt-2 text-[15px] leading-relaxed text-text-muted">
-          Watchtower updates daily, but only containers that opt in. When an update broke qBittorrent, I pinned it,
-          and qbit-manage and Nextcloud's MariaDB image are pinned too. Watchtower skips anything pinned, so those
-          get updated by hand.
+          Watchtower only updates containers that opt in. When an automatic update broke the download client, I
+          pinned that app and now update it by hand, after reading the release notes.
         </p>
       </article>
       <article class="border-t border-border pt-5">
-        <h3 class="text-lg font-semibold text-text">Plan for power cuts before you buy a UPS</h3>
+        <h3 class="text-lg font-semibold text-text">Plan for the power coming back</h3>
         <p class="mt-2 text-[15px] leading-relaxed text-text-muted">
-          About nine power cuts hit in two weeks. Wake-on-LAN on every machine and the NFS boot guard mean the lab comes
-          back on its own, but one cut still left a stale VPN DNS setting that broke DNS on the host. Boot order and
-          leftover state matter as much as the hardware. A UPS is next on the list.
+          Power cuts happen. Wake-on-LAN on every machine and the NFS boot guard mean the lab comes back on its own,
+          but one cut still left a stale VPN DNS setting that broke DNS on the host. Test the way back up, not just
+          the hardware.
         </p>
       </article>
     </div>

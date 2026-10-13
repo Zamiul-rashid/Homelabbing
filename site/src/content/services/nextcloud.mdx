@@ -2,14 +2,13 @@
 title: "Nextcloud: Cloud Storage & Suite"
 tagline: "A self-hosted file collaboration, synchronization, document editing, and productivity platform."
 replaces: "Google Drive, Dropbox, Microsoft OneDrive, Google Docs"
-port: 4443
 difficulty: 2
 folder: "cloud-storage"
 setupSteps:
   - "Ensure /data/nextcloud is created on your host (`sudo mkdir -p /data/nextcloud && sudo chown -R $USER:$USER /data/nextcloud`)."
   - "Verify stacks/.env contains DB_ROOT_PASSWORD and DB_PASSWORD."
   - "Run docker compose up -d inside stacks/cloud-storage/ (launches Nextcloud + MariaDB)."
-  - "Open https://YOUR_SERVER_IP:4443 (accept self-signed SSL warning) and complete setup."
+  - "Open the web interface over HTTPS (the address is in the stack's README), accept the self-signed certificate warning, and complete setup."
 whatNow:
   - label: "Install Desktop & Mobile Sync Clients"
     href: "https://nextcloud.com/install/#install-clients"
@@ -25,7 +24,7 @@ whatNow:
 import ProConTable from '../../components/ProConTable.astro';
 
 ## What I Ended Up With
-My own private cloud storage hub accessible across Windows, Mac, Linux, iOS, and Android. I could sync documents across computers in real-time, share password-protected download links with clients or friends, edit office files, manage calendars, and keep my sensitive files stored safely on `/data/nextcloud` under my physical control.
+My own private cloud storage hub accessible across Windows, Mac, Linux, iOS, and Android. I could sync documents across computers in real-time, share password-protected download links with clients or friends, edit office files, manage calendars, and keep my sensitive files on my own hardware.
 
 ## Why I Chose Nextcloud
 
@@ -39,9 +38,9 @@ Google Drive, Microsoft OneDrive, and Dropbox scanned my documents for policy vi
     "End-to-end encryption support and zero external cloud tracking."
   ]}
   cons={[
-    "Heavier resource footprint than simple file servers (benefited from 2 GB+ of dedicated RAM).",
+    "Heavier on memory and CPU than a simple file server.",
     "First startup took 1 to 2 minutes while MariaDB initialized its schema tables.",
-    "External access required an HTTPS certificate, which my Option B/C guides cover."
+    "Access from outside the house needs a valid HTTPS certificate, which the networking guide covers."
   ]}
 />
 
@@ -58,7 +57,7 @@ docker compose up -d
 ```
 
 ### 2. First-Time Wizard Configuration
-I opened my browser to `https://YOUR_SERVER_IP:4443`. Because LinuxServer Nextcloud generated an automatic self-signed SSL certificate on initial startup, my browser showed a standard warning (`Your connection is not private`). I clicked **Advanced → Proceed to YOUR_IP (unsafe)** to reach the wizard:
+I opened Nextcloud's web interface over HTTPS (the address is in the stack's README). Because LinuxServer Nextcloud generated an automatic self-signed SSL certificate on initial startup, my browser showed a standard warning (`Your connection is not private`). I clicked **Advanced**, then the link to proceed anyway, to reach the wizard:
 
 1. **Create Admin Account:** I entered my desired username and a strong password.
 2. **Database Configuration:** My compose stack connected Nextcloud to MariaDB automatically. If prompted for database connection parameters:

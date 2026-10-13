@@ -64,8 +64,8 @@ import { services } from '../data/services';
  ✔ Network media-server_default  Created
  ✔ Container jellyfin            Started</code></pre>
   <p>
-    Open <code>http://YOUR_SERVER_IP:8096</code> in a browser and the Jellyfin setup wizard appears. Replace
-    <code>YOUR_SERVER_IP</code> with the address of your server on your home network (<code>hostname -I</code> shows it).
+    Open Jellyfin in a browser (its address is in <code>stacks/media-server/README.md</code>) and the setup wizard
+    appears. Use your server's address on your home network; <code>hostname -I</code> shows it.
   </p>
 
   <h2 id="troubleshooting">If something goes wrong</h2>
@@ -84,8 +84,8 @@ import { services } from '../data/services';
     </dd>
     <dt>"Port is already allocated"</dt>
     <dd>
-      Another program already uses that port. In the Compose file, change the number on the left of the port mapping
-      (for example <code>8097:8096</code>) and open the new port instead.
+      Another program already uses that port. In the Compose file, change the number on the left of the
+      <code>ports:</code> mapping to a free one, and open the app on the new number instead.
     </dd>
     <dt>A setting change has no effect</dt>
     <dd>
@@ -95,18 +95,18 @@ import { services } from '../data/services';
   </dl>
 
   <h2 id="stacks">4. Pick your next stack</h2>
-  <p>Each card opens a walkthrough for that service.</p>
+  <p>
+    These have a beginner stack in this repository. Each card opens a walkthrough. The
+    <a href="/Homelabbing/services">services page</a> lists more apps worth running later.
+  </p>
   <div class="not-prose my-8 grid gap-4 sm:grid-cols-2">
-    {services.map((s) => <ServiceCard service={s} />)}
+    {services.filter((s) => s.folder).map((s) => <ServiceCard service={s} />)}
   </div>
 
-  <h2 id="health">5. Check every port at once</h2>
+  <h2 id="health">5. Check every service at once</h2>
   <p>
-    When you run several stacks, this script from the repository root checks every service port and tells you which
-    ones answer:
+    When you run several stacks, this script from the repository root checks every service and tells you which ones
+    answer:
   </p>
   <CodeBlock title="Check all services" code={`./helpers/check-health.sh`} />
-  <p>
-    The <a href="/Homelabbing/services#ports">port reference</a> lists the default port and folder of each service.
-  </p>
 </PageLayout>
