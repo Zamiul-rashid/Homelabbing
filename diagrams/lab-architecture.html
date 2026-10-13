@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homelabbing Author Lab Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js" integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      min-height: 100vh;
+      padding: 2rem;
+      color: white;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      margin-bottom: 2rem;
+    }
+    
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .pulse-dot {
+      width: 12px;
+      height: 12px;
+      background: #22d3ee;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+    
+    .subtitle {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      margin-left: 1.75rem;
+    }
+    
+    .diagram-container {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 1rem;
+      border: 1px solid #1e293b;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    
+    svg {
+      width: 100%;
+      min-width: 900px;
+      display: block;
+    }
+    
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .card {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 0.75rem;
+      border: 1px solid #1e293b;
+      padding: 1.25rem;
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .card-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    
+    .card-dot.cyan { background: #22d3ee; }
+    .card-dot.emerald { background: #34d399; }
+    .card-dot.violet { background: #a78bfa; }
+    .card-dot.amber { background: #fbbf24; }
+    .card-dot.rose { background: #fb7185; }
+    
+    .card h3 {
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    
+    .card ul {
+      list-style: none;
+      color: #94a3b8;
+      font-size: 0.75rem;
+    }
+    
+    .card li {
+      margin-bottom: 0.375rem;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #475569;
+      font-size: 0.75rem;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+      flex-shrink: 0;
+      align-items: center;
+    }
+    .toolbar-toggle {
+      background: transparent;
+      border: none;
+      color: #475569;
+      cursor: pointer;
+      font-size: 1.25rem;
+      line-height: 1;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.375rem;
+      transition: color 0.2s, background 0.2s;
+    }
+    .toolbar-toggle:hover { color: #94a3b8; background: rgba(30, 41, 59, 0.5); }
+    .toolbar-actions {
+      display: none;
+      gap: 0.5rem;
+    }
+    .toolbar.expanded .toolbar-actions { display: flex; }
+    .toolbar-actions button {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.375rem;
+      font-family: inherit;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .toolbar-actions button:hover {
+      background: rgba(51, 65, 85, 0.8);
+      color: white;
+      border-color: #475569;
+    }
+
+    @media print {
+      body { background: #020617; padding: 1rem; }
+      .toolbar { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="report-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>My homelab: two servers, one router</h1>
+        <div class="toolbar">
+          <div class="toolbar-actions">
+            <button onclick="copyAsImage(this)">📋 Copy</button>
+            <button onclick="downloadPNG(this)">🖼️ PNG</button>
+            <button onclick="downloadPDF(this)">📄 PDF</button>
+          </div>
+          <button class="toolbar-toggle" onclick="this.parentElement.classList.toggle('expanded')" title="Export options" aria-label="Export options">⋯</button>
+        </div>
+      </div>
+      <p class="subtitle">Roles and data flows as of October 2026. Machine names, addresses and versions are left out on purpose.</p>
+    </div>
+
+    <!-- Main Diagram -->
+    <div class="diagram-container">
+      <svg viewBox="0 0 1100 790" role="img" aria-labelledby="d2title">
+        <title id="d2title">The author's homelab: an OpenWrt router with firewall zones, an app server running 16 Docker Compose stacks, and a Proxmox host with four containers, the media disk and the backup disk</title>
+        <defs>
+          <marker id="ah-slate" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/></marker>
+          <marker id="ah-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/></marker>
+          <marker id="ah-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24"/></marker>
+          <marker id="ah-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#a78bfa"/></marker>
+          <marker id="ah-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#34d399"/></marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/></pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+
+        <!-- ============ ARROWS (behind boxes) ============ -->
+        <!-- public path -->
+        <line x1="105" y1="76" x2="105" y2="108" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#ah-cyan)"/>
+        <line x1="250" y1="182" x2="298" y2="182" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#ah-cyan)"/>
+        <line x1="412" y1="212" x2="412" y2="238" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#ah-cyan)"/>
+        <text x="420" y="229" fill="#94a3b8" font-size="8">proxied by container name</text>
+
+        <!-- router to its other zones -->
+        <line x1="82" y1="200" x2="82" y2="228" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah-slate)"/>
+        <line x1="197" y1="200" x2="197" y2="228" stroke="#64748b" stroke-width="1.5" marker-end="url(#ah-slate)"/>
+
+        <!-- Tailscale mesh -->
+        <line x1="410" y1="76" x2="410" y2="108" stroke="#a78bfa" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-violet)"/>
+        <path d="M 470 76 L 470 94 L 880 94 L 880 108" fill="none" stroke="#a78bfa" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-violet)"/>
+        <path d="M 300 48 L 265 48 L 265 262 L 253 262" fill="none" stroke="#a78bfa" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-violet)"/>
+
+        <!-- config repo -->
+        <line x1="665" y1="110" x2="665" y2="79" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-amber)"/>
+        <text x="672" y="106" fill="#fbbf24" font-size="8">git push</text>
+
+        <!-- alerts to phone -->
+        <line x1="1045" y1="150" x2="1045" y2="79" stroke="#34d399" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-emerald)"/>
+        <text x="1038" y="100" fill="#34d399" font-size="8" text-anchor="end">alerts</text>
+
+        <!-- monitoring scrapes the app server -->
+        <path d="M 830 240 L 788 240 L 788 486 L 762 486" fill="none" stroke="#34d399" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-emerald)"/>
+
+        <!-- NFS media share -->
+        <line x1="945" y1="480" x2="945" y2="462" stroke="#a78bfa" stroke-width="1.5"/>
+        <path d="M 830 437 L 800 437 L 800 633 L 762 633" fill="none" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#ah-violet)"/>
+        <text x="771" y="627" fill="#a78bfa" font-size="7">NFS</text>
+
+        <!-- nightly backups -->
+        <path d="M 370 666 L 370 712 L 945 712 L 945 642" fill="none" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#ah-amber)"/>
+        <line x1="527" y1="666" x2="527" y2="712" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="5,4"/>
+        <text x="736" y="706" fill="#fbbf24" font-size="8" text-anchor="middle">nightly rsync, 03:00 to 03:45</text>
+
+        <!-- ============ TOP ROW ============ -->
+        <rect x="30" y="20" width="150" height="56" rx="6" fill="#0f172a"/>
+        <rect x="30" y="20" width="150" height="56" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="105" y="43" fill="white" font-size="12" font-weight="600" text-anchor="middle">Internet</text>
+        <text x="105" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">visitors, me when away</text>
+
+        <rect x="300" y="20" width="220" height="56" rx="6" fill="#0f172a"/>
+        <rect x="300" y="20" width="220" height="56" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="410" y="43" fill="white" font-size="12" font-weight="600" text-anchor="middle">Tailscale mesh VPN</text>
+        <text x="410" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">laptop + both servers</text>
+
+        <rect x="560" y="20" width="210" height="56" rx="6" fill="#0f172a"/>
+        <rect x="560" y="20" width="210" height="56" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="665" y="43" fill="white" font-size="12" font-weight="600" text-anchor="middle">Private config repo</text>
+        <text x="665" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">every 15 min, secret-scanned</text>
+
+        <rect x="830" y="20" width="230" height="56" rx="6" fill="#0f172a"/>
+        <rect x="830" y="20" width="230" height="56" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="945" y="43" fill="white" font-size="12" font-weight="600" text-anchor="middle">My phone</text>
+        <text x="945" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">alerts, morning brief, digest</text>
+
+        <!-- ============ ROUTER + ZONES ============ -->
+        <rect x="30" y="110" width="220" height="90" rx="6" fill="#0f172a"/>
+        <rect x="30" y="110" width="220" height="90" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="140" y="133" fill="white" font-size="12" font-weight="600" text-anchor="middle">OpenWrt router</text>
+        <text x="140" y="151" fill="#94a3b8" font-size="8" text-anchor="middle">DHCP, NAT, zone firewall</text>
+        <text x="140" y="165" fill="#94a3b8" font-size="8" text-anchor="middle">one zone per port: servers,</text>
+        <text x="140" y="179" fill="#94a3b8" font-size="8" text-anchor="middle">admin laptop, Wi-Fi</text>
+
+        <rect x="30" y="230" width="105" height="64" rx="6" fill="#0f172a"/>
+        <rect x="30" y="230" width="105" height="64" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="82" y="253" fill="white" font-size="11" font-weight="600" text-anchor="middle">Wi-Fi AP</text>
+        <text x="82" y="269" fill="#94a3b8" font-size="8" text-anchor="middle">phones, TV,</text>
+        <text x="82" y="281" fill="#94a3b8" font-size="8" text-anchor="middle">smart devices</text>
+
+        <rect x="145" y="230" width="105" height="64" rx="6" fill="#0f172a"/>
+        <rect x="145" y="230" width="105" height="64" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="197" y="253" fill="white" font-size="11" font-weight="600" text-anchor="middle">Admin laptop</text>
+        <text x="197" y="269" fill="#94a3b8" font-size="8" text-anchor="middle">its own zone,</text>
+        <text x="197" y="281" fill="#94a3b8" font-size="8" text-anchor="middle">SSH jump host</text>
+
+        <rect x="30" y="320" width="220" height="104" rx="8" fill="transparent" stroke="#fb7185" stroke-width="1" stroke-dasharray="4,4"/>
+        <text x="42" y="338" fill="#fb7185" font-size="9" font-weight="600">Zone rules</text>
+        <text x="42" y="356" fill="#94a3b8" font-size="8">laptop: may reach everything</text>
+        <text x="42" y="371" fill="#94a3b8" font-size="8">servers: can't open connections</text>
+        <text x="42" y="383" fill="#94a3b8" font-size="8">  to the laptop or router admin</text>
+        <text x="42" y="398" fill="#94a3b8" font-size="8">Wi-Fi: DNS + a few home apps</text>
+        <text x="42" y="413" fill="#94a3b8" font-size="8">internet: the proxy and nothing else</text>
+
+        <!-- ============ APP SERVER ============ -->
+        <rect x="280" y="110" width="500" height="575" rx="12" fill="rgba(251, 191, 36, 0.03)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="292" y="128" fill="#fbbf24" font-size="10" font-weight="600">App server: Ryzen 5 3400G, 16 GB, Ubuntu + Docker</text>
+        <text x="292" y="142" fill="#94a3b8" font-size="8">16 Compose stacks, 55 containers</text>
+
+        <rect x="300" y="152" width="225" height="60" rx="6" fill="#0f172a"/>
+        <rect x="300" y="152" width="225" height="60" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="412" y="171" fill="white" font-size="11" font-weight="600" text-anchor="middle">Nginx Proxy Manager</text>
+        <text x="412" y="187" fill="#94a3b8" font-size="8" text-anchor="middle">the only way in, wildcard TLS</text>
+        <text x="412" y="200" fill="#94a3b8" font-size="8" text-anchor="middle">admin UIs: LAN + VPN only</text>
+
+        <rect x="540" y="152" width="220" height="60" rx="6" fill="#0f172a"/>
+        <rect x="540" y="152" width="220" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="650" y="171" fill="white" font-size="11" font-weight="600" text-anchor="middle">AdGuard Home</text>
+        <text x="650" y="187" fill="#94a3b8" font-size="8" text-anchor="middle">LAN DNS + ad blocking</text>
+        <text x="650" y="200" fill="#94a3b8" font-size="8" text-anchor="middle">split-horizon names</text>
+
+        <!-- stack grid -->
+        <rect x="300" y="240" width="225" height="60" rx="6" fill="#0f172a"/>
+        <rect x="300" y="240" width="225" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="412" y="259" fill="white" font-size="11" font-weight="600" text-anchor="middle">Media</text>
+        <text x="412" y="275" fill="#94a3b8" font-size="8" text-anchor="middle">Jellyfin (iGPU transcode), Seerr</text>
+        <text x="412" y="288" fill="#94a3b8" font-size="8" text-anchor="middle">Navidrome, Feishin, Kavita</text>
+
+        <rect x="540" y="240" width="220" height="60" rx="6" fill="#0f172a"/>
+        <rect x="540" y="240" width="220" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="650" y="259" fill="white" font-size="11" font-weight="600" text-anchor="middle">Downloads</text>
+        <text x="650" y="275" fill="#94a3b8" font-size="8" text-anchor="middle">Sonarr, Radarr, Prowlarr, qBittorrent</text>
+        <text x="650" y="288" fill="#94a3b8" font-size="8" text-anchor="middle">Recyclarr, Maintainerr, qbit-manage</text>
+
+        <rect x="300" y="312" width="225" height="60" rx="6" fill="#0f172a"/>
+        <rect x="300" y="312" width="225" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="412" y="331" fill="white" font-size="11" font-weight="600" text-anchor="middle">Tools</text>
+        <text x="412" y="347" fill="#94a3b8" font-size="8" text-anchor="middle">Paperless-ngx, Memos, Stirling PDF</text>
+        <text x="412" y="360" fill="#94a3b8" font-size="8" text-anchor="middle">File Browser, AudioMuse AI</text>
+
+        <rect x="540" y="312" width="220" height="60" rx="6" fill="#0f172a"/>
+        <rect x="540" y="312" width="220" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="650" y="331" fill="white" font-size="11" font-weight="600" text-anchor="middle">Cloud</text>
+        <text x="650" y="347" fill="#94a3b8" font-size="8" text-anchor="middle">Nextcloud + MariaDB</text>
+        <text x="650" y="360" fill="#94a3b8" font-size="8" text-anchor="middle">Mini QR (hardened, read-only)</text>
+
+        <rect x="300" y="384" width="225" height="60" rx="6" fill="#0f172a"/>
+        <rect x="300" y="384" width="225" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="412" y="403" fill="white" font-size="11" font-weight="600" text-anchor="middle">Home</text>
+        <text x="412" y="419" fill="#94a3b8" font-size="8" text-anchor="middle">Home Assistant, Mosquitto MQTT</text>
+        <text x="412" y="432" fill="#94a3b8" font-size="8" text-anchor="middle">SMART + power entities</text>
+
+        <rect x="540" y="384" width="220" height="60" rx="6" fill="#0f172a"/>
+        <rect x="540" y="384" width="220" height="60" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="650" y="403" fill="white" font-size="11" font-weight="600" text-anchor="middle">Code + secrets</text>
+        <text x="650" y="419" fill="#94a3b8" font-size="8" text-anchor="middle">Gitea (rootless)</text>
+        <text x="650" y="432" fill="#94a3b8" font-size="8" text-anchor="middle">Vaultwarden (never public)</text>
+
+        <rect x="300" y="456" width="225" height="60" rx="6" fill="#0f172a"/>
+        <rect x="300" y="456" width="225" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="412" y="475" fill="white" font-size="11" font-weight="600" text-anchor="middle">Operations</text>
+        <text x="412" y="491" fill="#94a3b8" font-size="8" text-anchor="middle">custom dashboard, Uptime Kuma</text>
+        <text x="412" y="504" fill="#94a3b8" font-size="8" text-anchor="middle">Scrutiny, Dozzle, Portainer, Watchtower</text>
+
+        <rect x="540" y="456" width="220" height="60" rx="6" fill="#0f172a"/>
+        <rect x="540" y="456" width="220" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="650" y="475" fill="white" font-size="11" font-weight="600" text-anchor="middle">Metrics</text>
+        <text x="650" y="491" fill="#94a3b8" font-size="8" text-anchor="middle">node-exporter, cAdvisor</text>
+        <text x="650" y="504" fill="#94a3b8" font-size="8" text-anchor="middle">app, blackbox + speed exporters</text>
+
+        <!-- docker networks -->
+        <rect x="300" y="530" width="460" height="54" rx="6" fill="#0f172a"/>
+        <rect x="300" y="530" width="460" height="54" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="530" y="548" fill="white" font-size="10" font-weight="600" text-anchor="middle">5 Docker networks, owned by a stack of their own</text>
+        <text x="530" y="563" fill="#94a3b8" font-size="8" text-anchor="middle">media_net, download_net, nextcloud_net</text>
+        <text x="530" y="576" fill="#94a3b8" font-size="8" text-anchor="middle">infra_net + qr_net are internal: no route out</text>
+
+        <!-- disks -->
+        <rect x="300" y="600" width="140" height="66" rx="6" fill="#0f172a"/>
+        <rect x="300" y="600" width="140" height="66" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="370" y="620" fill="white" font-size="11" font-weight="600" text-anchor="middle">256 GB NVMe</text>
+        <text x="370" y="636" fill="#94a3b8" font-size="8" text-anchor="middle">OS, Docker,</text>
+        <text x="370" y="649" fill="#94a3b8" font-size="8" text-anchor="middle">every app config</text>
+
+        <rect x="452" y="600" width="150" height="66" rx="6" fill="#0f172a"/>
+        <rect x="452" y="600" width="150" height="66" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="527" y="620" fill="white" font-size="11" font-weight="600" text-anchor="middle">4 x 1 TB HDD</text>
+        <text x="527" y="636" fill="#94a3b8" font-size="8" text-anchor="middle">music, books, Nextcloud,</text>
+        <text x="527" y="649" fill="#94a3b8" font-size="8" text-anchor="middle">archive, family backups</text>
+
+        <rect x="614" y="600" width="146" height="66" rx="6" fill="#0f172a"/>
+        <rect x="614" y="600" width="146" height="66" rx="6" fill="rgba(76, 29, 149, 0.25)" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="687" y="620" fill="white" font-size="11" font-weight="600" text-anchor="middle">/data (NFS)</text>
+        <text x="687" y="636" fill="#94a3b8" font-size="8" text-anchor="middle">movies, TV, torrents</text>
+        <text x="687" y="649" fill="#94a3b8" font-size="8" text-anchor="middle">hardlinks kept</text>
+
+        <!-- ============ PROXMOX HOST ============ -->
+        <rect x="810" y="110" width="270" height="575" rx="12" fill="rgba(52, 211, 153, 0.03)" stroke="#34d399" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="822" y="128" fill="#34d399" font-size="10" font-weight="600">Proxmox host: i5-11500, 16 GB</text>
+        <text x="822" y="142" fill="#94a3b8" font-size="8">4 unprivileged LXC containers</text>
+
+        <rect x="830" y="152" width="230" height="52" rx="6" fill="#0f172a"/>
+        <rect x="830" y="152" width="230" height="52" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="945" y="172" fill="white" font-size="11" font-weight="600" text-anchor="middle">AI assistant</text>
+        <text x="945" y="189" fill="#94a3b8" font-size="8" text-anchor="middle">alert relay, briefs, app lookups</text>
+
+        <rect x="830" y="214" width="230" height="52" rx="6" fill="#0f172a"/>
+        <rect x="830" y="214" width="230" height="52" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="945" y="234" fill="white" font-size="11" font-weight="600" text-anchor="middle">Monitoring</text>
+        <text x="945" y="251" fill="#94a3b8" font-size="8" text-anchor="middle">Prometheus + Grafana, 30 days</text>
+
+        <rect x="830" y="276" width="230" height="52" rx="6" fill="#0f172a"/>
+        <rect x="830" y="276" width="230" height="52" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="945" y="296" fill="white" font-size="11" font-weight="600" text-anchor="middle">Portfolio site</text>
+        <text x="945" y="313" fill="#94a3b8" font-size="8" text-anchor="middle">nginx + a small API</text>
+
+        <rect x="830" y="338" width="230" height="52" rx="6" fill="#0f172a"/>
+        <rect x="830" y="338" width="230" height="52" rx="6" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="945" y="358" fill="white" font-size="11" font-weight="600" text-anchor="middle">Game hub</text>
+        <text x="945" y="375" fill="#94a3b8" font-size="8" text-anchor="middle">RomM, RetroArch web, Sunshine</text>
+
+        <rect x="830" y="414" width="230" height="46" rx="6" fill="#0f172a"/>
+        <rect x="830" y="414" width="230" height="46" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="945" y="433" fill="white" font-size="11" font-weight="600" text-anchor="middle">NFS + Samba</text>
+        <text x="945" y="449" fill="#94a3b8" font-size="8" text-anchor="middle">exported only while the disk is mounted</text>
+
+        <rect x="830" y="482" width="230" height="70" rx="6" fill="#0f172a"/>
+        <rect x="830" y="482" width="230" height="70" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="945" y="502" fill="white" font-size="11" font-weight="600" text-anchor="middle">1 TB 2.5" HDD</text>
+        <text x="945" y="518" fill="#94a3b8" font-size="8" text-anchor="middle">bought used, already worn</text>
+        <text x="945" y="531" fill="#94a3b8" font-size="8" text-anchor="middle">movies, TV, torrents: replaceable</text>
+
+        <rect x="830" y="572" width="230" height="70" rx="6" fill="#0f172a"/>
+        <rect x="830" y="572" width="230" height="70" rx="6" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="945" y="592" fill="white" font-size="11" font-weight="600" text-anchor="middle">1 TB backup HDD</text>
+        <text x="945" y="608" fill="#94a3b8" font-size="8" text-anchor="middle">nightly backups, container dumps</text>
+        <text x="945" y="621" fill="#94a3b8" font-size="8" text-anchor="middle">ROM library, scratch space</text>
+
+        <!-- ============ LEGEND (below all boundaries) ============ -->
+        <text x="30" y="744" fill="white" font-size="10" font-weight="600">Legend</text>
+        <rect x="90" y="735" width="16" height="10" rx="2" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1"/>
+        <text x="112" y="743" fill="#94a3b8" font-size="8">firewall / ingress</text>
+        <rect x="220" y="735" width="16" height="10" rx="2" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1"/>
+        <text x="242" y="743" fill="#94a3b8" font-size="8">user-facing apps</text>
+        <rect x="350" y="735" width="16" height="10" rx="2" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1"/>
+        <text x="372" y="743" fill="#94a3b8" font-size="8">infrastructure</text>
+        <rect x="470" y="735" width="16" height="10" rx="2" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1"/>
+        <text x="492" y="743" fill="#94a3b8" font-size="8">storage / VPN</text>
+        <rect x="585" y="735" width="16" height="10" rx="2" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1"/>
+        <text x="607" y="743" fill="#94a3b8" font-size="8">device / network</text>
+
+        <line x1="90" y1="768" x2="106" y2="768" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="112" y="771" fill="#94a3b8" font-size="8">public request</text>
+        <line x1="220" y1="768" x2="236" y2="768" stroke="#a78bfa" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="242" y="771" fill="#94a3b8" font-size="8">VPN</text>
+        <line x1="290" y1="768" x2="306" y2="768" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="312" y="771" fill="#94a3b8" font-size="8">NFS share</text>
+        <line x1="390" y1="768" x2="406" y2="768" stroke="#34d399" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="412" y="771" fill="#94a3b8" font-size="8">metrics + alerts</text>
+        <line x1="520" y1="768" x2="536" y2="768" stroke="#fbbf24" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="542" y="771" fill="#94a3b8" font-size="8">backups + config git</text>
+      </svg>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>Two servers, split by job</h3>
+        </div>
+        <ul>
+          <li>• App server: every app, DNS, the reverse proxy</li>
+          <li>• Proxmox host: monitoring, AI assistant, portfolio, game hub</li>
+          <li>• Media lives on the Proxmox host and is shared over NFS</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot emerald"></div>
+          <h3>Backups and the drive window</h3>
+        </div>
+        <ul>
+          <li>• Every disk job starts between 03:00 and 03:45</li>
+          <li>• Configs, Gitea, Paperless and music go nightly to the backup disk</li>
+          <li>• All configs are also in git, scanned for secrets first</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot rose"></div>
+          <h3>Known gaps</h3>
+        </div>
+        <ul>
+          <li>• No offsite copy yet, apart from configs in git</li>
+          <li>• Nextcloud data has a single copy</li>
+          <li>• Restores never tested end to end; no UPS yet</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <p class="footer">
+      Homelabbing • the author&#39;s lab • drawn October 2026
+    </p>
+  </div>
+
+  <script>
+    async function copyAsImage(btn) {
+      const orig = btn.textContent;
+      try {
+        const el = document.getElementById('report-container');
+        const r = el.getBoundingClientRect();
+        const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#020617', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        btn.textContent = '✓ Copied!';
+      } catch (e) {
+        btn.textContent = '✗ Failed';
+      }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+
+    async function downloadPNG(btn) {
+      const orig = btn.textContent;
+      btn.textContent = '⏳ ...';
+      try {
+        const el = document.getElementById('report-container');
+        const r = el.getBoundingClientRect();
+        const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#020617', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const link = document.createElement('a');
+        link.download = 'lab-architecture.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        btn.textContent = '✓ Done!';
+      } catch (e) {
+        btn.textContent = '✗ Failed';
+      }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+
+    async function downloadPDF(btn) {
+      const orig = btn.textContent;
+      btn.textContent = '⏳ ...';
+      try {
+        const el = document.getElementById('report-container');
+        const r = el.getBoundingClientRect();
+        const pad = 32;
+        const canvas = await html2canvas(document.body, { backgroundColor: '#020617', scale: 2, useCORS: true, ignoreElements: (e) => e.classList && e.classList.contains('toolbar'), x: r.left + window.scrollX - pad, y: r.top + window.scrollY - pad, width: r.width + pad * 2, height: r.height + pad * 2 });
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const orientation = canvas.width > canvas.height ? 'landscape' : 'portrait';
+        const pdf = new jsPDF({ orientation, unit: 'px', format: [canvas.width, canvas.height], hotfixes: ['px_scaling'] });
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save('lab-architecture.pdf');
+        btn.textContent = '✓ Done!';
+      } catch (e) {
+        btn.textContent = '✗ Failed';
+      }
+      setTimeout(() => btn.textContent = orig, 2000);
+    }
+  </script>
+</body>
+</html>

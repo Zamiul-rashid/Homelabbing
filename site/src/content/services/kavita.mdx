@@ -1,11 +1,10 @@
 ---
-title: "Kavita — Your Personal Book & Comic Cloud"
+title: "Kavita: Your Personal Book & Comic Cloud"
 tagline: "A self-hosted digital library for reading EPUB eBooks, comic books (CBZ/CBR), and manga."
 replaces: "Amazon Kindle Cloud Reader, ComiXology, Apple Books"
 port: 5000
 difficulty: 1
 folder: "book-reader"
-mockupDescription: "Kavita eBook and Comic Library Interface"
 setupSteps:
   - "Place your EPUB eBooks, comic archives (CBZ/CBR), and PDFs into /data/media/books and /data/media/comics."
   - "Verify stacks/.env has your correct user permissions."
@@ -24,12 +23,9 @@ whatNow:
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
-import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
 A fast, beautiful reading server that organized my EPUB novels, comic archives (CBZ/CBR), manga, and PDFs. I could read right in my web browser across any tablet or laptop, or sync my reading progress and bookmarks natively across external OPDS e-readers.
-
-<UIMockup title="Kavita Digital Library" url="http://192.168.1.100:5000/login" type="library" />
 
 ## Why I Chose Kavita
 

@@ -1,11 +1,10 @@
 ---
-title: "Immich — AI Photo & Video Backup"
+title: "Immich: AI Photo & Video Backup"
 tagline: "Self-hosted photo and video backup with local AI and mobile sync apps."
 replaces: "Google Photos, Apple iCloud Photos, Amazon Photos"
 port: 2283
 difficulty: 2
 folder: "photo-backup"
-mockupDescription: "Immich Machine Learning & Hardware Acceleration status"
 setupSteps:
   - "Verify /data/media/photos exists on your host and verify stacks/.env contains IMMICH_DB_PASSWORD."
   - "Run docker compose up -d inside stacks/photo-backup/ (launches server, ML, Redis, and PostgreSQL)."
@@ -24,12 +23,9 @@ whatNow:
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
-import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
 A fast photo backup server running locally on my hardware with native iOS and Android backup apps. My entire lifetime photo library automatically backed up in full original quality right from my phone over Wi-Fi, featuring local AI facial recognition, object detection search (like searching "dog on beach"), interactive map albums, and zero cloud storage fees.
-
-<UIMockup title="Immich AI & Backup Hub" url="http://192.168.1.100:2283/admin" type="onboarding" />
 
 ## Why I Chose Immich
 
@@ -38,7 +34,7 @@ Immich matched Google Photos feature-for-feature and kept my photos on my own ha
 <ProConTable
   pros={[
     "Fast Svelte/TypeScript UI backed by Go microservices.",
-    "Local machine learning (CLIP & facial recognition) ran right on my server — zero data sent to third parties.",
+    "Local machine learning (CLIP & facial recognition) ran right on my server, with no data sent to third parties.",
     "Automatic background mobile backup across iOS and Android with duplicate detection.",
     "Multi-user support so my partner and family members could have their own private photo vaults."
   ]}
@@ -55,10 +51,10 @@ Immich matched Google Photos feature-for-feature and kept my photos on my own ha
 
 My `stacks/photo-backup/docker-compose.yml` configured a four-container Immich stack automatically:
 
-- **`immich-server` (`:2283`)** — Core API, web frontend, and upload controller.
-- **`immich-machine-learning`** — Python service running CLIP and face detection models locally.
-- **`immich-redis`** — High-speed task queue and job caching.
-- **`immich-db` (`pgvecto-rs`)** — PostgreSQL database with vector search capabilities for instant semantic photo lookups.
+- **`immich-server` (`:2283`)**: Core API, web frontend, and upload controller.
+- **`immich-machine-learning`**: Python service running CLIP and face detection models locally.
+- **`immich-redis`**: High-speed task queue and job caching.
+- **`immich-db` (`pgvecto-rs`)**: PostgreSQL database with vector search capabilities for instant semantic photo lookups.
 
 ---
 

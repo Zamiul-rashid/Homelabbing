@@ -10,44 +10,37 @@ interface Props {
 
 const { title, description } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://zamiul-rashid.github.io');
-const ogImageUrl = new URL('/Homelabbing/og-image.png', Astro.site || 'https://zamiul-rashid.github.io');
+const ogImageUrl = new URL('/Homelabbing/beginner-architecture.png', Astro.site || 'https://zamiul-rashid.github.io');
+const fullTitle = title === 'Home' ? 'Homelabbing: self-host your digital life' : `${title} | Homelabbing`;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} | Homelabbing — Self-Host Your Digital Life</title>
+    <meta name="theme-color" content="#05060A" />
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}/favicon.svg`} />
 
-    <!-- Open Graph -->
-    <meta property="og:title" content={`${title} | Homelabbing`} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="Homelabbing" />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={`${title} | Homelabbing`} />
+    <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;700;800&display=swap" rel="stylesheet">
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,600,700&display=swap" rel="stylesheet">
   </head>
-  <body class="min-h-screen flex flex-col relative">
-    <!-- Skip to main content accessible link -->
+  <body class="min-h-[100dvh] flex flex-col">
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 btn-primary z-50 shadow-2xl"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 btn-primary"
     >
       Skip to main content
     </a>

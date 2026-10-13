@@ -1,36 +1,89 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
 interface Props {
   title: string;
   description: string;
+  /** Short H1. Falls back to title. */
+  heading?: string;
+  /** Trail between Home and the current page, e.g. [{ label: 'Services', href: '/Homelabbing/services' }]. */
+  parents?: Crumb[];
+  /** Long-form reading layout with an "On this page" list. Set false for pages with their own layout. */
+  prose?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, heading, parents = [], prose = true } = Astro.props;
+const crumbs: Crumb[] = [{ label: 'Home', href: '/Homelabbing/' }, ...parents, { label: heading ?? title }];
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="max-w-6xl mx-auto px-4 py-12">
-    <!-- Breadcrumb -->
-    <nav aria-label="Breadcrumb" class="mb-8 text-sm text-text-muted">
-      <ol class="flex items-center space-x-2">
-        <li><a href="/Homelabbing/" class="hover:text-accent transition-colors">Home</a></li>
-        <li><span class="text-text-faint">/</span></li>
-        <li><a href="/Homelabbing/getting-started" class="hover:text-accent transition-colors">Getting Started & Stacks</a></li>
-        <li><span class="text-text-faint">/</span></li>
-        <li class="text-text font-medium" aria-current="page">{title}</li>
+  <div class="mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 sm:pt-14">
+    <nav aria-label="Breadcrumb" class="mb-8 text-sm">
+      <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-text-muted">
+        {crumbs.map((c, i) => (
+          <li class="flex items-center gap-2">
+            {i > 0 && <span aria-hidden="true" class="text-text-faint">/</span>}
+            {c.href && i < crumbs.length - 1 ? (
+              <a href={c.href} class="hover:text-text">{c.label}</a>
+            ) : (
+              <span class="text-text" aria-current="page">{c.label}</span>
+            )}
+          </li>
+        ))}
       </ol>
     </nav>
 
-    <!-- Page Header -->
-    <header class="mb-10">
-      <h1 class="section-heading mb-3">{title}</h1>
-      <p class="section-subheading">{description}</p>
+    <header class="mb-10 max-w-3xl">
+      <h1 class="page-title">{heading ?? title}</h1>
+      <p class="lede mt-4">{description}</p>
     </header>
 
-    <!-- Main Content Slot -->
-    <article class="prose prose-invert prose-lg max-w-none prose-headings:text-text prose-a:text-accent hover:prose-a:text-accent-hover prose-code:text-accent prose-pre:bg-terminal-bg prose-pre:border prose-pre:border-border">
+    {prose ? (
+      <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-16">
+        <article class="prose prose-invert prose-lg min-w-0" data-article>
+          <slot />
+        </article>
+        <aside class="hidden lg:block" aria-label="On this page" data-toc hidden>
+          <div class="sticky top-24">
+            <p class="mb-3 text-sm font-semibold text-text">On this page</p>
+            <ol class="space-y-2 border-l border-border text-sm" data-toc-list></ol>
+          </div>
+        </aside>
+      </div>
+    ) : (
       <slot />
-    </article>
+    )}
   </div>
 </BaseLayout>
+
+<script>
+  const article = document.querySelector<HTMLElement>('[data-article]');
+  const toc = document.querySelector<HTMLElement>('[data-toc]');
+  const list = document.querySelector<HTMLOListElement>('[data-toc-list]');
+  if (article && toc && list) {
+    const slug = (s: string) =>
+      s.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').slice(0, 60);
+    const headings = Array.from(article.querySelectorAll<HTMLHeadingElement>('h2'));
+    headings.forEach((h) => {
+      if (!h.id) h.id = slug(h.textContent ?? '');
+    });
+    const withId = headings.filter((h) => h.id && !h.closest('.not-prose'));
+    if (withId.length >= 3) {
+      for (const h of withId) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#${h.id}`;
+        a.textContent = h.textContent?.trim() ?? '';
+        a.className = '-ml-px block border-l border-transparent pl-3 text-text-muted hover:border-text-muted hover:text-text';
+        li.appendChild(a);
+        list.appendChild(li);
+      }
+      toc.hidden = false;
+    }
+  }
+</script>

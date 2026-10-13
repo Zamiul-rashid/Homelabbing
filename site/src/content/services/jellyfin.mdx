@@ -1,11 +1,10 @@
 ---
-title: "Jellyfin — Your Personal Netflix"
+title: "Jellyfin: Your Personal Netflix"
 tagline: "An open-source media system that organizes, manages, and streams your movies, shows, and music."
 replaces: "Netflix, Plex, Emby, Apple TV+"
 port: 8096
 difficulty: 1
 folder: "media-server"
-mockupDescription: "Jellyfin Language & Admin Wizard setup interface"
 setupSteps:
   - "Verify /data/media exists and is owned by your user (`sudo mkdir -p /data/media && sudo chown -R $USER:$USER /data/media`)."
   - "Verify stacks/.env has your correct user permissions (PUID and PGID)."
@@ -24,12 +23,9 @@ whatNow:
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
-import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
 A self-hosted media streaming server running locally on my hardware. I was able to open any web browser, smart TV, or mobile app on my home network and instantly stream my high-definition video files with automatic poster art, cast details, and subtitles.
-
-<UIMockup title="Jellyfin Setup Wizard" url="http://192.168.1.100:8096/setup" type="wizard" />
 
 ## Why I Chose Jellyfin
 
@@ -37,7 +33,7 @@ Commercial streaming services raised prices, yanked my favourite shows without w
 
 <ProConTable
   pros={[
-    "100% Free and Open Source forever — zero subscription fees or premium paywalls.",
+    "Free and open source, with no subscription fees or premium paywalls.",
     "No telemetry, no tracking, and no external account sign-in required.",
     "Hardware-accelerated transcoding for my Intel QuickSync CPU.",
     "Native apps across Roku, Apple TV, Android TV, LG webOS, iOS, and Android."

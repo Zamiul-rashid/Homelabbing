@@ -1,36 +1,98 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
-import ServiceFilter from '../../components/ServiceFilter';
+import ServiceCard from '../../components/ServiceCard.astro';
 import HealthTable from '../../components/HealthTable.astro';
-import { services } from '../../data/services';
+import { services, categories } from '../../data/services';
 ---
 
 <PageLayout
-  title="Modular Homelab Services"
-  description="Modular Docker Compose suites categorized by application domain and deployment complexity."
+  title="Services"
+  description="Every app in the guide, each in its own Docker Compose stack. Pick one to see how to set it up."
+  prose={false}
 >
-  <!-- Interactive Filter Island -->
-  <div class="not-prose mb-14">
-    <ServiceFilter client:load services={services} />
-  </div>
+  <section aria-labelledby="stacks-title">
+    <h2 id="stacks-title" class="sr-only">Stacks</h2>
 
-  <!-- Why Modular Section -->
-  <div class="space-y-6 pt-10 border-t border-border">
-    <h2>Why Modular Architecture?</h2>
-    <p>
-      Traditional homelab repositories dump 30+ containers into a single monolithic <code>docker-compose.yml</code> file. When one database fails or one container has a port conflict, the entire system breaks.
-    </p>
-    <p>
-      By separating each domain (<code>media-server</code>, <code>arr-stack</code>, <code>music-server</code>, <code>book-reader</code>, <code>photo-backup</code>, <code>cloud-storage</code>) into its own dedicated directory inside <code>stacks/</code>, you gain:
-    </p>
-    <ul>
-      <li><strong>Independent Upgrades:</strong> Update Navidrome or Kavita without taking Jellyfin offline.</li>
-      <li><strong>Resource Isolation:</strong> Run lightweight services on a Raspberry Pi or N100 mini-PC and heavy AI workloads (Immich) on a dedicated server.</li>
-      <li><strong>Zero Overwhelm:</strong> Learn and troubleshoot one service at a time before combining them inside <code>full-stack</code>.</li>
+    <div class="mb-6 flex flex-wrap gap-2" role="group" aria-label="Filter by purpose" data-filter>
+      <button type="button" class="filter-btn" aria-pressed="true" data-filter-value="all">
+        All <span class="text-text-faint">{services.length}</span>
+      </button>
+      {categories.map((c) => (
+        <button type="button" class="filter-btn" aria-pressed="false" data-filter-value={c.id}>
+          {c.label} <span class="text-text-faint">{services.filter((s) => s.category === c.id).length}</span>
+        </button>
+      ))}
+    </div>
+
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-filter-list>
+      {services.map((s) => (
+        <li data-category={s.category}>
+          <ServiceCard service={s} />
+        </li>
+      ))}
     </ul>
+  </section>
 
-    <!-- Quick health check reference -->
-    <h3 class="pt-6">Port Reference & Quick Health Table</h3>
+  <section class="mt-20 grid gap-10 border-t border-border pt-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
+    <div>
+      <h2 class="section-title">Why one stack per app?</h2>
+      <p class="mt-4 text-[17px] leading-relaxed text-text-muted">
+        Many homelab repositories put 30 or more containers in one Compose file. When one database fails or two apps
+        want the same port, everything stops. Here each app has its own folder in <code class="inline-code">stacks/</code>.
+      </p>
+    </div>
+    <dl class="space-y-6 text-[17px] leading-relaxed">
+      <div>
+        <dt class="font-semibold text-text">Update one app at a time</dt>
+        <dd class="mt-1 text-text-muted">Upgrade Navidrome or Kavita without taking Jellyfin offline.</dd>
+      </div>
+      <div>
+        <dt class="font-semibold text-text">Put each app where it fits</dt>
+        <dd class="mt-1 text-text-muted">Run light services on a Raspberry Pi or mini PC, and heavy ones such as Immich on a stronger machine.</dd>
+      </div>
+      <div>
+        <dt class="font-semibold text-text">Learn one thing at a time</dt>
+        <dd class="mt-1 text-text-muted">Get one service working before you add the next, then combine them in <code class="inline-code">full-stack</code> if you want.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section id="ports" class="mt-20 scroll-mt-24 border-t border-border pt-12">
+    <h2 class="section-title">Port reference</h2>
+    <p class="mt-3 max-w-measure text-[17px] leading-relaxed text-text-muted">
+      Default ports and folders. <code class="inline-code">./helpers/check-health.sh</code> checks all of them from
+      the repository root.
+    </p>
     <HealthTable />
-  </div>
+  </section>
 </PageLayout>
+
+<style>
+  .filter-btn {
+    @apply inline-flex items-center gap-2 rounded-md border border-border-strong bg-bg-surface px-3.5 py-2 text-sm font-medium text-text-muted transition-colors hover:border-text-muted hover:text-text;
+  }
+  .filter-btn[aria-pressed='true'] {
+    @apply border-accent bg-accent text-accent-ink;
+  }
+  .filter-btn[aria-pressed='true'] span {
+    @apply text-accent-ink;
+  }
+</style>
+
+<script>
+  const group = document.querySelector<HTMLElement>('[data-filter]');
+  const list = document.querySelector<HTMLElement>('[data-filter-list]');
+  if (group && list) {
+    const buttons = Array.from(group.querySelectorAll<HTMLButtonElement>('button[data-filter-value]'));
+    const items = Array.from(list.querySelectorAll<HTMLElement>(':scope > li'));
+    group.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-filter-value]');
+      if (!btn) return;
+      const value = btn.dataset.filterValue;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      items.forEach((li) => {
+        li.hidden = value !== 'all' && li.dataset.category !== value;
+      });
+    });
+  }
+</script>

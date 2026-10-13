@@ -1,11 +1,10 @@
 ---
-title: "Nextcloud — Cloud Storage & Suite"
+title: "Nextcloud: Cloud Storage & Suite"
 tagline: "A self-hosted file collaboration, synchronization, document editing, and productivity platform."
 replaces: "Google Drive, Dropbox, Microsoft OneDrive, Google Docs"
 port: 4443
 difficulty: 2
 folder: "cloud-storage"
-mockupDescription: "Nextcloud First-Time Database & Admin Setup"
 setupSteps:
   - "Ensure /data/nextcloud is created on your host (`sudo mkdir -p /data/nextcloud && sudo chown -R $USER:$USER /data/nextcloud`)."
   - "Verify stacks/.env contains DB_ROOT_PASSWORD and DB_PASSWORD."
@@ -24,12 +23,9 @@ whatNow:
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
-import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
 My own private cloud storage hub accessible across Windows, Mac, Linux, iOS, and Android. I could sync documents across computers in real-time, share password-protected download links with clients or friends, edit office files, manage calendars, and keep my sensitive files stored safely on `/data/nextcloud` under my physical control.
-
-<UIMockup title="Nextcloud Workspace" url="https://192.168.1.100:4443/status.php" type="wizard" />
 
 ## Why I Chose Nextcloud
 
@@ -44,7 +40,7 @@ Google Drive, Microsoft OneDrive, and Dropbox scanned my documents for policy vi
   ]}
   cons={[
     "Heavier resource footprint than simple file servers (benefited from 2 GB+ of dedicated RAM).",
-    "First startup took ~1–2 minutes while MariaDB initialized its schema tables.",
+    "First startup took 1 to 2 minutes while MariaDB initialized its schema tables.",
     "External access required an HTTPS certificate, which my Option B/C guides cover."
   ]}
 />

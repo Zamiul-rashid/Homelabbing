@@ -1,119 +1,112 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import CodeBlock from '../components/CodeBlock.astro';
-import HealthTable from '../components/HealthTable.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import { services } from '../data/services';
 ---
 
 <PageLayout
-  title="Getting Started Guide & Modular Architecture"
-  description="Practical 3-step setup to understand architecture, configure environment variables, and launch home server stacks using Docker Compose."
+  title="Getting started"
+  description="Three steps to your first running stack: prepare storage, fill in one settings file, start a stack with Docker Compose."
 >
-  <div class="space-y-12">
-    <!-- Intro Banner -->
-    <section class="glass p-8 border border-accent/40 bg-gradient-to-br from-bg-surface via-bg-surface to-accent/5">
-      <h2 class="text-2xl font-bold text-text mt-0">Modular Architecture Principles</h2>
-      <p class="text-text-muted leading-relaxed mb-6">
-        Built around an <strong>Architecture First</strong> methodology. Rather than utilizing black-box scripts, the repository is organized into standalone, heavily commented application stacks inside the <code>stacks/</code> directory to demonstrate port bindings, container networking, and volume storage.
-      </p>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-sans not-prose">
-        <div class="p-4 rounded-lg bg-bg border border-border">
-          <span class="text-xs font-mono text-accent font-bold">STEP 01</span>
-          <h3 class="font-bold text-text text-base mt-1">Prepare Storage</h3>
-          <p class="text-xs text-text-muted mt-1">Create unified <code>/data</code> folders so all your media and downloads share a clean hierarchy.</p>
-        </div>
-        <div class="p-4 rounded-lg bg-bg border border-border">
-          <span class="text-xs font-mono text-accent font-bold">STEP 02</span>
-          <h3 class="font-bold text-text text-base mt-1">Configure .env</h3>
-          <p class="text-xs text-text-muted mt-1">Copy <code>stacks/.env.example</code> to <code>stacks/.env</code> and set your user ID and passwords.</p>
-        </div>
-        <div class="p-4 rounded-lg bg-bg border border-border">
-          <span class="text-xs font-mono text-accent font-bold">STEP 03</span>
-          <h3 class="font-bold text-text text-base mt-1">Start & Learn</h3>
-          <p class="text-xs text-text-muted mt-1">Navigate into any stack directory and run <code>docker compose up -d</code>.</p>
-        </div>
-      </div>
-    </section>
+  <p>
+    This guide does not hide anything behind install scripts. Every app lives in its own folder under
+    <code>stacks/</code>, and every line of its Compose file has a comment that explains what it does. You will:
+  </p>
+  <ol>
+    <li><strong>Prepare storage</strong>: one <code>/data</code> folder for all media and downloads.</li>
+    <li><strong>Fill in settings</strong>: copy <code>stacks/.env.example</code> to <code>stacks/.env</code> and set your user ID, time zone and passwords.</li>
+    <li><strong>Start a stack</strong>: go into a stack folder and run <code>docker compose up -d</code>.</li>
+  </ol>
+  <p>
+    You need a Linux machine with Docker Engine and the Compose plugin installed. If you do not have one yet,
+    <a href="https://github.com/Zamiul-rashid/Homelabbing/blob/main/docs/03-your-first-server.md" target="_blank" rel="noopener noreferrer">Your first server</a>
+    walks through it.
+  </p>
 
-    <!-- Step 1 Command -->
-    <section>
-      <h2>1. Clone Repository & Prepare Storage (`/data`)</h2>
-      <p>
-        First, clone this repository onto your home server. Then create your unified storage directory tree under <code>/data</code> (or any path you prefer) and assign ownership to your Linux user (`$USER`). This ensures all containers can read and write media cleanly without permission denied errors:
-      </p>
-      <CodeBlock
-        title="bash — Repository Cloning & Storage Setup"
-        code={`git clone https://github.com/Zamiul-rashid/Homelabbing.git\ncd Homelabbing\n\n# Create standard directory tree for movies, TV, music, books, photos, and cloud storage\nsudo mkdir -p /data/media/{movies,tv,music,books,comics,photos} /data/downloads/{incomplete,complete} /data/nextcloud\n\n# Assign ownership to your current Linux user\nsudo chown -R $USER:$USER /data`}
-      />
-      <div class="p-4 rounded-xl bg-blue-950/20 border border-blue-500/30 text-xs text-blue-200 not-prose mt-4">
-        <strong>Why `/data`?</strong> By keeping your media and download directories under the same parent folder path (`/data`), download clients like qBittorrent and organizers like Radarr can perform instantaneous, zero-copy hardlinks—saving hard disk space and CPU cycles.
-      </div>
-    </section>
-
-    <!-- Step 2 Command -->
-    <section>
-      <h2>2. Configure Environment Variables (`stacks/.env`)</h2>
-      <p>
-        Every modular stack automatically pulls shared variables (like your timezone, database passwords, and user IDs) from a single central environment file inside <code>stacks/.env</code>. Copy the template and verify your user permissions using <code>id -u</code> and <code>id -g</code>:
-      </p>
-      <CodeBlock
-        title="bash — Environment Configuration"
-        code={`# Copy the documented environment template\ncp stacks/.env.example stacks/.env\n\n# Check your current Linux user ID and group ID (usually 1000)\nid -u\nid -g\n\n# Open stacks/.env in your favorite terminal editor to set your secure passwords\nnano stacks/.env`}
-      />
-    </section>
-
-    <!-- Step 3 Command -->
-    <section>
-      <h2>3. Launch Your Chosen Stack</h2>
-      <p>
-        You do not need to boot everything at once. Move inside any modular application folder inside <code>stacks/</code> (such as <code>media-server/</code> or <code>book-reader/</code>) and start it in detached background mode:
-      </p>
-      <CodeBlock
-        title="bash — Starting a Modular Stack"
-        code={`cd stacks/media-server\ndocker compose up -d`}
-      />
-      
-      <div class="terminal-window not-prose border border-border my-6">
-        <div class="terminal-titlebar">
-          <span class="text-xs font-mono text-text-muted">Terminal Output — docker compose up -d</span>
-        </div>
-        <div class="p-5 bg-terminal-bg font-mono text-xs text-terminal-text space-y-1">
-          <p class="text-text-muted">[+] Running 2/2</p>
-          <p class="text-success"> ✔ Network media-server_default   Created                            0.1s</p>
-          <p class="text-success"> ✔ Container jellyfin               Started                            0.4s</p>
-          <p class="pt-2 text-accent font-bold">Jellyfin is live. Open:</p>
-          <p class="font-bold">http://YOUR_SERVER_IP:8096</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Explore Services Directory -->
-    <section>
-      <h2>4. Explore All Modular Stacks</h2>
-      <p>
-        Want to inspect the architectural comments or read the detailed onboarding walkthrough for a specific service? Click any card below:
-      </p>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 not-prose my-8">
-        {services.map((s) => (
-          <ServiceCard service={s} />
-        ))}
-      </div>
-    </section>
-
-    <!-- Health table -->
-    <section>
-      <h2>5. Health Checking Across All Ports</h2>
-      <p>
-        To verify that all containers are running cleanly without error loops or database connection timeouts, execute the diagnostic health checker script from the repository root:
-      </p>
-      <CodeBlock
-        title="bash — Automated Health Diagnostics"
-        code={`./helpers/check-health.sh`}
-      />
-      <HealthTable />
-    </section>
+  <h2 id="prepare-storage">1. Clone the repository and prepare <code>/data</code></h2>
+  <p>
+    Clone the repository onto your server. Then create one storage tree under <code>/data</code> (or any path you
+    prefer) and give it to your own Linux user, so containers can read and write without "permission denied" errors.
+  </p>
+  <CodeBlock
+    title="Clone and create the storage tree"
+    code={`git clone https://github.com/Zamiul-rashid/Homelabbing.git\ncd Homelabbing\n\n# Folders for movies, TV, music, books, photos, downloads and cloud files\nsudo mkdir -p /data/media/{movies,tv,music,books,comics,photos} /data/downloads/{incomplete,complete} /data/nextcloud\n\n# Make your user the owner\nsudo chown -R $USER:$USER /data`}
+  />
+  <div class="callout not-prose">
+    <p class="font-semibold">Why one <code class="inline-code">/data</code> folder?</p>
+    <p class="mt-1 text-text-muted">
+      When downloads and the media library sit on the same disk under one parent folder, Radarr and Sonarr can
+      import a finished download as a hardlink: the file appears in your library instantly and uses no extra space.
+      If they live on different disks, every import is a full copy.
+    </p>
   </div>
+
+  <h2 id="settings">2. Fill in <code>stacks/.env</code></h2>
+  <p>
+    Every stack reads shared settings (time zone, user and group IDs, database passwords) from one file,
+    <code>stacks/.env</code>. Copy the template, check your IDs, then edit it.
+  </p>
+  <CodeBlock
+    title="Create your settings file"
+    code={`# Copy the documented template\ncp stacks/.env.example stacks/.env\n\n# Your user and group IDs (usually 1000)\nid -u\nid -g\n\n# Set PUID, PGID, TZ and passwords\nnano stacks/.env`}
+  />
+  <p>Never commit <code>stacks/.env</code> to Git. It holds your passwords.</p>
+
+  <h2 id="start">3. Start a stack</h2>
+  <p>
+    You do not need to start everything at once. Go into one stack folder, such as <code>media-server</code>,
+    and start it in the background:
+  </p>
+  <CodeBlock title="Start Jellyfin" code={`cd stacks/media-server\ndocker compose up -d`} />
+  <p>Docker pulls the image the first time, then prints something like this:</p>
+  <pre class="font-mono text-sm"><code>[+] Running 2/2
+ ✔ Network media-server_default  Created
+ ✔ Container jellyfin            Started</code></pre>
+  <p>
+    Open <code>http://YOUR_SERVER_IP:8096</code> in a browser and the Jellyfin setup wizard appears. Replace
+    <code>YOUR_SERVER_IP</code> with the address of your server on your home network (<code>hostname -I</code> shows it).
+  </p>
+
+  <h2 id="troubleshooting">If something goes wrong</h2>
+  <p>Most first-day problems are one of these four.</p>
+  <dl>
+    <dt>The page does not load</dt>
+    <dd>
+      Run <code>docker compose ps</code> in the stack folder. If the container is restarting, read its log with
+      <code>docker compose logs -f</code>. The last few lines usually name the problem.
+    </dd>
+    <dt>"Permission denied" in the logs</dt>
+    <dd>
+      <code>PUID</code> and <code>PGID</code> in <code>stacks/.env</code> must match <code>id -u</code> and
+      <code>id -g</code>, and that user must own <code>/data</code>. Fix the file, then run
+      <code>docker compose up -d</code> again.
+    </dd>
+    <dt>"Port is already allocated"</dt>
+    <dd>
+      Another program already uses that port. In the Compose file, change the number on the left of the port mapping
+      (for example <code>8097:8096</code>) and open the new port instead.
+    </dd>
+    <dt>A setting change has no effect</dt>
+    <dd>
+      Containers read <code>.env</code> only when they are created. Run <code>docker compose up -d</code> again after
+      every change; Compose recreates what changed.
+    </dd>
+  </dl>
+
+  <h2 id="stacks">4. Pick your next stack</h2>
+  <p>Each card opens a walkthrough for that service.</p>
+  <div class="not-prose my-8 grid gap-4 sm:grid-cols-2">
+    {services.map((s) => <ServiceCard service={s} />)}
+  </div>
+
+  <h2 id="health">5. Check every port at once</h2>
+  <p>
+    When you run several stacks, this script from the repository root checks every service port and tells you which
+    ones answer:
+  </p>
+  <CodeBlock title="Check all services" code={`./helpers/check-health.sh`} />
+  <p>
+    The <a href="/Homelabbing/services#ports">port reference</a> lists the default port and folder of each service.
+  </p>
 </PageLayout>

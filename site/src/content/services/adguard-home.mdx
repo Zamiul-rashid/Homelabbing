@@ -1,11 +1,10 @@
 ---
-title: "AdGuard Home — Network-Wide DNS Ad Blocker"
+title: "AdGuard Home: Network-Wide DNS Ad Blocker"
 tagline: "Network-level DNS ad and tracking protection that shields every phone, PC, and smart TV in your entire household."
 replaces: "uBlock Origin (for mobile/IoT), Pi-hole, NextDNS, Commercial VPN Ad Blockers"
 port: 8083
 difficulty: 1
 folder: "home-automation"
-mockupDescription: "AdGuard Home Network DNS Shield and Query Dashboard"
 setupSteps:
   - "Verify your stacks/.env has correct user permissions (`PUID`/`PGID` and `TZ`)."
   - "Run `cd stacks/home-automation && docker compose up -d`."
@@ -24,12 +23,9 @@ whatNow:
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
-import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
 I built a local DNS server that intercepted domain requests before they ever reached the internet. By checking incoming DNS queries against blocklists, AdGuard Home stopped ads, trackers, and malware across every iPhone, Android, smart TV, tablet, and PC on my home Wi-Fi automatically.
-
-<UIMockup title="AdGuard Home DNS Shield" url="http://192.168.1.100:8083" type="login" />
 
 ## Why I Chose AdGuard Home
 

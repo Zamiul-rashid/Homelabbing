@@ -5,7 +5,6 @@ replaces: "Manual torrenting, Radarr, Sonarr, manual renaming, and folder manage
 port: 8080
 difficulty: 2
 folder: "arr-stack"
-mockupDescription: "Jellyseerr Media Request Dashboard"
 setupSteps:
   - "Ensure /data/downloads and /data/media exist and are writable by your user."
   - "Verify stacks/.env contains your exact PUID and PGID."
@@ -24,12 +23,9 @@ whatNow:
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
-import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
 I built an automated media pipeline. When I browsed and requested a movie or TV show on **Jellyseerr**, it triggered search indexers in **Prowlarr**, sent the optimal quality torrent to **qBittorrent**, and monitored progress in **Radarr/Sonarr**. Radarr then renamed and moved the finished file into `/data/media`, where Jellyfin picked it up immediately.
-
-<UIMockup title="Jellyseerr Media Portal" url="http://192.168.1.100:5055/requests" type="library" />
 
 ## Why I Used the *arr Suite
 
@@ -37,7 +33,7 @@ I was completely done hunting down torrents on sketchy websites, manually unzipp
 
 <ProConTable
   pros={[
-    "Fully hands-off automation — I requested a movie once and it appeared in Jellyfin within minutes.",
+    "Fully hands-off automation: I requested a movie once and it appeared in Jellyfin within minutes.",
     "Centralized indexer synchronization via Prowlarr across all my apps.",
     "Automatic quality upgrades (e.g., replacing a 720p WEB-DL with a 4K Remux automatically when released).",
     "Beautiful family-friendly request UI (Jellyseerr) with Jellyfin single sign-on."
@@ -55,11 +51,11 @@ I was completely done hunting down torrents on sketchy websites, manually unzipp
 
 Running this stack launched five specialized tools inside `stacks/arr-stack/`, each with a distinct job:
 
-1. **qBittorrent (`:8080`)** — High-performance download engine with web interface and hardlink support.
-2. **Prowlarr (`:9696`)** — Indexer manager that synced search providers directly to Radarr and Sonarr.
-3. **Radarr (`:7878`)** — Movie monitoring, searching, downloading, and automated renaming.
-4. **Sonarr (`:8989`)** — TV show and anime monitoring with season/episode tracking.
-5. **Jellyseerr (`:5055`)** — Request portal where family and friends could discover and request content.
+1. **qBittorrent (`:8080`)**: High-performance download engine with web interface and hardlink support.
+2. **Prowlarr (`:9696`)**: Indexer manager that synced search providers directly to Radarr and Sonarr.
+3. **Radarr (`:7878`)**: Movie monitoring, searching, downloading, and automated renaming.
+4. **Sonarr (`:8989`)**: TV show and anime monitoring with season/episode tracking.
+5. **Jellyseerr (`:5055`)**: Request portal where family and friends could discover and request content.
 
 ---
 
@@ -73,11 +69,11 @@ docker compose up -d
 ```
 
 ### 2. Connecting Prowlarr (`http://YOUR_IP:9696`)
-1. I clicked **Add Indexer**, searched for public indexers (e.g., `1337x`, `EZTV`), and clicked **Save**.
+1. I clicked **Add Indexer**, searched for the indexers I wanted, and clicked **Save**.
 2. I went to **Settings → Apps → + Add**:
    - Added **Radarr** (`http://radarr:7878`) and pasted my Radarr API key (found in Radarr under Settings → General).
    - Added **Sonarr** (`http://sonarr:8989`) and pasted my Sonarr API key.
-3. I clicked **Sync App Indexers** — my search providers were automatically linked.
+3. I clicked **Sync App Indexers**: my search providers were automatically linked.
 
 ### 3. Linking Radarr & Sonarr to qBittorrent
 In both Radarr (`http://YOUR_IP:7878`) and Sonarr (`http://YOUR_IP:8989`):

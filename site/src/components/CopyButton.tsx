@@ -1,49 +1,41 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface Props {
   code: string;
   className?: string;
 }
 
+type State = 'idle' | 'copied' | 'failed';
+
 export default function CopyButton({ code, className = '' }: Props) {
-  const [copied, setCopied] = useState(false);
+  const [state, setState] = useState<State>('idle');
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy code: ', err);
+      setState('copied');
+    } catch {
+      setState('failed');
     }
+    setTimeout(() => setState('idle'), 2500);
   };
+
+  const label = state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed, select the text instead' : 'Copy';
 
   return (
     <button
       onClick={handleCopy}
       type="button"
-      className={`px-3 py-1.5 rounded-md text-xs font-mono font-semibold transition-all duration-200 border flex items-center gap-1.5 shadow-sm focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none ${
-        copied
-          ? 'bg-success/20 border-success text-success'
-          : 'bg-bg-elevated hover:bg-bg border-border text-text-muted hover:text-text'
+      className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
+        state === 'failed'
+          ? 'border-warning/50 text-warning'
+          : state === 'copied'
+          ? 'border-accent/60 text-accent'
+          : 'border-border-strong text-text-muted hover:border-text-muted hover:text-text'
       } ${className}`}
-      aria-label="Copy code to clipboard"
     >
-      {copied ? (
-        <>
-          <svg className="w-3.5 h-3.5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-          </svg>
-          <span>Copied!</span>
-        </>
-      ) : (
-        <>
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-          <span>Copy</span>
-        </>
-      )}
+      <span aria-live="polite">{label}</span>
+      <span className="sr-only">{state === 'idle' ? ' code to clipboard' : ''}</span>
     </button>
   );
 }

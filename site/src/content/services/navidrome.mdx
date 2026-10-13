@@ -1,11 +1,10 @@
 ---
-title: "Navidrome — Personal Cloud Music"
+title: "Navidrome: Personal Cloud Music"
 tagline: "A modern, lightweight, fast web-based music server and Subsonic-compatible audio streaming system."
 replaces: "Spotify, Apple Music, YouTube Music, Tidal"
 port: 4533
 difficulty: 1
 folder: "music-server"
-mockupDescription: "Navidrome Admin Account Login screen"
 setupSteps:
   - "Place your FLAC, MP3, and ALAC music folders inside /data/media/music."
   - "Check that stacks/.env has your correct user permissions (PUID and PGID)."
@@ -24,12 +23,9 @@ whatNow:
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
-import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
-A fast, private music server that indexed my entire FLAC, MP3, and ALAC audio collection. I could stream lossless audio from any browser or use third-party Subsonic apps for offline downloads, smart playlists, and scrobbling—no subscription required.
-
-<UIMockup title="Navidrome Audio Cloud" url="http://192.168.1.100:4533/login" type="login" />
+A fast, private music server that indexed my entire FLAC, MP3, and ALAC audio collection. I could stream lossless audio from any browser or use third-party Subsonic apps for offline downloads, smart playlists, and scrobbling, with no subscription.
 
 ## Why I Chose Navidrome
 
@@ -37,7 +33,7 @@ Streaming services compressed my music, yanked classic albums over licensing dis
 
 <ProConTable
   pros={[
-    "Extremely lightweight Go backend — started in under 1 second and consumed minimal RAM.",
+    "Very lightweight Go backend: it started in under 1 second and consumed minimal RAM.",
     "Full compatibility with the universal Subsonic API ecosystem (hundreds of mobile and desktop apps).",
     "Supported multi-disc albums, lyrics, instant search, and automated background scanning.",
     "Handled my massive library (100,000+ tracks) without slowing down."

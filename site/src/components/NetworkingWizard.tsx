@@ -1,10 +1,70 @@
-import React, { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import CopyButton from './CopyButton';
 
+type Answer = 'yes' | 'no' | null;
+
+interface ChoiceProps {
+  selected: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}
+
+function Choice({ selected, onClick, children }: ChoiceProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={`rounded-md border px-4 py-2.5 text-left text-sm font-medium transition-colors ${
+        selected
+          ? 'border-accent bg-accent text-accent-ink'
+          : 'border-border-strong bg-bg-elevated text-text hover:border-accent'
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+interface QuestionProps {
+  n: number;
+  text: ReactNode;
+  children: ReactNode;
+}
+
+function Question({ n, text, children }: QuestionProps) {
+  return (
+    <fieldset className={n > 1 ? 'border-t border-border pt-6' : ''}>
+      <legend className="mb-3 text-[15px] font-medium leading-relaxed text-text">
+        <span className="mr-2 font-mono text-text-faint">{n}.</span>
+        {text}
+      </legend>
+      <div className="flex flex-wrap gap-3">{children}</div>
+    </fieldset>
+  );
+}
+
+function Result({ title, children, actions }: { title: string; children: ReactNode; actions?: ReactNode }) {
+  return (
+    <div className="rounded-md border border-accent/60 bg-bg-elevated p-5 sm:p-6">
+      <p className="text-sm text-text-muted">Recommended</p>
+      <h3 className="mt-1 text-xl font-semibold tracking-[-0.01em] text-text">{title}</h3>
+      <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-text-muted">{children}</div>
+      {actions && <div className="mt-5 flex flex-wrap gap-3">{actions}</div>}
+    </div>
+  );
+}
+
+const link = (href: string, label: string, primary = false) => (
+  <a href={href} className={`${primary ? 'btn-primary' : 'btn-secondary'} px-4 py-2.5`}>
+    {label}
+  </a>
+);
+
 export default function NetworkingWizard() {
-  const [remoteAccess, setRemoteAccess] = useState<string | null>(null);
-  const [publicWeb, setPublicWeb] = useState<string | null>(null);
-  const [hasDomain, setHasDomain] = useState<string | null>(null);
+  const [remoteAccess, setRemoteAccess] = useState<Answer>(null);
+  const [publicWeb, setPublicWeb] = useState<Answer>(null);
+  const [hasDomain, setHasDomain] = useState<Answer>(null);
 
   const reset = () => {
     setRemoteAccess(null);
@@ -12,241 +72,159 @@ export default function NetworkingWizard() {
     setHasDomain(null);
   };
 
+  const started = remoteAccess !== null || publicWeb !== null || hasDomain !== null;
+
   const renderRecommendation = () => {
     if (remoteAccess === 'no') {
       return (
-        <div className="p-6 rounded-xl bg-bg-surface border border-border space-y-4 animate-fade-in">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🏠</span>
-            <div>
-              <h3 className="text-xl font-bold text-text">Local LAN Only (No Remote Access Needed)</h3>
-              <p className="text-xs text-text-muted">You can stop right here! Your setup is simpler and more secure.</p>
-            </div>
-          </div>
-          <p className="text-sm text-text-muted leading-relaxed">
-            Since you only plan to access Jellyfin or Navidrome when connected to your home Wi-Fi or Ethernet network, you do not need to configure any domain names or reverse proxies.
+        <Result title="Stay on your home network">
+          <p>
+            If you only watch and listen at home, you need no domain, no reverse proxy and no open ports. Open each app
+            by its local address:
           </p>
-          <div className="p-4 rounded-lg bg-bg border border-border font-mono text-xs text-text flex items-center justify-between">
-            <span>http://YOUR_SERVER_LOCAL_IP:PORT (e.g. http://192.168.1.100:8096)</span>
-            <span className="text-success font-semibold">Ready to Use</span>
-          </div>
-        </div>
+          <p className="font-mono text-sm text-text">http://YOUR_SERVER_IP:PORT</p>
+          <p>You can add remote access later without changing anything you set up now.</p>
+        </Result>
       );
     }
 
     if (publicWeb === 'no') {
+      const key = 'TAILSCALE_AUTH_KEY=tskey-auth-xxxxxx-xxxxxxxxxxxxxxxx';
       return (
-        <div className="p-6 rounded-xl bg-bg-surface border border-accent space-y-4 animate-fade-in shadow-[0_0_30px_rgba(99,102,241,0.15)]">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🔒</span>
-            <div>
-              <h3 className="text-xl font-bold text-text">Recommended: Option D (Tailscale Mesh VPN)</h3>
-              <p className="text-xs text-accent">Maximum Privacy &bull; Zero Open Ports &bull; 100% Free</p>
-            </div>
-          </div>
-          <p className="text-sm text-text-muted leading-relaxed">
-            Because you only need access on your own personal devices (phone, laptop, tablet), **Tailscale** creates an encrypted WireGuard mesh between them. Bots on the public internet cannot see or ping your home server at all!
+        <Result
+          title="Option D: Tailscale"
+          actions={link('/Homelabbing/networking#option-d-tailscale', 'Read the Tailscale steps', true)}
+        >
+          <p>
+            Tailscale builds an encrypted WireGuard network between your own devices. Nothing is exposed to the public
+            internet and you open no ports on your router. It is free for personal use.
           </p>
-          <div className="p-4 rounded-lg bg-terminal-bg border border-border space-y-2">
-            <div className="flex items-center justify-between text-xs text-text-faint font-mono pb-2 border-b border-border/50">
-              <span>stacks/.env snippet</span>
-              <CopyButton code="TAILSCALE_AUTH_KEY=tskey-auth-xxxxxx-xxxxxxxxxxxxxxxx" />
+          <div className="overflow-hidden rounded-md border border-border bg-bg-surface">
+            <div className="flex items-center justify-between gap-3 border-b border-border px-3 py-2 text-sm text-text-muted">
+              <span>Add to stacks/.env</span>
+              <CopyButton code={key} />
             </div>
-            <pre className="text-xs font-mono text-terminal-text overflow-x-auto m-0">TAILSCALE_AUTH_KEY=tskey-auth-xxxxxx-xxxxxxxxxxxxxxxx</pre>
+            <pre className="m-0 overflow-x-auto p-3 font-mono text-[13px] text-text">{key}</pre>
           </div>
-          <div className="flex justify-end pt-2">
-            <a href="/Homelabbing/networking#option-d-tailscale" className="btn-primary text-xs py-2 px-4">
-              View Complete Tailscale Guide →
-            </a>
-          </div>
-        </div>
+        </Result>
       );
     }
 
     if (hasDomain === 'no') {
       return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade-in">
-          <div className="p-6 rounded-xl bg-bg-surface border border-border flex flex-col justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🦆</span>
-                <h3 className="font-bold text-text text-lg">Option A: DuckDNS + NPM</h3>
-              </div>
-              <p className="text-xs text-text-muted leading-relaxed">
-                Get a completely free dynamic subdomain like <code className="text-accent">https://myhomelab.duckdns.org</code> with automated Let's Encrypt SSL certificates.
-              </p>
-            </div>
-            <a href="/Homelabbing/networking#option-a-duckdns" className="btn-secondary text-xs py-2 block text-center mt-2">
-              DuckDNS Setup Guide →
-            </a>
-          </div>
-
-          <div className="p-6 rounded-xl bg-bg-surface border border-accent flex flex-col justify-between gap-4 shadow-[0_0_30px_rgba(99,102,241,0.1)]">
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">⚡</span>
-                  <h3 className="font-bold text-text text-lg">Option B: Cloudflare + NPM</h3>
-                </div>
-                <span className="px-2 py-0.5 rounded bg-accent/20 text-accent text-[10px] font-semibold">Recommended</span>
-              </div>
-              <p className="text-xs text-text-muted leading-relaxed">
-                Uses Cloudflare DNS Challenge so you never have to open Port 80 on your router! Includes DDoS protection and global CDN proxying. Note: requires buying a domain (~$10/yr).
-              </p>
-            </div>
-            <a href="/Homelabbing/networking#option-b-cloudflare" className="btn-primary text-xs py-2 block text-center mt-2">
-              Cloudflare Setup Guide →
-            </a>
-          </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Result title="Option A: DuckDNS" actions={link('/Homelabbing/networking#option-a-duckdns', 'DuckDNS steps')}>
+            <p>
+              A free subdomain such as <code className="font-mono text-text">yourname.duckdns.org</code> with automatic
+              Let's Encrypt certificates. It needs ports 80 and 443 forwarded on your router.
+            </p>
+          </Result>
+          <Result
+            title="Option B: Cloudflare"
+            actions={link('/Homelabbing/networking#option-b-cloudflare', 'Cloudflare steps', true)}
+          >
+            <p>
+              Certificates come from a DNS challenge, so port 80 stays closed. You need your own domain (about $10 a
+              year), which also gives you nicer addresses.
+            </p>
+          </Result>
         </div>
       );
     }
 
     if (hasDomain === 'yes') {
       return (
-        <div className="p-6 rounded-xl bg-bg-surface border border-accent space-y-4 animate-fade-in shadow-[0_0_30px_rgba(99,102,241,0.15)]">
-          <div className="flex items-center gap-3">
-            <span className="text-3xl">🌟</span>
-            <div>
-              <h3 className="text-xl font-bold text-text">Recommended: Option C (Custom Domain + Cloudflare)</h3>
-              <p className="text-xs text-accent">Cleanest Presentation &bull; Wildcard SSL &bull; Enterprise Protection</p>
-            </div>
-          </div>
-          <p className="text-sm text-text-muted leading-relaxed">
-            Since you already own a custom domain, you can set up clean, memorable subdomains like <code className="text-accent">https://jellyfin.yourdomain.com</code> and <code className="text-accent">https://cloud.yourdomain.com</code> with automated wildcard Let's Encrypt certificates via DNS challenge.
+        <Result
+          title="Option C: your domain, with Cloudflare DNS"
+          actions={
+            <>
+              {link('/Homelabbing/networking#option-b-cloudflare', 'Set up certificates', true)}
+              {link('/Homelabbing/networking#option-c-custom-domain', 'Domain tips')}
+            </>
+          }
+        >
+          <p>
+            Point your domain at Cloudflare DNS and use a wildcard certificate, so every app gets a clean address such as{' '}
+            <code className="font-mono text-text">jellyfin.yourdomain.com</code> without opening port 80.
           </p>
-          <div className="flex justify-end pt-2 gap-3">
-            <a href="/Homelabbing/networking#option-c-custom-domain" className="btn-secondary text-xs py-2 px-4">
-              Domain Best Practices →
-            </a>
-            <a href="/Homelabbing/networking#option-b-cloudflare" className="btn-primary text-xs py-2 px-4">
-              Configure Cloudflare SSL →
-            </a>
-          </div>
-        </div>
+        </Result>
       );
     }
 
     return null;
   };
 
+  const recommendation = renderRecommendation();
+
   return (
-    <div className="glass p-6 md:p-8 my-8 border border-border">
-      <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
+    <section className="not-prose my-8 rounded-md border border-border bg-bg-surface p-5 sm:p-7" aria-labelledby="wizard-title">
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-4 border-b border-border pb-5">
         <div>
-          <h2 className="text-2xl font-bold text-text flex items-center gap-2">
-            <span>🧙‍♂️</span>
-            <span>Interactive Networking Decision Wizard</span>
+          <h2 id="wizard-title" className="text-xl font-semibold tracking-[-0.01em] text-text">
+            Which remote access option fits you?
           </h2>
-          <p className="text-xs text-text-muted mt-1">Answer 1 to 3 quick questions to find your exact setup path.</p>
+          <p className="mt-1 text-sm text-text-muted">One to three questions. Each answer narrows the choice.</p>
         </div>
-        {(remoteAccess !== null || publicWeb !== null || hasDomain !== null) && (
+        {started && (
           <button
+            type="button"
             onClick={reset}
-            className="text-xs text-text-muted hover:text-accent font-mono underline transition-colors"
+            className="rounded-md border border-border-strong px-3 py-1.5 text-sm text-text-muted hover:border-text-muted hover:text-text"
           >
-            Reset Wizard
+            Start over
           </button>
         )}
       </div>
 
       <div className="space-y-6">
-        {/* Question 1 */}
-        <div className="space-y-3">
-          <label className="text-sm font-semibold text-text block">
-            1. Will you need to access your server when you are away from home (outside your home Wi-Fi)?
-          </label>
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => { setRemoteAccess('yes'); }}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-all ${
-                remoteAccess === 'yes'
-                  ? 'bg-accent text-white border-accent shadow-[0_0_15px_rgba(99,102,241,0.3)]'
-                  : 'bg-bg-elevated text-text-muted border-border hover:border-accent'
-              }`}
-            >
-              Yes, I want remote access
-            </button>
-            <button
-              onClick={() => { setRemoteAccess('no'); setPublicWeb(null); setHasDomain(null); }}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-all ${
-                remoteAccess === 'no'
-                  ? 'bg-accent text-white border-accent shadow-[0_0_15px_rgba(99,102,241,0.3)]'
-                  : 'bg-bg-elevated text-text-muted border-border hover:border-accent'
-              }`}
-            >
-              No, local Wi-Fi / Ethernet only
-            </button>
-          </div>
-        </div>
+        <Question n={1} text="Do you need your apps when you are away from home?">
+          <Choice selected={remoteAccess === 'yes'} onClick={() => setRemoteAccess('yes')}>
+            Yes, from anywhere
+          </Choice>
+          <Choice
+            selected={remoteAccess === 'no'}
+            onClick={() => {
+              setRemoteAccess('no');
+              setPublicWeb(null);
+              setHasDomain(null);
+            }}
+          >
+            No, only at home
+          </Choice>
+        </Question>
 
-        {/* Question 2 */}
         {remoteAccess === 'yes' && (
-          <div className="space-y-3 animate-fade-in pt-4 border-t border-border/50">
-            <label className="text-sm font-semibold text-text block">
-              2. Do you want the public internet to be able to reach your server (e.g. sharing public links with friends)?
-            </label>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => { setPublicWeb('yes'); }}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-all ${
-                  publicWeb === 'yes'
-                    ? 'bg-accent text-white border-accent shadow-[0_0_15px_rgba(99,102,241,0.3)]'
-                    : 'bg-bg-elevated text-text-muted border-border hover:border-accent'
-                }`}
-              >
-                Yes, public web reachable (with valid HTTPS SSL)
-              </button>
-              <button
-                onClick={() => { setPublicWeb('no'); setHasDomain(null); }}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-all ${
-                  publicWeb === 'no'
-                    ? 'bg-accent text-white border-accent shadow-[0_0_15px_rgba(99,102,241,0.3)]'
-                    : 'bg-bg-elevated text-text-muted border-border hover:border-accent'
-                }`}
-              >
-                No, only my personal enrolled devices (Tailscale Mesh VPN)
-              </button>
-            </div>
-          </div>
+          <Question n={2} text="Should people outside your own devices reach it, for example through a shared link?">
+            <Choice selected={publicWeb === 'yes'} onClick={() => setPublicWeb('yes')}>
+              Yes, public links over HTTPS
+            </Choice>
+            <Choice
+              selected={publicWeb === 'no'}
+              onClick={() => {
+                setPublicWeb('no');
+                setHasDomain(null);
+              }}
+            >
+              No, just my own devices
+            </Choice>
+          </Question>
         )}
 
-        {/* Question 3 */}
         {remoteAccess === 'yes' && publicWeb === 'yes' && (
-          <div className="space-y-3 animate-fade-in pt-4 border-t border-border/50">
-            <label className="text-sm font-semibold text-text block">
-              3. Do you currently own a custom domain name (e.g. <code className="text-accent font-mono">yourdomain.com</code>)?
-            </label>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => setHasDomain('yes')}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-all ${
-                  hasDomain === 'yes'
-                    ? 'bg-accent text-white border-accent shadow-[0_0_15px_rgba(99,102,241,0.3)]'
-                    : 'bg-bg-elevated text-text-muted border-border hover:border-accent'
-                }`}
-              >
-                Yes, I own a custom domain
-              </button>
-              <button
-                onClick={() => setHasDomain('no')}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-all ${
-                  hasDomain === 'no'
-                    ? 'bg-accent text-white border-accent shadow-[0_0_15px_rgba(99,102,241,0.3)]'
-                    : 'bg-bg-elevated text-text-muted border-border hover:border-accent'
-                }`}
-              >
-                No, I don't own one yet
-              </button>
-            </div>
-          </div>
+          <Question n={3} text="Do you already own a domain name?">
+            <Choice selected={hasDomain === 'yes'} onClick={() => setHasDomain('yes')}>
+              Yes
+            </Choice>
+            <Choice selected={hasDomain === 'no'} onClick={() => setHasDomain('no')}>
+              Not yet
+            </Choice>
+          </Question>
         )}
 
-        {/* Recommendations */}
-        <div className="pt-6 border-t border-border">
-          {renderRecommendation()}
+        <div aria-live="polite">
+          {recommendation && <div className="border-t border-border pt-6">{recommendation}</div>}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

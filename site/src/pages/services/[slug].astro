@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import WhatNowCards from '../../components/WhatNowCards.astro';
 import CodeBlock from '../../components/CodeBlock.astro';
-import { services as serviceCatalog } from '../../data/services';
+import { services as serviceCatalog, difficultyLabel } from '../../data/services';
 
 export async function getStaticPaths() {
   const serviceEntries = await getCollection('services');
@@ -19,86 +19,57 @@ export async function getStaticPaths() {
 const { entry, catalogItem } = Astro.props;
 const { Content } = await entry.render();
 
-const difficultyLabel =
-  entry.data.difficulty === 1 ? '🟢 Beginner Easy' : entry.data.difficulty === 2 ? '🟡 Medium' : '🔴 Advanced';
+const name = catalogItem?.name ?? entry.data.title;
+const repoFolder = `https://github.com/Zamiul-rashid/Homelabbing/tree/main/stacks/${entry.data.folder}`;
+const index = serviceCatalog.findIndex((s) => s.slug === entry.slug);
+const next = index >= 0 ? serviceCatalog[(index + 1) % serviceCatalog.length] : undefined;
 ---
 
 <PageLayout
   title={entry.data.title}
+  heading={entry.data.title}
   description={entry.data.tagline}
+  parents={[{ label: 'Services', href: '/Homelabbing/services' }]}
 >
-  <!-- Service Quick Specs Bar -->
-  <div class="glass p-6 my-8 border border-border not-prose flex flex-wrap items-center justify-between gap-6">
-    <div class="flex items-center gap-4">
-      <div class="w-14 h-14 rounded-2xl bg-bg-elevated border border-border flex items-center justify-center text-3xl shadow-lg">
-        {catalogItem?.icon || '📦'}
+  <div class="not-prose mb-10 rounded-md border border-border bg-bg-surface">
+    <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-t-md bg-border sm:grid-cols-4">
+      <div class="bg-bg-surface p-4">
+        <dt class="text-sm text-text-faint">Service</dt>
+        <dd class="mt-1 font-medium text-text">{name}</dd>
       </div>
-      <div>
-        <div class="flex items-center gap-2">
-          <span class="font-bold text-text text-lg">{entry.data.title.split('—')[0]}</span>
-          <span class="px-2.5 py-0.5 rounded-full bg-accent/20 text-accent text-xs font-semibold">Port {entry.data.port}</span>
-        </div>
-        <p class="text-xs text-text-muted mt-1">Folder: <code class="text-accent font-mono">stacks/{entry.data.folder}</code></p>
+      <div class="bg-bg-surface p-4">
+        <dt class="text-sm text-text-faint">Port</dt>
+        <dd class="mt-1 font-mono text-text">{entry.data.port}</dd>
       </div>
-    </div>
-
-    <div class="flex items-center gap-4 text-sm font-mono">
-      <div class="text-right">
-        <span class="text-xs text-text-faint block">Difficulty Level</span>
-        <span class="font-semibold text-text">{difficultyLabel}</span>
+      <div class="bg-bg-surface p-4">
+        <dt class="text-sm text-text-faint">Folder</dt>
+        <dd class="mt-1 font-mono text-sm text-text">stacks/{entry.data.folder}</dd>
       </div>
-      <a
-        href={`https://github.com/Zamiul-rashid/Homelabbing/tree/main/stacks/${entry.data.folder}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn-secondary text-xs py-2.5 px-4"
-      >
-        View Compose File →
-      </a>
-    </div>
-  </div>
-
-  <!-- Quick Setup Checklist -->
-  <div class="not-prose my-10 p-6 rounded-2xl bg-bg-surface border border-border/80">
-    <h3 class="text-lg font-bold text-text mb-4 flex items-center gap-2">
-      <span>⚡</span>
-      <span>Quick Launch Summary</span>
-    </h3>
-    <ol class="space-y-3 font-mono text-xs md:text-sm text-text-muted">
-      {entry.data.setupSteps.map((step, index) => (
-        <li class="flex items-start gap-3">
-          <span class="w-6 h-6 rounded-full bg-accent/20 text-accent font-bold flex items-center justify-center shrink-0">
-            {index + 1}
-          </span>
-          <span class="mt-0.5 text-text">{step}</span>
-        </li>
-      ))}
-    </ol>
-    <div class="mt-6 pt-6 border-t border-border flex items-center justify-between">
-      <span class="text-xs text-text-faint font-mono">Run container command:</span>
-      <CodeBlock
-        code={`cd stacks/${entry.data.folder} && docker compose up -d`}
-      />
+      <div class="bg-bg-surface p-4">
+        <dt class="text-sm text-text-faint">Difficulty</dt>
+        <dd class="mt-1 font-medium text-text">{difficultyLabel(entry.data.difficulty)}</dd>
+      </div>
+    </dl>
+    <div class="border-t border-border p-5">
+      <h2 class="text-base font-semibold text-text">Quick start</h2>
+      <ol class="mt-3 list-decimal space-y-2 pl-5 text-[15px] leading-relaxed text-text-muted marker:text-text-faint">
+        {entry.data.setupSteps.map((step) => (
+          <li>{step.split('`').map((part, i) => (i % 2 ? <code class="inline-code">{part}</code> : part))}</li>
+        ))}
+      </ol>
+      <CodeBlock title="Start this stack" code={`cd stacks/${entry.data.folder} && docker compose up -d`} />
+      <a href={repoFolder} target="_blank" rel="noopener noreferrer" class="text-link text-sm">View the Compose file on GitHub</a>
     </div>
   </div>
 
-  <!-- Render MDX Content -->
-  <div class="mt-12">
-    <Content />
-  </div>
+  <Content />
 
-  <!-- What Now Next Steps -->
-  {entry.data.whatNow && entry.data.whatNow.length > 0 && (
-    <WhatNowCards items={entry.data.whatNow} />
-  )}
+  {entry.data.whatNow && entry.data.whatNow.length > 0 && <WhatNowCards items={entry.data.whatNow} />}
 
-  <!-- Back Link -->
-  <div class="mt-16 pt-8 border-t border-border flex justify-between items-center not-prose">
-    <a href="/Homelabbing/services" class="text-accent hover:underline text-sm font-semibold flex items-center gap-2">
-      ← Back to All Modular Stacks
-    </a>
-    <a href="/Homelabbing/networking" class="text-text-muted hover:text-text text-sm font-semibold flex items-center gap-2">
-      Remote Access & HTTPS Options →
-    </a>
-  </div>
+  <nav aria-label="More services" class="not-prose mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6 text-sm">
+    <a href="/Homelabbing/services" class="text-text-muted hover:text-text">All services</a>
+    {next && (
+      <a href={`/Homelabbing/services/${next.slug}`} class="text-link">Next: {next.name}</a>
+    )}
+  </nav>
 </PageLayout>

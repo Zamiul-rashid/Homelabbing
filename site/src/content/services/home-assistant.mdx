@@ -1,11 +1,10 @@
 ---
-title: "Home Assistant — The Local Smart Home Brain"
+title: "Home Assistant: The Local Smart Home Brain"
 tagline: "The world's leading open-source smart home hub that unifies all your IoT devices locally with zero cloud lag."
 replaces: "SmartThings, Apple HomeKit Hub, Google Nest, Philips Hue Bridge"
 port: 8123
 difficulty: 2
 folder: "home-automation"
-mockupDescription: "Home Assistant Smart Home Dashboard Interface"
 setupSteps:
   - "Verify your stacks/.env has correct user permissions (PUID/PGID and TZ)."
   - "Run cd stacks/home-automation && docker compose up -d."
@@ -24,16 +23,13 @@ whatNow:
 ---
 
 import ProConTable from '../../components/ProConTable.astro';
-import UIMockup from '../../components/UIMockup.astro';
 
 ## What I Ended Up With
 A local, privacy-first smart home hub running directly on my home server's network adapter (`port 8123`). Home Assistant automatically scanned my Wi-Fi network to discover and pair with my Apple HomeKit, Sonos, Google Cast, Philips Hue, and Zigbee devices. This allowed me to control everything from one single app even when my internet connection dropped.
 
-<UIMockup title="Home Assistant Dashboard" url="http://192.168.1.100:8123/lovelace" type="wizard" />
-
 ## Why I Chose Home Assistant
 
-Commercial smart home gadgets routinely routed commands through remote data centers—pressing a wall switch sent a packet across the country before the bulb above my head lit up. I moved to Home Assistant so it executed my automations 100% locally with zero latency and complete privacy.
+Commercial smart home gadgets routinely routed commands through remote data centers: pressing a wall switch sent a packet across the country before the bulb above my head lit up. I moved to Home Assistant so it executed my automations 100% locally with zero latency and complete privacy.
 
 <ProConTable
   pros={[
@@ -61,7 +57,7 @@ docker compose up -d
 ```
 
 ### 2. First-Run Wizard
-I opened `http://YOUR_SERVER_IP:8123` in my web browser. Home Assistant took about 1–2 minutes on first boot to prepare its internal database and required dependencies. Once it was ready, I followed the wizard to set my name, username, and home location (used for sunrise/sunset triggers).
+I opened `http://YOUR_SERVER_IP:8123` in my web browser. Home Assistant took about 1 to 2 minutes on first boot to prepare its internal database and required dependencies. Once it was ready, I followed the wizard to set my name, username, and home location (used for sunrise/sunset triggers).
 
 ### 3. Pairing My First Devices
 1. Once logged in, I went to **Settings** → **Devices & Services**.

@@ -1,30 +1,28 @@
 ---
 const currentYear = new Date().getFullYear();
+const base = '/Homelabbing';
 ---
 
-<footer class="bg-bg-surface border-t border-border mt-20 py-12">
-  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-sm">
-        🏠
-      </div>
-      <div>
-        <span class="font-bold text-text block">Homelabbing</span>
-        <span class="text-xs text-text-faint">Open Source Self-Hosting & Modular Stacks Guide</span>
-      </div>
+<footer class="mt-24 border-t border-border bg-bg-surface">
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-[1fr_auto]">
+    <div class="max-w-sm">
+      <p class="font-semibold text-text">Homelabbing</p>
+      <p class="mt-2 text-sm leading-relaxed text-text-muted">
+        A beginner guide to self-hosting with Docker Compose. Open source under the MIT licence.
+      </p>
+      <p class="mt-4 text-sm text-text-faint">&copy; {currentYear} Zamiul Rashid</p>
     </div>
 
-    <div class="flex flex-wrap items-center gap-6 text-sm text-text-muted">
-      <a href="/Homelabbing/getting-started" class="hover:text-text transition-colors">Getting Started</a>
-      <a href="/Homelabbing/concepts" class="hover:text-text transition-colors">Core Concepts</a>
-      <a href="/Homelabbing/networking" class="hover:text-text transition-colors">Networking</a>
-      <a href="https://github.com/Zamiul-rashid/Homelabbing" target="_blank" rel="noopener noreferrer" class="hover:text-text transition-colors">GitHub</a>
-      <a href="https://trash-guides.info" target="_blank" rel="noopener noreferrer" class="hover:text-text transition-colors">TRaSH Guides</a>
-    </div>
-
-    <div class="text-xs text-text-faint text-center md:text-right font-mono">
-      <p>© {currentYear} Zamiul Rashid. Open Source (MIT).</p>
-      <p class="mt-1">Zero Secrets. Zero Telemetry. 100% Self-Hosted.</p>
-    </div>
+    <nav aria-label="Footer">
+      <ul class="grid grid-cols-2 gap-x-10 gap-y-2 text-sm sm:grid-cols-3">
+        <li><a href={`${base}/getting-started`} class="text-text-muted hover:text-text">Guide</a></li>
+        <li><a href={`${base}/services`} class="text-text-muted hover:text-text">Services</a></li>
+        <li><a href={`${base}/concepts`} class="text-text-muted hover:text-text">Concepts</a></li>
+        <li><a href={`${base}/networking`} class="text-text-muted hover:text-text">Networking</a></li>
+        <li><a href={`${base}/my-lab`} class="text-text-muted hover:text-text">My lab</a></li>
+        <li><a href="https://github.com/Zamiul-rashid/Homelabbing" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-text">GitHub</a></li>
+        <li><a href="https://trash-guides.info" target="_blank" rel="noopener noreferrer" class="text-text-muted hover:text-text">TRaSH Guides</a></li>
+      </ul>
+    </nav>
   </div>
 </footer>

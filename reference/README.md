@@ -1,109 +1,92 @@
-# 🏛️ Author's Personal Reference Setup (`reference/`)
+# The author's reference setup (`reference/`)
 
 > [!IMPORTANT]
-> **This directory is provided for advanced reference and inspiration only.**
-> You are **NOT** expected or advised to deploy these configurations directly on your first home server!
+> **The files in this folder are a July 2026 snapshot. The text below describes the setup as it runs in October 2026.**
+> The two have drifted apart. Where they disagree, this README says so. The snapshot is kept for reading, not for deploying.
 
-Start with the modular, self-contained stacks inside [`stacks/`](../stacks/README.md) for your first home server. Each stack there is isolated, heavily commented, and designed to teach you how the underlying services work.
+Start with the modular stacks in [`stacks/`](../stacks/README.md) for your first server. Each one is small, commented line by line, and runs on its own. This folder is where you look later, when you want to see how the pieces fit together in a lab that has grown.
 
----
+For the full write-up of the current lab, with diagrams, the backup schedule and a timeline, see the **[My lab](https://Zamiul-rashid.github.io/Homelabbing/my-lab)** page on the website.
 
-## 🧐 What is Inside This Folder?
+![The lab in October 2026: router zones, the app server's stacks, the Proxmox host, NFS media share, backups and alerting](../docs/lab-architecture.png)
 
-The repository author uses these exact, unmodified Docker Compose blueprints and recovery scripts to run a 25+ service production ecosystem at home:
-
-- **[`media-stack/`](media-stack/README.md)** — A **Tri-Network (`media_net`, `download_net`, `infra_net`)** 25-container production compose stack combining `Jellyfin`, `Navidrome`, `Kavita`, `Feishin`, the complete `*arr` download automation pipeline (`Radarr`, `Sonarr`, `Prowlarr`, `qBittorrent`, `Jellyseerr`), artificial intelligence audio vector indexing (`AudioMuse AI` + `PostgreSQL pgvector`), `Paperless-ngx`, `Stirling PDF`, `Actual Budget`, `Home Assistant`, `Mosquitto MQTT`, `AdGuard Home`, `Redis`, `Portainer`, `Watchtower`, `Uptime Kuma`, `Homarr`, and `Homepage`. Features zero-trust database isolation (`internal: true`).
-- **[`nextcloud-stack/`](nextcloud-stack/)** — A standalone production Nextcloud + MariaDB stack wired to dedicated cloud storage pools.
-- **[`proxy-stack/`](proxy-stack/)** — The primary Nginx Proxy Manager + DuckDNS edge routing gateway.
-- **[`recovery/`](recovery/)** — The author's personal bare-metal recovery scripts (`01-bootstrap.sh`, `02-restore.sh`, `03-backup.sh`, `04-recyclarr.yml`, `05-ignition.sh`) used to resurrect the entire 25+ service lab from a cold backup in under 30 minutes (`Bus Factor: 0`).
+The HTML sources for both diagrams are in [`diagrams/`](../diagrams/); open one in a browser and use its export menu to make a new PNG.
 
 ---
 
-## 🏛️ System Architecture & Data Flow
+## What is in this folder
 
-Below is the high-level system architecture of the Homelabbing ecosystem, illustrating how traffic enters from external networks, routes through the proxy layer, hits the dual-homed application containers, and interacts with isolated databases and unified storage:
-
-![Homelabbing Architecture Diagram](../docs/architecture.png)
-
----
-
-## 🌐 The Tri-Network Architecture: Why Three Networks?
-
-If you look at the bottom of [`media-stack/docker-compose.yml`](media-stack/docker-compose.yml#L617-L625), you will notice that this production stack does **not** put all containers on a single flat network. Instead, it deploys a **Tri-Network Architecture**:
-
-```yaml
-networks:
-  media_net:
-    driver: bridge
-  download_net:
-    driver: bridge
-  infra_net:
-    driver: bridge
-    internal: true  # Zero internet access & zero external port access
-```
-
-### 1. `media_net` (Frontend & Core Application Tier)
-- **Role:** The primary application bridge where user-facing web dashboards and streaming services reside (`jellyfin`, `navidrome`, `kavita`, `jellyseerr`, `homepage`, `paperless-ngx`, `stirling-pdf`, `actual-budget`, `filebrowser`, `audiomuse-ai`).
-- **Why?** These containers bind ports to the host machine (`SERVER_IP:PORT`) so your web browsers, TVs, mobile apps, and Nginx reverse proxy can reach them. They also communicate directly with one another over DNS (e.g., `http://jellyfin:8096`).
-
-### 2. `download_net` (Automation & P2P Isolation Tier)
-- **Role:** Dedicated bridge for download clients and index scrapers (`qbittorrent`, `prowlarr`, `radarr`, `sonarr`).
-- **Why separate from `media_net`?** BitTorrent clients open hundreds of simultaneous peer-to-peer (P2P) connections, and indexers frequently fire burst HTTP requests to external trackers. Isolating this traffic onto `download_net` prevents broadcast chatter, TCP socket exhaustion, and rate-limit noise from degrading real-time 4K video streaming (`jellyfin`) or database queries. Furthermore, when routing downloaders through a VPN (`gluetun`), `download_net` ensures tight containment against accidental IP leaks.
-
-### 3. `infra_net` (Zero-Trust Backend Database & Cache Tier)
-- **Role:** The sealed backend data vault hosting databases and memory caches (`redis`, `audiomuse-db`).
-- **Why `internal: true`?** In Docker Compose, the `internal: true` flag creates a **completely air-gapped virtual bridge**. Containers on `infra_net` have **no default outbound internet gateway** and **no external host ports**. Even if an attacker breached a download client or discovered your server's IP, they physically cannot send packets to `redis` or `audiomuse-db` because external routing rules do not exist. Only dual-homed application containers (such as `paperless-ngx` or `audiomuse-ai`) that sit simultaneously on `media_net` and `infra_net` can reach the backend database.
+| Path | What it is | Snapshot vs today |
+| :--- | :--- | :--- |
+| [`media-stack/`](media-stack/README.md) | One 25-container Compose file from July: media, downloads, documents, smart home and dashboards in a single stack. | Today those services are split across 16 stacks with 55 containers. See [`media-stack/README.md`](media-stack/README.md). |
+| [`nextcloud-stack/`](nextcloud-stack/) | Nextcloud and MariaDB. | Still a stack of its own. The MariaDB image is now pinned to a version. |
+| [`proxy-stack/`](proxy-stack/) | Nginx Proxy Manager and a dynamic DNS updater. | Same idea today: the proxy is the only way in from the internet. |
+| [`recovery/`](recovery/README.md) | Bootstrap, restore, backup and start-up scripts. | The backup has changed a lot. See [`recovery/README.md`](recovery/README.md). |
 
 ---
 
-## 📦 What Every Container in the Media Stack Does
+## The lab in October 2026, in one page
 
-To help you understand the purpose of all 25 containers defined inside [`media-stack/docker-compose.yml`](media-stack/docker-compose.yml), here is a complete breakdown organized by functional tier:
+### Two servers and a router
 
-### 🎬 Media Streaming & Library Management (`media_net`)
-- **`jellyfin`:** The open-source media server. Indexes your `/data/media/movies` and `/data/media/tv` folders, scrapes metadata/posters, and transcodes video on-the-fly to stream to TVs, phones, and web browsers.
-- **`navidrome`:** A lightweight web-based music server and Subsonic API endpoint. Indexes `/data/media/music` (`Artist/Album/Track.flac`) for instant streaming to mobile apps like Symfonium, Amperfy, and Feishin.
-- **`kavita`:** A digital library server for eBooks (EPUB/PDF), manga, and comic books (`.cbz`/`.cbr`). Features a distraction-free web reader and syncs progress across devices.
-- **`feishin`:** A modern desktop and web UI built specifically as a sleek client front-end for Navidrome and Jellyfin music libraries.
+- **The app server** runs every user-facing app in Docker, plus LAN DNS, the reverse proxy and most of the bulk storage. AMD Ryzen 5 3400G (its Vega iGPU does Jellyfin transcoding), 16 GB RAM, a 256 GB NVMe for the OS and all configs, and four 1 TB hard disks. Ubuntu LTS.
+- **The Proxmox host** is the hypervisor, the backup disk, the NFS server for media and a Samba share. Intel i5-11500, 16 GB RAM, a 256 GB NVMe for guest disks, a 1 TB disk for backups and a used 1 TB 2.5" disk for movies, TV and torrents.
+- **The router** runs OpenWrt and gives each physical port its own firewall zone (servers, admin laptop, Wi-Fi). The old router is now just a Wi-Fi access point.
 
-### 🤖 Automated Download & Indexing Pipeline (`download_net` & `media_net`)
-- **`jellyseerr`:** The self-service discovery and request dashboard. Family and friends log in here to browse movies/shows and click **"Request"**, which automatically sends tasks to Radarr and Sonarr.
-- **`radarr`:** Automated movie collection manager. Monitors RSS feeds from Prowlarr, finds releases matching your exact quality rules (e.g., `1080p Web-DL`), instructs qBittorrent to download them, and renames/moves completed files into `/data/media/movies`.
-- **`sonarr`:** Automated TV series manager. Tracks episodes, seasons, and airing schedules, coordinating downloads and organizing files into `/data/media/tv`.
-- **`prowlarr`:** The central indexer and tracker manager. Synchronizes torrent trackers and API keys across Radarr and Sonarr from a single interface.
-- **`qbittorrent`:** The BitTorrent download client that performs the heavy lifting inside `/data/downloads`.
+### 55 containers in 16 Compose stacks
 
-### 🧠 Artificial Intelligence & Audio Vector Indexing (`media_net` + `infra_net`)
-- **`audiomuse-ai`:** Custom AI audio intelligence API server. Processes your music collection to generate acoustic embeddings, mood classifications, and semantic similarity search vectors.
-- **`audiomuse-ai-worker`:** Background processing queue worker that handles heavy acoustic feature extraction and vector embeddings without slowing down the web UI.
-- **`audiomuse-db`:** PostgreSQL database loaded with the `pgvector` extension (`infra_net`). Safely stores high-dimensional vector embeddings and song metadata with zero external exposure.
+| Group | Stacks |
+| :--- | :--- |
+| Media | `media` (Jellyfin, Seerr, Navidrome, Feishin, Kavita), `download` (qBittorrent, Sonarr, Radarr, Prowlarr, qbit-manage, Recyclarr, Maintainerr) |
+| Documents and personal data | `tools` (Paperless-ngx with Redis, File Browser, Memos, Stirling PDF, AudioMuse AI with Postgres and pgvector), `nextcloud`, `vault` (Vaultwarden, LAN and Tailscale only), `dev` (Gitea) |
+| Home | `smarthome` (Home Assistant, Mosquitto, AdGuard Home) |
+| Edge and plumbing | `proxy` (Nginx Proxy Manager, dynamic DNS), `networks` (owns the shared Docker networks), `qr` (Mini QR, hardened) |
+| Monitoring | `infra` (a hand-written dashboard, Portainer, Dozzle, GoAccess, Scrutiny, Uptime Kuma, docker-socket-proxy, Watchtower), `monitoring`, `network-monitoring`, `app-exporters` |
+| Kept but stopped | an old Prometheus and Grafana stack; the live copies moved to the Proxmox host |
 
-### 📄 Productivity, Documents & Finance (`media_net` + `infra_net`)
-- **`paperless-ngx`:** An intelligent document management system. Scans PDF/image invoices and letters, performs automated OCR (Optical Character Recognition), extracts text, and organizes documents with machine learning tags.
-- **`redis`:** High-speed in-memory data store (`infra_net`). Powers the task queues and caching engines for both `paperless-ngx` and `watchtower`.
-- **`stirling-pdf`:** A locally-hosted PDF manipulation suite. Split, merge, compress, OCR, convert, and redact sensitive PDF files entirely on your own hardware without uploading data to third-party cloud tools.
-- **`actual-budget`:** A local-first, privacy-focused personal finance and budgeting system based on the envelope budgeting method.
+The Proxmox host runs four unprivileged LXC containers: monitoring (Prometheus and Grafana), a self-hosted AI assistant that relays alerts to my phone, a portfolio site, and a game hub.
 
-### 🏠 Smart Home Automation & Network Core (`media_net`)
-- **`homeassistant`:** Open-source smart home automation hub. Connects lights, sensors, thermostats, and cameras across different brands into unified dashboards and local automations.
-- **`mosquitto`:** Eclipse Mosquitto MQTT message broker. Acts as the lightweight real-time communication spine for IoT devices and Zigbee/Z-Wave sensors talking to Home Assistant.
-- **`adguardhome`:** Network-wide DNS server and ad/tracker blocker. Acts as your home's primary DNS resolver to strip ads and malware domains from every phone, PC, and smart TV on your Wi-Fi without installing client software.
+### What changed since the snapshot
 
-### 🛠️ Lab Observability & Management (`media_net`)
-- **`homepage`:** Highly customizable, icon-rich dashboard that aggregates live stats (CPU, RAM, active streams, download speeds) and quick-launch links for all your services.
-- **`homarr`:** An alternative sleek, widget-driven home server dashboard with native integration widgets for `*Arr` services, qBittorrent, and system monitoring.
-- **`uptime-kuma`:** Self-hosted monitoring tool that pings your internal ports and external websites every 60 seconds, displaying uptime percentages and sending instant alerts via Telegram/Discord if a container crashes.
-- **`portainer`:** Visual web interface for managing Docker containers, volumes, networks, and logs without touching the command line.
-- **`filebrowser`:** A web-based file manager providing a clean browser interface to upload, download, move, and edit files directly across `/data`.
-- **`watchtower`:** Automated container updater. Checks Docker Hub nightly for security updates and automatically recreates containers when new stable images are released (`redis`-backed).
+- **Homarr, Homepage and Actual Budget are gone.** A small hand-written dashboard replaced both dashboards; its numbers come live from Prometheus.
+- **Seerr replaced Jellyseerr.** It is the same request app under its new name and image.
+- **Watchtower is opt-in.** It runs once a day and only updates containers that are labelled for it. Pinned images (qBittorrent, qbit-manage, Nextcloud's MariaDB) are excluded. Watchtower does not use Redis; Redis is there for Paperless-ngx.
+- **Alerts go to my phone through Grafana**, not through Uptime Kuma. Grafana sends a webhook to the AI assistant's relay, which forwards it to my phone with no language model in the path. Uptime Kuma still runs, with 38 monitors.
+- **There is no VPN container.** Earlier text mentioned routing downloads through `gluetun`. That was hypothetical; it was never deployed.
+- **Downloads live in `/data/torrents`**, not `/data/downloads`. qBittorrent downloads into `/data/torrents/incomplete` and moves finished files to `/data/torrents/radarr` or `/data/torrents/sonarr`. Since 1 October 2026, `/data` on the app server is an NFS share from the Proxmox host.
+- **Five Docker networks instead of three**, all owned by a dedicated `networks` stack (see below).
+- **Paths moved** from `/opt/homelab` to `~/homelab`, and that folder is now a Git repository that syncs itself every 15 minutes (see [`recovery/README.md`](recovery/README.md)).
 
 ---
 
-## 🛠️ Why Keep This Here?
+## Why the networks are split
 
-While our beginner-friendly `stacks/` teach you how to build service by service, reading real-world production configurations provides immense learning value:
-1. **Seeing the Big Picture:** You can inspect [`media-stack/docker-compose.yml`](media-stack/docker-compose.yml) to see how 25 containers share network definitions (`media_net`, `download_net`, `infra_net`) and zero-copy hardlink volumes (`/data/torrents` ↔ `/data/media`).
-2. **Studying Advanced Security:** Notice how the `infra_net` bridge uses `internal: true` to completely seal off Redis and PostgreSQL from the public internet.
-3. **Automated Recovery Inspiration:** Reviewing [`recovery/03-backup.sh`](recovery/03-backup.sh) shows how to pause live SQLite databases before archiving and encrypt tarballs in memory using `AES-256-CBC` and `PBKDF2`.
+The July snapshot defines three networks at the bottom of [`media-stack/docker-compose.yml`](media-stack/docker-compose.yml). Today there are five:
 
-Feel free to explore, learn from the patterns, and adopt what fits your own personal homelab architecture.
+| Network | Who is on it | Notes |
+| :--- | :--- | :--- |
+| `media_net` | Front-end apps | Apps that people open in a browser or a TV app. |
+| `download_net` | Sonarr, Radarr, Prowlarr, qBittorrent and their exporters | Keeps the download side apart from the apps people use. |
+| `infra_net` | Redis, the AudioMuse database | `internal: true`. Nextcloud, Paperless and AudioMuse are on it **and** on a front-end network, so only they can reach the databases. |
+| `nextcloud_net` | Nextcloud and MariaDB | |
+| `qr_net` | Mini QR and the proxy | `internal: true`. Nothing else can reach Mini QR. |
+
+### `internal: true` in one paragraph
+
+A Docker network with `internal: true` has no route to the outside world. Containers on it cannot reach the internet, and nothing outside can reach them through it. Put a database on an internal network, give it no published ports, and the only way to talk to it is from another container that you deliberately attached to the same network.
+
+### Why a separate `networks` stack?
+
+If a network is defined inside an app's Compose file, `docker compose down` on that app deletes the network, even when other stacks still use it. In this lab a tiny "network keeper" container owns all five networks, and every app stack joins them as `external: true`. Taking any app stack down can no longer break the others.
+
+---
+
+## Why keep this folder?
+
+The beginner stacks in `stacks/` teach one service at a time. A grown lab shows things the beginner stacks cannot:
+
+1. **How many services share networks and storage.** Read [`media-stack/docker-compose.yml`](media-stack/docker-compose.yml) to see 25 containers, three networks and the `/data` layout in one file. It is also a good example of why the lab was later split into smaller stacks.
+2. **Database isolation.** Look for `internal: true` on `infra_net`.
+3. **Encrypted backups.** [`recovery/03-backup.sh`](recovery/03-backup.sh) pauses the proxy while it archives, then encrypts the tarball with OpenSSL (AES-256-CBC with PBKDF2).
+
+Take the patterns that fit your own lab and leave the rest.
